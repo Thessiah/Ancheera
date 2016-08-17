@@ -12,6 +12,14 @@
   var decAP = 0;
   var decBP = 0;
 
+  var $apNumber = $('#ap-number');
+  var $apTime = $('#ap-time');
+  var $bpNumber = $('#bp-number');
+  var $bpTime = $('#bp-time');
+
+  var $apBar = $('#ap-bar').find('.progress-bar');
+  var $bpBar = $('#bp-bar').find('.active-circle-icon');
+
   window.APBP = {
     VerifyAPBP: function(json) {
       var status;
@@ -87,6 +95,12 @@
         };
       }
     },
+    InitializeRaidCode: function(json) {
+      availableRaids = {};
+      availableRaids[json.raid.id] = {
+        bp: json.used_battle_point
+      };
+    },
 
     StartRaid: function(json) {
       if(json.result !== false) {
@@ -99,11 +113,11 @@
       decAP = 0;
     },
 
-    ClearRaid: function(json) {
-      var index = request.request.url.indexOf('/check_reward/') + '/check_reward/'.length;
-      if(currRaids[index] !== null) {
-        delete currRaids[index];
-      }
+    ClearRaid: function(json, url) {
+      // var index = url.indexOf('/check_reward/') + '/check_reward/'.length;
+      // if(currRaids[index] !== null) {
+      //   delete currRaids[index];
+      // }
     },
     
     RestoreAPBP: function(json) {
@@ -179,13 +193,21 @@
   var setAP = function(curr, max) {
     currAP = curr;
     maxAP = max;
-    $('#ap-number').text('AP: ' + currAP + '/' + maxAP);
+    $apNumber.text('AP: ' + currAP + '/' + maxAP);
+    $apBar.css('width', ((currAP / maxAP) * 100) + '%');
   }
 
   var setBP = function(curr, max) {
     currBP = curr;
     maxBP = max;
-    $('#bp-number').text('EP: ' + currBP + '/' + maxBP);
+    $bpNumber.text('EP: ' + currBP + '/' + maxBP);
+    $bpBar.each(function(index) {
+      if(index >= currBP) {
+        $(this).hide();
+      } else {
+        $(this).show();
+      }
+    });
   }
 
   var setAPTime = function() {
@@ -203,7 +225,10 @@
       }
     }
     str += apTime.second;
-    $('#ap-time').text(str);
+    if(parseInt(str) <= 0) {
+      str = "";
+    }
+    $apTime.text(str);
   }
   var setBPTime = function() {
     var str = "";
@@ -220,7 +245,10 @@
       }
     }
     str += bpTime.second;
-    $('#bp-time').text(str);
+    if(parseInt(str) <= 0) {
+      str = "";
+    }
+    $bpTime.text(str);
   }
 
   var resetAPTimer = function() {

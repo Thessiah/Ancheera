@@ -1,0 +1,41 @@
+{
+  "manifest_version": 2,
+
+  "name": "gbflmao",
+  "description": "o shit waddup",
+  "version": "1.0",
+
+  "browser_action": {
+    "default_icon": "src/assets/images/icon.png",
+    "default_popup": "src/pages/popup/popup.html",
+    "default_title": "ayyy"
+    
+  },
+  "options_ui": {
+    "page": "src/pages/options/options.html",
+    "chrome_style": true
+  },
+  
+  
+  "background": {
+    "scripts": ["src/background.js"]
+  },
+
+  "content_scripts": [{
+    "matches": ["http://gbf.game.mbga.jp/*"],
+    "js": ["lib/jquery-3.0.0.min.js", "src/script.js"],
+    "run_at": "document_end"
+  }],
+
+  "permissions": [
+    "storage",
+    "cookies",
+    "http://gbf.game.mbga.jp/*",
+    "notifications",
+    "tabs",
+    "activeTab",
+    "https://ajax.googleapis.com/"
+  ],
+
+  "devtools_page": "src/pages/devtools/devtools.html"
+}

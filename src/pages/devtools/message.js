@@ -5,7 +5,7 @@
         type: 'basic',
         title: title,
         message: message,
-        iconUrl: '../../anchiraicon.png' 
+        iconUrl: 'src/assets/images/anchiraicon.png' 
       }});
     },
     SetCookie: function(name, value) {
@@ -23,6 +23,17 @@
       }}, function(response) {
         
         sendResponse(response.cookie);
+      });
+    },
+    OpenURL: function(url) {
+      //Message.ConsoleLog('message.js', 'opening url: ' + url);
+      chrome.runtime.sendMessage({openURL: {
+        url: url
+      }});
+    },
+    MessageTabs: function(message, sendResponse) {
+      chrome.runtime.sendMessage({tabs: message}, function(response) {
+        sendResponse(response);
       });
     },
     // GetCookies: function(names, sendResponse) {
@@ -44,14 +55,18 @@
     }
   };
   var port = chrome.runtime.connect({name: 'devtools'});
-    port.onMessage.addListener(function(msg) {
-      if(msg.assault) {
-        // if(msg.assault === parseInt(msg.assault, 10)) {
-        //   Message.ConsoleLog('message', 'curr assault time');
-        //   Time.SetAssaultTime(-1, -1);
-        // } else {
-          Time.SetAssaultTime(msg.assault.slot, msg.assault.hour);
-        //}
-      }
+  port.onMessage.addListener(function(msg) {
+    if(msg.assault) {
+      Time.SetAssaultTime(msg.assault.times);
+    }
+    if(msg.angel) {
+      Time.SetAngelHalo(msg.angel.delta, msg.angel.active);
+    }
+    if(msg.defense) {
+     Time.SetDefenseOrder(msg.defense.time, msg.defense.active);
+    }
+    if(msg.checkRaids) {
+      Quest.CheckJoinedRaids(msg.checkRaids.raids, msg.checkRaids.unclaimed, msg.checkRaids.type);
+    }
   });
 })();

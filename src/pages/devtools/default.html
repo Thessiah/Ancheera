@@ -2,65 +2,390 @@
 <html>
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-</head>
+    <link href="../../stylesheets/default.css" rel="stylesheet">
+  </head>
   <body>
-		<div id="wait">
-			Waiting for home page...
-		</div>
-    <div id="ap-number"></div>
-    <div id="ap-time"></div>
-    <div id="bp-number"></div>
-    <div id="bp-time"></div>
-    <div id="jst-date"></div>
-    <div id="jst-time"></div>
-    <div id="daily-reset"></div>
-    <div id="weekly-reset"></div>
-    <div id="monthly-reset"></div>
-    <div id="next-assault"></div>
-    <div class="assault-time"></div>
-    <div class="assault-time"></div>
-    <div id="active-quest"></div>
-    <div id="quest-drops"></div>
-    <div id="dailies"> 
-      <div id="draw-count"></div>
-      <div id="tweet-status"></div>
-      <div class="coop-quest"></div>
-      <div class="coop-quest"></div>
-      <div class="coop-quest"></div>
-      <!-- POTS + BEADS -->
-      <div class="casino-item"></div>
-      <div class="casino-item"></div>
-      <!-- ANIME -->
-      <div class="casino-item"></div>
-      <div class="casino-item"></div>
-      <div class="casino-item"></div>
-      <div class="casino-item"></div>
-      <div class="casino-item"></div>
-      <div class="casino-item"></div>
+    <div id="wait">
+      <div class="sky-panel">
+        Waiting for home page...
+      </div>
     </div>
-    <div id="weeklies">
-      <div id="renown-n"></div>
-      <div id="renown-r"></div>
-      <div id="renown-sr"><div>
-      <div id="prestige-n"></div>
+    <div id="contents">
+      <div id="ap-bp-panel">
+        <div id="ap" class="panel">
+          <div class="ap-bp-info">
+            <div id="ap-number" class="ap-bp-number">AP: 22/92</div>
+            <div id="ap-time" class="ap-bp-time">5:46:02</div>
+          </div>
+          <div id="ap-bar" class="progress bar">
+            <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div>
+          </div>
+        </div>
+        <div id="bp" class="panel">
+          <div class="ap-bp-info">
+            <div id="bp-number" class="ap-bp-number">EP: 5/5</div>
+            <div id="bp-time" class="ap-bp-time">1:46:02</div>
+          </div>
+          <div  id="bp-bar" class="bar">
+            <div id="active-circle-icons" class="circle-icons">
+              <span class="active-circle-icon"><img src="../../assets/images/circle_full.png"></span>
+              <span class="active-circle-icon"><img src="../../assets/images/circle_full.png"></span>
+              <span class="active-circle-icon"><img src="../../assets/images/circle_full.png"></span>
+              <span class="active-circle-icon"><img src="../../assets/images/circle_full.png"></span>
+              <span class="active-circle-icon"><img src="../../assets/images/circle_full.png"></span>
+            </div>
+            <div class="circle-icons">
+              <span class="inactive-circle-icon"><img src="../../assets/images/circle_empty.png"></span>
+              <span class="inactive-circle-icon"><img src="../../assets/images/circle_empty.png"></span>
+              <span class="inactive-circle-icon"><img src="../../assets/images/circle_empty.png"></span>
+              <span class="inactive-circle-icon"><img src="../../assets/images/circle_empty.png"></span>
+              <span class="inactive-circle-icon"><img src="../../assets/images/circle_empty.png"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="time">
+        <div>
+          <div id="jst-date">Mon Aug 08 2016</div>
+          <div id="jst-time">4:10:15 PM</div>
+        </div>
+        <div id="jst-zone">JST</div>
+      </div>
+      <div id="events">
+        <div id="next-assault" class="white-panel">
+          <div class="name"> Assault Time: </div>
+          <div class="delta"> 12 h, 49m</div>
+          <div id="left-assault" class="assault-time">12PM</div>
+          <div id="right-assault" class="assault-time">12PM</div>
+        </div>
+        <div id="angel-halo" class="white-panel">
+          <div class="name"> Angel Halo: </div>
+          <div class="delta"> 12h, 49m</div>
+          <div class="time">8/8, 4PM</div>
+        </div>
+        <div id="defense-order" class="white-panel">
+          <div class="name"> Defense Order: </div>
+          <div class="delta"> 12h, 49m</div>
+          <div class="time">8/8, 4PM</div>
+        </div>
+
+      </div>
+      <div id="resets">
+        <div id="daily-reset" class="white-panel">
+          Daily reset:
+          <div class="delta"> 12h, 49m</div>
+          <div class="date"> 8/8, 4PM</div>
+        </div>
+        <div id="weekly-reset" class="white-panel">
+          Weekly reset:
+          <div class="delta"> 12h, 49m</div>
+          <div class="date"> 8/8, 4PM</div>
+        </div>
+        <div id="monthly-reset" class="white-panel">
+          Monthly reset:
+          <div class="delta"> 12h, 49m</div>
+          <div class="date"> 8/8, 4PM</div>
+        </div>
+      </div>
+      <div class="container">
+        <ul class="nav nav-tabs">
+          <li class="active"><a data-toggle="tab" href="#profile">Profile</a></li>
+          <li><a data-toggle="tab" href="#quest">Quest</a></li>
+          <li><a data-toggle="tab" href="#dailies">Dailies</a></li>
+          <li><a data-toggle="tab" href="#supplies">Supplies</a></li>
+        </ul>
+        <div class="tab-content">
+          <div id="profile" class="tab-pane in active">
+            <div id="left-profile">
+              <div id="rank" class="profile-bar">
+                <div id="rank-number" class="number">Rank: 5</div>
+                <div id="rank-remaining" class="remaining">3040920</div>
+                <div id="rank-bar" class="progress bar">
+                  <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 100%"></div>
+                </div>
+              </div>
+              <div id="class" class="profile-bar">
+                <div id="class-number" class="number">Class: 20</div>
+                <div id="class-remaining" class="remaining">3040920</div>
+                <div id="class-bar" class="progress bar">
+                  <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 100%"></div>
+                </div>
+              </div>
+              <div id="restore-list">
+                <div class="profile-item">
+                  <img src="../../assets/images/items/1.jpg" class="item-img">
+                  <div class="item-count">9999</div>
+                </div>
+                <div class="profile-item">
+                  <img src="../../assets/images/items/2.jpg" class="item-img">
+                  <div class="item-count">9999</div>
+                </div>
+                <div class="profile-item">
+                  <img src="../../assets/images/items/3.jpg" class="item-img">
+                  <div class="item-count">9999</div>
+                </div>
+                <div class="profile-item">
+                  <img src="../../assets/images/items/5.jpg" class="item-img">
+                  <div class="item-count">9999</div>
+                </div>
+              </div>
+            </div>
+            <div id="right-profile">
+              <div id="ruppee" class="profile-currency">
+                <img src="../../assets/images/items/20011.jpg" class="currency-img">
+                <div class="currency-amount">123124</div>
+              </div>
+              <div id="crystal" class="profile-currency">
+                <img src="../../assets/images/items/20011.jpg" class="currency-img">
+                <div class="currency-amount">2424</div>
+              </div>
+              <div id="draw" class="profile-currency">
+                <img src="../../assets/images/items/20011.jpg" class="currency-img">
+                <div class="currency-amount">35</div>
+              </div>
+              <div id="chips"></div>
+              <div id="cp">5</div>
+              <div id="renown">30</div>
+              <div id="prestige">30</div>
+
+            </div>
+          </div>
+          <div id="quest" class="tab-pane">
+            <div id="curr-quest" class="panel panel-default">
+              <a data-toggle="collapse" href="#curr-quest-collapse" class="link-heading panel-heading-new text-center"> Quest
+              </a>
+              <div id="curr-quest-collapse" class="panel-collapse collapse">
+                <div class="table">
+                  <div class="quest-panel" </div>
+                    <img src="../../assets/images/quests/unknown.jpg" id= "curr-quest-img" class="quest-img">
+                    <div id="curr-quest-name" class="quest-name">None</div>
+                    <!--<div id="curr-quest-id">1213</div>
+                    <div id="curr-quest-url">url</div>-->
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div id="curr-raids" class="panel panel-default">
+              <a data-toggle="collapse" href="#curr-raids-collapse" class="link-heading panel-heading-new text-center"> Raids
+              </a>
+              <div id="curr-raids-collapse" class="panel-collapse collapse">
+                <ul class="panel-body-new table">
+                  <li class="quest-panel">
+                    <img src="../../assets/images/quests/unknown.jpg" class="quest-img">
+                    <div class="quest-name">None</div>
+                  </li>
+                  <li class="quest-panel">
+                    <img src="../../assets/images/quests/unknown.jpg" class="quest-img">
+                    <div class="quest-name">test quest test quest test</div>
+                  </li>
+                  <li class="quest-panel">
+                    <img src="../../assets/images/quests/unknown.jpg" class="quest-img">
+                    <div class="quest-name">test quest test quest test</div>
+                  </li>
+                  <li class="quest-panel">
+                    <img src="../../assets/images/quests/unknown.jpg" class="quest-img">
+                    <div class="quest-name">test quest test quest test</div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div id="curr-coop" class="panel panel-default">
+              <a data-toggle="collapse" href="#curr-coop-collapse" class="link-heading panel-heading-new text-center"> Co-op
+              </a>
+              <div id="curr-coop-collapse" class="panel-collapse collapse">
+                <div class="table">
+                  <div class="quest-panel" </div>
+                    <img src="../../assets/images/quests/unknown.jpg" id= "curr-coop-img" class="quest-img">
+                    <div id="curr-coop-name" class="quest-name">test quest test quest test</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div id="dailies" class="tab-pane">
+            <ul id="daily-categories" class="nav nav-pills sky">
+              <li class="active"><a data-toggle="pill" href="#dailies-panel">Dailies</a></li>
+              <li><a data-toggle="pill" href="#weeklies-panel">Weeklies</a></li>
+              <li><a data-toggle="pill" href="#monthlies-panel">Monthlies</a></li>
+            </ul>
+            <div class="tab-content">
+              <div id="dailies-panel" class="tab-pane in active">
+                <div id="draw-count"></div>
+                <div id="tweet-status"></div>
+                <div id="coop-dailies" class="panel panel-default">
+                  <a data-toggle="collapse" href="#coop-daily-collapse" class="link-heading panel-heading-new text-center"> Co-op Quests
+                  </a>
+                  <div id="coop-daily-collapse" class="panel-collapse collapse">
+                    <ul class="panel-body-new table">
+                      <li class="coop-div">
+                        <div class="coop-quest">Win 5 Co-Op Quests.</div>
+                        <div class="coop-progress"> 3/5 </div>
+                      </li>
+                      <li class="coop-div">
+                        <div class="coop-quest">Get 3 Mystical Flames.</div>
+                        <div class="coop-progress">  0/3 </div>
+                      </li>
+                      <li class="coop-div">
+                        <div class="coop-quest">Clear Stone Body, Iron Will (H7).</div>
+                        <div class="coop-progress"> 1/1 </div>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                <div id="casino-dailies" class="panel panel-default">
+                  <a data-toggle="collapse" href="#casino-daily-collapse" class="link-heading panel-heading-new text-center"> Casino
+                  </a>
+                  <div id="casino-daily-collapse" class="panel-collapse collapse">
+                    <ul class="panel-body-new vertical-table">
+                      <!-- ANIME -->
+                      <li class="casino-div">
+                        <img src="../../assets/images/items/26.jpg" class="item-img">
+                        <div class= "casino-item"></div>
+                      </li>
+                      <li class="casino-div">
+                        <img src="../../assets/images/items/31.jpg" class="item-img">
+                        <div class= "casino-item"></div>
+                      </li>
+                      <li class="casino-div">
+                        <img src="../../assets/images/items/18.jpg" class="item-img">
+                        <div class= "casino-item"></div>
+                      </li>
+                      <li class="casino-div">
+                        <img src="../../assets/images/items/19.jpg" class="item-img">
+                        <div class= "casino-item"></div>
+                      </li>
+                      <li class="casino-div">
+                        <img src="../../assets/images/items/20.jpg" class="item-img">
+                        <div class= "casino-item"></div>
+                      </li>
+                      <li class="casino-div">
+                        <img src="../../assets/images/items/21.jpg" class="item-img">
+                        <div class= "casino-item"></div>
+                      </li>
+                      <!-- POTS + BEADS -->
+                      <li class="casino-div">
+                        <img src="../../assets/images/items/2.jpg" class="item-img">
+                        <div class= "casino-item"></div>
+                      </li>
+                      <li class="casino-div">
+                        <img src="../../assets/images/items/5.jpg" class="item-img">
+                        <div class= "casino-item"></div>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                <div id="raid-dailies" class="panel panel-default">
+                  <a data-toggle="collapse" href="#quest-dailies-collapse" class="link-heading panel-heading-new text-center"> Raids
+                  </a>
+                  <div id="quest-dailies-collapse" class="panel-collapse collapse">
+                    <ul id="daily-raid-list" class="panel-body-new table">
+                      <li class="daily-quest-panel">
+                        <img src="../../assets/images/quests/2040020000_high.jpg" class="quest-img">
+                        <div class="quest-name">Luminiera (HL)</div>
+                        <div class="quest-count">0/3</div>
+                        <div class="quest-item">
+                          <img src="../../assets/images/items/18.jpg" class="item-img">
+                          <div class="item-count">9999</div>
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div id="weeklies-panel" class="tab-pane">
+              </div>
+              <div id="monthlies-panel" class="tab-pane">
+                <div id="casino-monthlies" class="panel panel-default">
+              <a data-toggle="collapse" href="#casino-monthly-collapse" class="link-heading panel-heading-new heading-link text-center"> Casino
+              </a>
+              <div id="casino-monthly-collapse" class="panel-collapse collapse">
+                <ul class="panel-body-new vertical-table">
+                  <!-- moonlight steel beams -->
+                  <li class="casino-div">
+                      <img src="../../assets/images/items/20013.jpg" class="item-img">
+                      <div class= "casino-item"></div>
+                  </li>
+                  <li class="casino-div">
+                      <img src="../../assets/images/items/20003.jpg" class="item-img">
+                      <div class= "casino-item"></div>
+                  </li>
+                  <!-- FURYYYYY -->
+                  <li class="casino-div">
+                    <img src="../../assets/images/items/1039900000.jpg" class="item-img">
+                    <div class= "casino-item"></div>
+                  </li>
+                  <li class="casino-div">
+                    <img src="../../assets/images/items/1029900000.jpg" class="item-img">
+                    <div class= "casino-item"></div>
+                  </li>
+                  <!-- POTS + BEADS -->
+                  <li class="casino-div">
+                    <img src="../../assets/images/items/2.jpg" class="item-img">
+                    <div class= "casino-item"></div>
+                  </li>
+                  <li class="casino-div">
+                    <img src="../../assets/images/items/5.jpg" class="item-img">
+                    <div class= "casino-item"></div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+              </div>
+            </div>
+          </div>
+          <div id="monthlies" class="tab-pane">
+            
+          </div>
+          <div id="supplies" class="tab-pane">
+            <div class="form-group panel"> 
+              <input type="text" class="form-control" id="search-supplies" placeholder="Search Supplies">
+            </div>
+            <ul id="supply-categories" class="nav nav-pills sky">
+              <li class="active"><a data-toggle="pill" href="#supplies-all" data-category="all">All</a></li>
+              <li><a data-toggle="pill" href="#supplies-all" data-category="misc">Misc</a></li>
+              <li><a data-toggle="pill" href="#supplies-all" data-category="treasure">Treasure</a></li>
+              <li><a data-toggle="pill" href="#supplies-all" data-category="raid">Raid</a></li>
+              <li><a data-toggle="pill" href="#supplies-all" data-category="material">Material</a></li>
+              <li><a data-toggle="pill" href="#supplies-all" data-category="event">Event</a></li>
+              <li><a data-toggle="pill" href="#supplies-all" data-category="coop">Coop</a></li>
+            </ul>
+            <div id="supplies-all" class="tab-pane in active">
+              <ul id="supply-list" class="panel-body-new table">
+                <li class="supply-item">
+                  <img src="../../assets/images/items/1.jpg" class="item-img">
+                  <div class="item-count">9999</div>
+                </li>
+              </ul>
+            </div>
+            <!--<div id="casino-monthlies" class="panel panel-default">
+              <a data-toggle="collapse" href="#casino-monthly-collapse" class="link-heading panel-heading-new heading-link text-center"> Casino
+              </a>
+              <div id="casino-monthly-collapse" class="panel-collapse collapse">
+                <ul class="panel-body-new vertical-table">
+                  <li class="casino-div">
+                      <img src="../../assets/images/items/20013.jpg" class="item-img">
+                      <div class= "casino-item"></div>
+                  </li>
+                
+                </ul>
+              </div>
+            </div>-->
+          </div>
+        </div>
+      </div>
     </div>
-    <div id="monthlies">
-      <!-- POTS + BEADS -->
-      <div class="casino-item"></div>
-      <div class="casino-item"></div>
-      <!-- FURYYYYY -->
-      <div class="casino-item"></div>
-      <div class="casino-item"></div>
-    </div> 
 
-
-    <div id="test"></div>
-    <script type="text/javascript" src="../../jquery-3.0.0.min.js"></script>
+    <script type="text/javascript" src="../../../lib/jquery-3.0.0.min.js"></script>
+    <script type="text/javascript" src="../../../lib/bootstrap-sass-3.3.7/assets/javascripts/bootstrap.min.js"></script>
+    
     <script type="text/javascript" src="message.js"></script>
+    <script type="text/javascript" src="storage.js"></script>
     <script type="text/javascript" src="network.js"></script>
+    <script type="text/javascript" src="supplies.js"></script>
     <script type="text/javascript" src="apbp.js"></script>
     <script type="text/javascript" src="quest.js"></script>
     <script type="text/javascript" src="casino.js"></script>
+    <script type="text/javascript" src="profile.js"></script>
     <script type="text/javascript" src="dailies.js"></script>
     <script type="text/javascript" src="weeklies.js"></script>
     <script type="text/javascript" src="monthlies.js"></script>

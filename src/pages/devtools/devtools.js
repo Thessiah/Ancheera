@@ -1,7 +1,7 @@
 (function() {
   chrome.devtools.panels.create("Ancheera",
-    "../../icon.png",
-    "pages/devtools/default.html",
+    "assets/images/icon.png",
+    "src/pages/devtools/default.html",
     function(panel) {
     });
 })();
