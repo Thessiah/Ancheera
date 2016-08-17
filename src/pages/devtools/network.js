@@ -53,6 +53,7 @@
       request.getContent(function(responseBody) {
         //Message.ConsoleLog('network.js', 'test1');
         Message.MessageTabs({selectQuest: true});
+        Quest.CheckDailyRaid(JSON.parse(responseBody), request.request.url);
         //Message.ConsoleLog('network.js', 'test2');
       });
     }
@@ -170,19 +171,12 @@
         Quest.EnterCoop(JSON.parse(responseBody));
       });
     }
-    //limited time quest
-    if(request.request.url.indexOf('/quest/check_quest_start/') !== -1) {
-      request.getContent(function(responseBody) {
-        Quest.CheckLimited(JSON.parse(responseBody), request.request.url);
-      });
-    }
     //restore ap/bp
     if(request.request.url.indexOf('/quest/user_item/') !== -1) {
       request.getContent(function(responseBody) {
         APBP.RestoreAPBP(JSON.parse(responseBody));
       });
     }
-
     //gacha
     if(request.request.url.indexOf('/gacha/list?_=') !== -1) {
       request.getContent(function(responseBody) {

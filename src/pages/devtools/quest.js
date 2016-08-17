@@ -113,13 +113,28 @@
 
   window.Quest = {
     Initialize: function() {
+      Storage.GetMultiple(['dailyRaids'], function(response) {
+        if(response['dailyRaids'] !== undefined) {
+          remainingQuests = response['dailyRaids'];
+        } else {
+          Storage.Set('dailyRaids', remainingQuests);
+        }
+        var id;
+        $dailyRaidList.find('.quest-count').each(function(index) {
+          id = $(this).data('id');
+          $(this).text(remainingQuests[id] + '/' + raidInfo[id].max);
+        });
+      });
+
       for(var i = 0; i < raidList.length; i++) {
         var raid = raidInfo[raidList[i]];
         var newRaid = $dailyRaid.clone();
         newRaid.data('id', raidList[i]);
         newRaid.children('.quest-img').first().attr('src', raid.url);
         newRaid.children('.quest-name').first().text(raid.name);
-        newRaid.children('.quest-count').first().text(raid.max + '/' + raid.max);
+        //newRaid.children('.quest-count').first().text(raid.max + '/' + raid.max);
+        newRaid.children('.quest-count').first().attr('id', 'remaining-' + raidList[i]);
+        newRaid.children('.quest-count').first().data('id', raidList[i]);
         if(raid.animeID !== null) {
           newRaid.find('.item-img').first().attr('src', imageURL + 'items/' + raid.animeID + '.jpg');
           var amount = Supplies.Get(raid.animeID, 'raid', updateAnimes);
@@ -163,14 +178,14 @@
         imageURL: '../../assets/images/quests/unknown.jpg'
       };
     },
-    UpdateAnimes: function() {
-      updateAnimes();
-    },
     InitializeQuestImg: function(url) {
       nextQuest.imageURL = url;
     },
     StartQuest: function(json) {
       currQuest = nextQuest;
+      if(remainingQuests[currQuest.questID] !== undefined && remainingQuests[currQuest.questID] > 0) {
+        setRemainingRaids(currQuest.questID, remainingQuests[currQuest.questID] - 1);
+      }
       setQuest();
     },
     NextBattle: function(json) {
@@ -313,16 +328,20 @@
         setRaids();
       }
     },
+    CheckDailyRaid: function(json, url) {
+      id = url.substring(url.lastIndexOf('/') + 1, url.indexOf('?'));
+      if(remainingQuests[id] !== undefined) {
+        if(json.result === 'ok') {
+          setRemainingRaids(id, parseInt(json.limited_count));
+        } else {
+          setRemainingRaids(id, 0);
+        }
+      }
+    },
     InitializeCoop: function(json) {
       nextCoop = json.quest_info.chapter_name;
     },
     EnterCoop: function(json) {
-    },
-    CheckLimited: function(json, url) {
-      var url = url.substring(url.indexOf('/1/') + 1, url.indexOf('?_='));
-      if(remainingQuests[url] !== undefined) {
-        remainingQuests[url] = json.limited_count;
-      }
     },
     LoadImage: function(url) {
     },
@@ -337,7 +356,16 @@
     return url.substring(url.indexOf('data/') + 5, url.lastIndexOf('/'));
   }
 
-
+  var setRemainingRaids = function(id, amount) {
+    if(remainingQuests[id] !== undefined) {
+      Message.ConsoleLog('quest.js', remainingQuests[id]);
+      remainingQuests[id] = amount;
+      Message.ConsoleLog('quest.js', JSON.stringify(remainingQuests));
+      $dailyRaidList.find('#remaining-' + id).first().text(amount + '/' + raidInfo[id].max);
+      Message.ConsoleLog('quest.js', JSON.stringify(remainingQuests));
+      Storage.Set('dailyRaids', remainingQuests);
+    }
+  }
   var setQuest = function() {
     if(currQuest !== null) {
       $currQuestName.text(currQuest.name);

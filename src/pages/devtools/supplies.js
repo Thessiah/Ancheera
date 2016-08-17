@@ -1,4 +1,5 @@
 (function() {
+  Message.ConsoleLog('supplies.js', 'test1');
   var supplies = {
     treasureHash: {},
     recovery: {},
@@ -72,18 +73,18 @@
       }
       return 0;
     },
-    Set: function(id, amount) {
-      var category = supplies.all[id];
-      if(category !== undefined) {
-        updateSupply(id, category, amount); 
-      }
-    },
-    Increment: function(id, amount) {
-      var category = supplies.all[id];
-      if(category !== undefined) {
-        updateSupply(id, category, supplies[category][id].count + amount); 
-      }
-    },
+    // Set: function(id, amount) {
+    //   var category = supplies.all[id];
+    //   if(category !== undefined) {
+    //     updateSupply(id, category, amount); 
+    //   }
+    // },
+    // Increment: function(id, amount) {
+    //   var category = supplies.all[id];
+    //   if(category !== undefined) {
+    //     updateSupply(id, category, supplies[category][id].count + amount); 
+    //   }
+    // },
     SetRecovery: function(json) {
       if(json !== undefined) {
         var updated = false;
@@ -196,20 +197,16 @@
     GetLoot: function(json) {
       var item;
       var updated =[];
-      var category;
       var list = json.rewards.reward_list;
       for(var property in list) {
         if(list.hasOwnProperty(property)) {
-          Message.ConsoleLog('supplies.js', 'property: ' + property);
           for(var i = 0; i < list[property].length; i++) {
             item = list[property][i];
             Message.ConsoleLog('supplies.js', JSON.stringify(item));
-            category = supplies.all[item.id];
-            if(category !== undefined) {
-              if(incrementSupply(item.id, category, 1)) {
-                if(updated.indexOf(category) === -1) {
-                  updated.push(category);
-                }
+            category = getCategory(item.id, item.item_kind);
+            if(category !== undefined && incrementSupply(item.id, category, 1)) {
+              if(updated.indexOf(category) === -1) {
+                updated.push(category);
               }
             }
           }
@@ -219,8 +216,8 @@
       for(var property in list) {
         if(list.hasOwnProperty(property)) {
           item = list[property];
-          category = supplies.all[item.id];
-          if(incrementSupply(item.id, category, item.count)) {
+          category = getCategory(item.id, item.item_kind);
+          if(category !== undefined && incrementSupply(item.id, category, item.count)) {
             if(updated.indexOf(category) === -1) {
               updated.push(category);
             }
@@ -237,7 +234,7 @@
       var updated = [];
       for(var i = 0; i < json.presents.length; i++) {
         item = json.presents[i];
-        category = supplies.all[item.item_id];
+        category = getCategory(item.id, item.item_kind_id);
         if(category !== undefined && incrementSupply(item.item_id, category, item.number)) {
           if(updated.indexOf(category) === -1) {
             updated.push(category);
@@ -252,7 +249,7 @@
       if(json.article.item_ids.length > 0 && json.article.is_get.result) {
         var updated = [];
         var id = json.article.item_ids[0];
-        var category = supplies.all[id];
+        var category = getCategory(id, json.article.item_kind[0]);
         if(category !== undefined && updateSupply(id, category, parseInt(json.article.is_get.item_cnt) + parseInt(json.purchase_number))) {
           if(updated.indexOf(category) === -1) {
             updated.push(category);
@@ -265,7 +262,7 @@
           articleNumber = json.article['article' + ('' + i) + '_number'];
           if(article !== '' && articleNumber !== '' && article !== undefined && article.master !== undefined) {
             id = article.master.id;
-            category = supplies.all[id];
+            category = getCategory(id, '10');
             if(category !== undefined && updateSupply(id, category, parseInt(article.has_number) - parseInt(articleNumber) * parseInt(json.purchase_number))) {
               if(updated.indexOf(category) === -1) {
                 updated.push(category);
@@ -280,15 +277,15 @@
     }
   }
 
-  var getItem = function(id, item_kind) {
+  var getCategory = function(id, item_kind) {
     if(item_kind === '4') {
-      return supplies.recovery[id];
+      return 'recovery';
     } else if(item_kind === '8') {
-      return supplies.draw[id];
+      return 'draw';
     } else if(item_kind === '17') {
-      return supplies.powerUp[id];
+      return 'powerUp';
     } else if(item_kind === '10') {
-      return supplies[supplies.treasureHash[id]][id];
+      return supplies.treasureHash[id];
     } else {
       return undefined;
     }
@@ -314,8 +311,8 @@
     
     if(supply !== undefined && supply.count !== intNum) {
       supply.count = intNum;
-      Message.ConsoleLog('supplies.js', 'updating: ' + supply.name + ': '+supply.count + ' ' + intNum + ' ' + $supplyList.children('#supply-' + supply.sequence).length);
-      $supplyList.children('#supply-' + supply.sequence).children('.item-count').first().text(intNum);
+      Message.ConsoleLog('supplies.js', 'updating: ' + supply.name + ': '+supply.count + ' ' + intNum);
+      $supplyList.children('#supply-' + supply.sequence + '-' + id).children('.item-count').first().text(intNum);
       updatedSupplies.push(id);
       for(var i = 0; i < supply.responseList.length; i++) {
         supply.responseList[i](id, intNum);
@@ -342,7 +339,7 @@
     //supplies.all[id] = category;
     updatedSupplies.push(id);
     var newItem = $supplyItem.clone();
-    newItem.attr('id', 'supply-' + sequence);
+    newItem.attr('id', 'supply-' + sequence + '-' + id);
     if(category === 'recovery' || category === 'draw' || category === 'powerUp') {
       newItem.data('category', 'misc');
     } else {
@@ -368,10 +365,9 @@
     //if(sortedSupplies.length > 0) {
       var low = 0
       var high = sortedSupplies.length;
-
       while (low < high) {
         var mid = low + high >>> 1;
-        if (sortedSupplies[mid] < parseInt(sequence)) {
+        if (sortedSupplies[mid].sequence < parseInt(sequence)) {
           low = mid + 1;
         } else {
           high = mid;
@@ -379,11 +375,17 @@
       }
       //Message.ConsoleLog('supplies.js', 'low: ' + low + ' low value: ' + sortedSupplies[low]);
       if(low < sortedSupplies.length) {
-        $supplyList.children('#supply-' + sortedSupplies[low]).before(newItem);
-        sortedSupplies.splice(low, 0, parseInt(sequence));
+        $supplyList.children('#supply-' + sortedSupplies[low].sequence + '-' + sortedSupplies[low].id).before(newItem);
+        sortedSupplies.splice(low, 0, {
+          'sequence': parseInt(sequence),
+          'id': parseInt(id)
+        });
       } else {
         $supplyList.append(newItem);
-        sortedSupplies.push(parseInt(sequence));
+        sortedSupplies.push({
+          'sequence': parseInt(sequence),
+          'id': parseInt(id)
+        });
       }
     return true;
   }
@@ -423,4 +425,5 @@
   //     }
   //   }
   // }
+  Message.ConsoleLog('supplies.js', 'test1');
 })();
