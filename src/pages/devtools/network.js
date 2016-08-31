@@ -24,7 +24,7 @@
         // Message.ConsoleLog(Object.keys(request.request));
         // Message.ConsoleLog(Object.keys(request.response));
       }
-    if(request.request.url.indexOf('http://gbf.game.mbga.jp/') !== -1) {
+    if(request.request.url.indexOf('http://gbf.game.mbga.jp/') !== -1 || request.request.url.indexOf('http://game.granbluefantasy.jp/') !== -1) {
       if(Default.IsInitialized()) {
         checkRequest(request);
       } else {
@@ -46,6 +46,18 @@
     if(request.request.url.indexOf('/user/status?') !== -1 || request.request.url.indexOf('/user/data_assets?') !== -1) {
       request.getContent(function(responseBody) {
         APBP.VerifyAPBP(JSON.parse(responseBody));
+        Profile.SetLupiCrystal(JSON.parse(responseBody));
+      });
+    }
+    //check entering raid resources
+    if(request.request.url.indexOf('/quest/treasure_raid')  !== -1) {
+      request.getContent(function(responseBody) {
+        Supplies.RaidTreasureInfo(JSON.parse(responseBody));
+      });
+    }
+    if(request.request.url.indexOf('/quest/treasure_check_item')  !== -1) {
+      request.getContent(function(responseBody) {
+        Supplies.RaidTreasureCheck(JSON.parse(responseBody), request.request.url);
       });
     }
     //check limited quest
@@ -62,6 +74,7 @@
       request.getContent(function(responseBody) {
         APBP.InitializeQuest(JSON.parse(responseBody));
         Quest.InitializeQuest(JSON.parse(responseBody), request.request.url);
+        Supplies.InitializeRaid(JSON.parse(responseBody), request.request.url);
         Message.MessageTabs({startQuest: {
           'name': JSON.parse(responseBody).chapter_name,
           'ap': JSON.parse(responseBody).action_point,
@@ -79,6 +92,7 @@
       request.getContent(function(responseBody) {
         APBP.StartQuest(JSON.parse(responseBody));
         Quest.StartQuest(JSON.parse(responseBody));
+        Supplies.EnterRaid(JSON.parse(responseBody));
       });
     }
     //CHECK IF HOSTING QUEST IS RAID
@@ -154,8 +168,9 @@
       request.getContent(function(responseBody) {
         Quest.CompleteRaid(JSON.parse(responseBody), request.request.url);
         Supplies.GetLoot(JSON.parse(responseBody));
-       Profile.CompleteRaid(JSON.parse(responseBody));       
+        Profile.CompleteRaid(JSON.parse(responseBody));       
         Dailies.CompleteCoop(JSON.parse(responseBody));
+        Dailies.CompleteRaid(JSON.parse(responseBody));
         //APBP.RestoreAPBP(JSON.parse(responseBody));
       });
     }
@@ -175,6 +190,7 @@
     if(request.request.url.indexOf('/quest/user_item/') !== -1) {
       request.getContent(function(responseBody) {
         APBP.RestoreAPBP(JSON.parse(responseBody));
+        Supplies.UseRecovery(JSON.parse(responseBody), request.request.url);
       });
     }
     //gacha
@@ -186,8 +202,17 @@
     if(request.request.url.indexOf('/gacha/normal/result//normal/6?_=') !== -1) {
       request.getContent(function(responseBody) {
         Dailies.DecDraws(JSON.parse(responseBody));
+        Profile.LupiDraw(JSON.parse(responseBody));
+      })
+    } 
+    if(request.request.url.indexOf('/gacha/result//legend') !== -1) {
+      request.getContent(function(responseBody) {
+        Dailies.DecDraws(JSON.parse(responseBody));
+        Profile.CrystalDraw(JSON.parse(responseBody));
       })
     }
+
+    
     //co-op dailies
     if(request.request.url.indexOf('/coopraid/daily_mission?_=') !== -1) {
       request.getContent(function(responseBody) {
@@ -198,17 +223,20 @@
     if(request.request.url.indexOf('/casino/article_list/1/1?_=') !== -1 || request.request.url.indexOf('/casino/article_list/undefined/1?_=') !== -1) {
       request.getContent(function(responseBody) {
         Casino.SetCasino1(JSON.parse(responseBody));
+        Profile.SetChips(JSON.parse(responseBody).medal.number);
       })
     }
     if(request.request.url.indexOf('/casino/article_list/undefined/2?_=') !== -1) {
       request.getContent(function(responseBody) {
         Casino.SetCasino2(JSON.parse(responseBody));
+        Profile.SetChips(JSON.parse(responseBody).medal.number);
       })
     }
     //casino buy
     if(request.request.url.indexOf('/casino/exchange?_=') !== -1) {
       request.getContent(function(responseBody) {
         Casino.BuyCasino(JSON.parse(responseBody));
+        Supplies.BuyCasino(JSON.parse(responseBody), JSON.stringify(request.request.postData).replace(/:/g, '').replace(/,/g, '').split('\\\"'));
       })
 
     }
@@ -223,40 +251,160 @@
         Dailies.UseTweet(JSON.parse(responseBody));
       })
     }
-    if(request.request.url.indexOf('/item/normal_item_list/') !== -1) {
+    if(request.request.url.indexOf('/item/normal_item_list') !== -1) {
       request.getContent(function(responseBody) {
         Supplies.SetRecovery(JSON.parse(responseBody));
       })
     }
-    if(request.request.url.indexOf('/item/evolution_items/') !== -1) {
+    if(request.request.url.indexOf('/item/evolution_items') !== -1) {
       request.getContent(function(responseBody) {
         Supplies.SetPowerUp(JSON.parse(responseBody));
       })
     }
-    if(request.request.url.indexOf('/item/article_list/') !== -1) {
+    if(request.request.url.indexOf('/item/article_list') !== -1) {
       request.getContent(function(responseBody) {
         Supplies.SetTreasure(JSON.parse(responseBody));
       })
     }
-        if(request.request.url.indexOf('/item/gacha_ticket_list/') !== -1) {
+        if(request.request.url.indexOf('/item/gacha_ticket_list') !== -1) {
       request.getContent(function(responseBody) {
         Supplies.SetDraw(JSON.parse(responseBody));
       })
     }
-        if(request.request.url.indexOf('/item/others_items/') !== -1) {
+    if(request.request.url.indexOf('/present/possessed') !== -1) {
       request.getContent(function(responseBody) {
-        Supplies.SetOther(JSON.parse(responseBody));
+        Profile.CheckWeaponSummon(JSON.parse(responseBody));
       })
     }
-    if(request.request.url.indexOf('/item/others_items/') !== -1) {
+    if(request.request.url.indexOf('/present/receive?') !== -1) {
       request.getContent(function(responseBody) {
-        Supplies.GetGifts(JSON.parse(responseBody));
+        Supplies.GetGift(JSON.parse(responseBody));
+        Profile.GetGift(JSON.parse(responseBody));
+      })
+    }
+    if(request.request.url.indexOf('/present/receive_all?') !== -1 || request.request.url.indexOf('/present/term_receive_all?') !== -1) {
+      request.getContent(function(responseBody) {
+        Supplies.GetAllGifts(JSON.parse(responseBody));
+        Profile.GetAllGifts(JSON.parse(responseBody));
       })
     }
     //treasure trade purchase
     if(request.request.url.indexOf('/shop_exchange/purchase/') !== -1) {
       request.getContent(function(responseBody) {
         Supplies.PurchaseItem(JSON.parse(responseBody));
+        Dailies.PurchaseMoon(JSON.parse(responseBody));
+      })
+    }
+    if(request.request.url.indexOf('/weapon/list/') !== -1) {
+      request.getContent(function(responseBody) {
+        Profile.SetWeaponNumber(JSON.parse(responseBody));
+      })
+    }
+    if(request.request.url.indexOf('/npc/list/') !== -1) {
+      request.getContent(function(responseBody) {
+        Profile.SetCharacterNumber(JSON.parse(responseBody));
+      })
+    }
+    if(request.request.url.indexOf('/summon/list/') !== -1) {
+      request.getContent(function(responseBody) {
+        Profile.SetSummonNumber(JSON.parse(responseBody));
+      })
+    }
+    if(request.request.url.indexOf('/container/move?') !== -1) {
+      request.getContent(function(responseBody) {
+        Profile.MoveFromStash(JSON.parse(responseBody));
+      })
+    }
+    if(request.request.url.indexOf('/listall/move?') !== -1) {
+      request.getContent(function(responseBody) {
+        Profile.MoveToStash(JSON.parse(responseBody));
+      })
+    }
+    if(request.request.url.indexOf('/shop/point_list') !== -1) {
+      request.getContent(function(responseBody) {
+        Profile.SetDrops(JSON.parse(responseBody));
+      })
+    }
+    //Moon shop
+    if(request.request.url.indexOf('/shop_exchange/article_list/5/1/1/null/null/null?') !== -1 || request.request.url.indexOf('/shop_exchange/article_list/5/1/1/null/null/3?') !== -1) {
+      request.getContent(function(responseBody) {
+        Dailies.CheckMoons(JSON.parse(responseBody));
+      })
+    }
+    //do shop
+    if(request.request.url.indexOf('/shop_exchange/article_list/10/1/1/null/null/') !== -1) {
+      request.getContent(function(responseBody) {
+        Profile.SetDefense(JSON.parse(responseBody));
+        Dailies.CheckDefense(JSON.parse(responseBody), request.request.url);
+      })
+    }
+    if(request.request.url.indexOf('/shop/purchase') !== -1) {
+      request.getContent(function(responseBody) {
+        Profile.SpendCrystals(JSON.parse(responseBody));
+      })
+    }
+    if(request.request.url.indexOf('/npc/list') !== -1 || request.request.url.indexOf('/weapon/list') !== -1 || request.request.url.indexOf('/summon/list') !== -1) {
+      request.getContent(function(responseBody) {
+        Profile.SetInventoryCount(JSON.parse(responseBody), request.request.url);
+      })
+    }
+    if(request.request.url.indexOf('mbp/mbp_info') !== -1) {
+      request.getContent(function(responseBody) {
+        Dailies.CheckRenown(JSON.parse(responseBody));
+      })
+    }
+    if(request.request.url.indexOf('evolution_weapon/evolution?') !== -1 || request.request.url.indexOf('evolution_summon/evolution?') !== -1) {
+      request.getContent(function(responseBody) {
+        Profile.Uncap(JSON.parse(responseBody));
+        Profile.BuyUncap();
+      })
+    }
+    if(request.request.url.indexOf('evolution_weapon/item_evolution?') !== -1 || request.request.url.indexOf('evolution_summon/item_evolution?') !== -1) {
+      request.getContent(function(responseBody) {
+        Supplies.Uncap(JSON.parse(responseBody));
+        Profile.BuyUncap();
+      })
+    }
+    if(request.request.url.indexOf('item/evolution_items/') !== -1) {
+      request.getContent(function(responseBody) {
+        Supplies.CheckUncapItem(JSON.parse(responseBody));
+      })
+    }
+    if(request.request.url.indexOf('item/evolution_item_one') !== -1) {
+      request.getContent(function(responseBody) {
+        Supplies.SetUncapItem(JSON.parse(responseBody));
+        Profile.SetUncapItem(JSON.parse(responseBody));
+      })
+    }
+    if(request.request.url.indexOf('weapon/weapon_base_material?') !== -1 || request.request.url.indexOf('summon/summon_base_material?') !== -1) {
+      request.getContent(function(responseBody) {
+        Supplies.SetUncap(JSON.parse(responseBody));
+        Profile.SetUncap(JSON.parse(responseBody), request.request.url);
+      })
+    }
+    if(request.request.url.indexOf('npc/evolution_materials') !== -1) {
+      request.getContent(function(responseBody) {
+        Supplies.SetNpcUncap(JSON.parse(responseBody));
+      })
+    }
+    if(request.request.url.indexOf('evolution_npc/item_evolution?') !== -1) {
+      request.getContent(function(responseBody) {
+        Supplies.NpcUncap(JSON.parse(responseBody));
+        Profile.BuyUncap();
+      })
+    }
+    if(request.request.url.indexOf('weapon/weapon_material') !== -1 || 
+       request.request.url.indexOf('summon/summon_material') !== -1 ||
+       request.request.url.indexOf('npc/npc_material') !== -1) {
+      request.getContent(function(responseBody) {
+        Profile.SetUpgrade(JSON.parse(responseBody), request.request.url);
+      })
+    }
+    if(request.request.url.indexOf('enhancement_weapon/enhancement') !== -1 ||
+       request.request.url.indexOf('enhancement_summon/enhancement') !== -1 ||
+       request.request.url.indexOf('enhancement_npc/enhancement') !== -1) {
+      request.getContent(function(responseBody) {
+        Profile.Upgrade(JSON.parse(responseBody));
       })
     }
 
@@ -270,11 +418,17 @@
       //support_time string
       //success:true
       //Message.ConsoleLog(Object.keys(request.request));
-      Message.ConsoleLog(JSON.stringify(request));
-      Message.ConsoleLog(JSON.stringify(request.request.postData));
-
+      Buffs.StartBuff(JSON.stringify(request.request.postData).replace(/:/g, '').replace(/,/g, '').split('\\\"'));
     }
-        if(request.request.url.indexOf('/ob/r?t=') !== -1) {
+    if(request.request.url.indexOf('/sell_article/execute') !== -1) {
+      Supplies.SellCoop(JSON.stringify(request.request.postData).replace(/:/g, '').replace(/,/g, '').split('\\\"'));
+      // Profile.SellCoop(request.request.postData);
+      //Profile.SellCoop(JSON.stringify(request.request.postData).replace(/:/g, '').replace(/,/g, '').split('\\\"'));
+      //Message.ConsoleLog(request.request.text.postData.split('\"'));
+      // request.getContent(function(responseBody) {
+      //   Profile.SetShop(JSON.parse(responseBody));
+      // })
+    }
       // request.getContent(function(responseBody) {
       //   Dailies.UseTweet(JSON.parse(responseBody));
       // })
@@ -286,8 +440,6 @@
       //Message.ConsoleLog(Object.keys(request.request));
       // Message.ConsoleLog(request.request.method);
        //Message.ConsoleLog(JSON.stringify(request));
-      
-    }
 
 
   }

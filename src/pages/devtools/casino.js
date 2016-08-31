@@ -8,6 +8,8 @@
   }
   var $dailies = $('#casino-dailies').find('.casino-item');
   var $monthlies = $('#casino-monthlies').find('.casino-item');
+  var $dailyCollapse = $('#casino-daily-collapse');
+  var $monthlyCollapse = $('#casino-monthly-collapse');
   var updatedPages = [false, false];
   var dailyItemNames = ['Luminiera Omega Anima', 'Celeste Omega Anima', 'Tiamat Omega Anima', 'Colossus Omega Anima', 'Leviathan Omega Anima', 'Yggdrasil Omega Anima', 'Half Elixir', 'Soul Berry'];
   var remainingDailyItems = {
@@ -74,10 +76,20 @@
           remainingDailyItems[itemName] = dailyItemInfo[itemName].max;
         }
       }
+      Storage.Set('casino', {
+        'dailies': remainingDailyItems,
+        'monthlies': remainingMonthlyItems
+      });
+      setCasino();
     },
     MonthlyReset: function() {
       for(var i = 0; i < monthlyItemNames.length; i++) {
         remainingMonthlyItems[monthlyItemNames[i]] = monthlyItemInfo[monthlyItemNames[i]].max;
+          Storage.Set('casino', {
+          'dailies': remainingDailyItems,
+          'monthlies': remainingMonthlyItems
+        });
+        setCasino();
       }
     },
     SetCasino1: function(json) {
@@ -150,19 +162,32 @@
   var setCasino = function() {
     str = "";
     var itemName;
+    var collapse = true;
     $dailies.each(function(index) {
       itemName = dailyItemNames[index];
-      Message.ConsoleLog('casino.js', 'gucci');
       $(this).text(remainingDailyItems[itemName] + '/' + dailyItemInfo[itemName].max);
-      Message.ConsoleLog('casino.js', 'ayy');
+      if(remainingDailyItems[itemName] !== 0) {
+        collapse = false;
+      }
     });
-    Message.ConsoleLog('casino.js', 4);
+    if($dailyCollapse.hasClass('collapse in') && collapse) {
+      $dailyCollapse.collapse('hide');
+    } else if(!$dailyCollapse.hasClass('collapse in') && !collapse) {
+      $dailyCollapse.collapse('show');
+    }
+    collapse = true;
     $monthlies.each(function(index) {
       itemName = monthlyItemNames[index];
       $(this).text(remainingMonthlyItems[itemName] + '/' + monthlyItemInfo[itemName].max);
+      if(remainingMonthlyItems[itemName] !== 0) {
+        collapse = false;
+      }
     });
-    Message.ConsoleLog('casino.js', 'bye');
-
+    if($monthlyCollapse.hasClass('collapse in') && collapse) {
+      $monthlyCollapse.collapse('hide');
+    } else if(!$monthlyCollapse.hasClass('collapse in') && !collapse) {
+      $monthlyCollapse.collapse('show');
+    }
   }
 
   var checkUpdated = function() {

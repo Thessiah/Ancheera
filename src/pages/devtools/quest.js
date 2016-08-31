@@ -4,6 +4,7 @@
   var nextCoop = null;
   var currCoop = null;
   var nextRaids = null;
+  var isMagFest = false;
   var nextRaids = {};
   var currRaids = [];
   var imageURL = "../../assets/images/";
@@ -16,53 +17,57 @@
   var $currRaidNames = $currRaidCollapse.find('.quest-name');
   var $currRaidPanels = $currRaidCollapse.find('.quest-panel');
 
+  var $raidsPanel = $('#raids-panel');
   var $dailyRaidList = $('#daily-raid-list');
+  var $completedRaidList = $('#completed-raid-list');
   var $dailyRaid = $dailyRaidList.find('.daily-quest-panel').first().clone();
   $dailyRaidList.find('.daily-quest-panel').first().remove();
 
   var updateAnimes = function(id, amt) {
-    $dailyRaidList.find('#count-' + id).first().text(amt);
+    $raidsPanel.find('#count-' + id).first().text(amt);
   }
-
-
 
   var remainingQuests = {
-    '300031' : 3,
-    '300041' : 3,
-    '300051' : 3,
-    '300441' : 2,
+    '300031' : null,
+    '300041' : null,
+    '300051' : null,
+    '300441' : null,
 
-    '300081' : 3,
-    '300091' : 3,
-    '300101' : 3,
-    '300491' : 2,
+    '300081' : null,
+    '300091' : null,
+    '300101' : null,
+    '300491' : null,
 
-    '300141' : 3,
-    '300151' : 3,
-    '300161' : 3,
-    '300511' : 2,
+    '300141' : null,
+    '300151' : null,
+    '300161' : null,
+    '300511' : null,
 
-    '300181' : 3,
-    '300191' : 3,
-    '300261' : 3,
-    '300531' : 2,
+    '300181' : null,
+    '300191' : null,
+    '300261' : null,
+    '300531' : null,
     
-    '300211' : 3,
-    '300221' : 3,
-    '300271' : 3,
-    '300561' : 2,
+    '300211' : null,
+    '300221' : null,
+    '300271' : null,
+    '300561' : null,
     
-    '300241' : 3,
-    '300251' : 3,
-    '300281' : 3,
-    '300581' : 2,
+    '300241' : null,
+    '300251' : null,
+    '300281' : null,
+    '300581' : null,
   }
-  var createRaid = function(name, max, url, animeID) {
+  var createRaid = function(sequence, name, max, magDelta, url, animeID, isHL) {
     return {
+      sequence: sequence,
       name: name,
       max: max,
+      magDelta: magDelta,
       url: imageURL + 'quests/' + url,
-      animeID: animeID
+      animeID: animeID,
+      isHL: isHL,
+      isEnabled: true
     };
   }
   var raidList = [
@@ -74,99 +79,213 @@
     '300241', '300251', '300281', '300581'
   ]
 
+    var currRaidList = [
+    '300031', '300041', '300051', '300441', 
+    '300081', '300091', '300101', '300491', 
+    '300141', '300151', '300161', '300511',
+    '300181', '300191', '300261', '300531',
+    '300211', '300221', '300271', '300561',
+    '300241', '300251', '300281', '300581'
+  ]
+
+  var completedRaidList = [];
+
   var raidInfo = {
-    '300031' : createRaid('Tiamat (N)', 3, '2030000000.jpg', null),
-    '300041' : createRaid('Tiamat (H)', 3, '2030000000_hard.jpg', null),
-    '300051' : createRaid('Tiamat (EX)', 3, '2040020000_ex.jpg', '18'),
-    '300441' : createRaid('Tiamat (HL)', 2, '2040020000_high.jpg', '32'),
+    '300031' : createRaid(1, 'Tiamat (N)', 3, 2, '2030000000.jpg', null, false),
+    '300041' : createRaid(2, 'Tiamat (H)', 3, 2, '2030000000_hard.jpg', null, false),
+    '300051' : createRaid(3, 'Tiamat (EX)', 3, 2, '2040020000_ex.jpg', '18', false),
+    '300441' : createRaid(4, 'Tiamat (HL)', 2, 3, '2040020000_high.jpg', '32', true),
 
-    '300081' : createRaid('Colossus (N)', 3, '2030001000.jpg', null),
-    '300091' : createRaid('Colossus (H)', 3, '2030001000_hard.jpg', null),
-    '300101' : createRaid('Colossus (EX)', 3, '2040034000_ex.jpg', '19'),
-    '300491' : createRaid('Colossus (HL)', 2, '2040034000_high.jpg', '47'),
+    '300081' : createRaid(5, 'Colossus (N)', 3, 2, '2030001000.jpg', null, false),
+    '300091' : createRaid(6, 'Colossus (H)', 3, 2, '2030001000_hard.jpg', null, false),
+    '300101' : createRaid(7, 'Colossus (EX)', 3, 2, '2040034000_ex.jpg', '19', false),
+    '300491' : createRaid(8, 'Colossus (HL)', 2, 3, '2040034000_high.jpg', '47', true),
 
-    '300141' : createRaid('Leviathan (N)', 3, '2030011000.jpg', null),
-    '300151' : createRaid('Leviathan (H)', 3, '2030011000_hard.jpg', null),
-    '300161' : createRaid('Leviathan (EX)', 3, '2040028000_ex.jpg', '20'),
-    '300511' : createRaid('Leviathan (HL)', 2, '2040028000_high.jpg', '48'),
+    '300141' : createRaid(9, 'Leviathan (N)', 3, 2, '2030011000.jpg', null, false),
+    '300151' : createRaid(10, 'Leviathan (H)', 3, 2, '2030011000_hard.jpg', null, false),
+    '300161' : createRaid(11, 'Leviathan (EX)', 3, 2, '2040028000_ex.jpg', '20', false),
+    '300511' : createRaid(12, 'Leviathan (HL)', 2, 3, '2040028000_high.jpg', '48', true),
 
-    '300181' : createRaid('Yggdrasil (N)', 3, '2030015000.jpg', null),
-    '300191' : createRaid('Yggdrasil (H)', 3, '2030015000_hard.jpg', null),
-    '300261' : createRaid('Yggdrasil (EX)', 3, '2040027000_ex.jpg', '21'),
-    '300531' : createRaid('Yggdrasil (HL)', 2, '2040027000_high.jpg', '49'),
+    '300181' : createRaid(13, 'Yggdrasil (N)', 3, 2, '2030015000.jpg', null, false),
+    '300191' : createRaid(14, 'Yggdrasil (H)', 3, 2, '2030015000_hard.jpg', null, false),
+    '300261' : createRaid(15, 'Yggdrasil (EX)', 3, 2, '2040027000_ex.jpg', '21', false),
+    '300531' : createRaid(16, 'Yggdrasil (HL)', 2, 3, '2040027000_high.jpg', '49', true),
     
-    '300211' : createRaid('Luminiera (N)', 3, '2030035000.jpg', null),
-    '300221' : createRaid('Luminiera (H)', 3, '2030035000_hard.jpg', null),
-    '300271' : createRaid('Luminiera (EX)', 3, '2040047000_ex.jpg', '26'),
-    '300561' : createRaid('Luminiera (HL)', 2, '2040047000_high.jpg', '50'),
+    '300211' : createRaid(17, 'Luminiera (N)', 3, 2, '2030035000.jpg', null, false),
+    '300221' : createRaid(18, 'Luminiera (H)', 3, 2, '2030035000_hard.jpg', null, false),
+    '300271' : createRaid(19, 'Luminiera (EX)', 3, 2, '2040047000_ex.jpg', '26', false),
+    '300561' : createRaid(20, 'Luminiera (HL)', 2, 3, '2040047000_high.jpg', '50', true),
     
-    '300241' : createRaid('Celeste (N)', 3, '2030041000.jpg', null),
-    '300251' : createRaid('Celeste (H)', 3, '2030041000_hard.jpg', null),
-    '300281' : createRaid('Celeste (EX)', 3, '2040046000_ex.jpg', '31'),
-    '300581' : createRaid('Celeste (HL)', 2, '2040046000_high.jpg', '51'),
+    '300241' : createRaid(21, 'Celeste (N)', 3, 2, '2030041000.jpg', null, false),
+    '300251' : createRaid(22, 'Celeste (H)', 3, 2, '2030041000_hard.jpg', null, false),
+    '300281' : createRaid(23, 'Celeste (EX)', 3, 2, '2040046000_ex.jpg', '31', false),
+    '300581' : createRaid(24, 'Celeste (HL)', 2, 3, '2040046000_high.jpg', '51', true)
   }
 
   var questImageURLs = {};
 
 
+  var hideHLRaids = function(rank) {
+    // if(rank < 101) {
+      $dailyRaidList.children('.daily-quest-panel').each(function() {
+        if(raidInfo[$(this).data('id')].isHL && raidInfo[$(this).data('id')].isEnabled) {
+          if(rank < 101) {
+            $(this).hide();
+          } else {
+            $(this).show();
+          }
+        }
+      });
+      $completedRaidList.children('.daily-quest-panel').each(function() {
+        if(raidInfo[$(this).data('id')].isHL && raidInfo[$(this).data('id')].isEnabled) {
+          if(rank < 101) {
+            $(this).hide();
+          } else {
+            $(this).show();
+          }
+        }
+      });
+    // } else {
+    //   $dailyRaidList.children('.daily-quest-panel').each(function() {
+    //     if(raidInfo[$(this).data('id')].isHL) {
+    //       $(this).show();
+    //     }
+    //   });
+    //   $completedRaidList.children('.daily-quest-panel').each(function() {
+    //     if(raidInfo[$(this).data('id')].isHL) {
+    //       $(this).show();
+    //     }
+    //   });
+    // }
+  }
 
+  var filterRaid = function(id, show) {
+    raidInfo[id].isEnabled = show;
+    if(!show) {
+      $('#daily-raid-' + id).hide();
+    } else {
+      $('#daily-raid-' + id).show();
+    }
+  }
+
+  var updateMagFest = function(id, enabled) {
+    var raidID;
+    var currMag = isMagFest;
+    isMagFest = enabled;
+    for(var i = 0; i < raidList.length; i++) {
+      raidID = raidList[i];
+      if(currMag && !enabled) {
+        setRemainingRaids(raidID, remainingQuests[raidID] - raidInfo[raidID].magDelta);
+      } else if(!currMag && enabled) {
+        setRemainingRaids(raidID, remainingQuests[raidID] + raidInfo[raidID].magDelta);
+      } else {
+        setRemainingRaids(raidID, remainingQuests[raidID]);
+      }
+    }
+    saveRemainingRaids();
+
+  }
 
   window.Quest = {
     Initialize: function() {
-      Storage.GetMultiple(['dailyRaids'], function(response) {
-        if(response['dailyRaids'] !== undefined) {
-          remainingQuests = response['dailyRaids'];
-        } else {
-          Storage.Set('dailyRaids', remainingQuests);
+        for(var i = 0; i < raidList.length; i++) {
+          var raid = raidInfo[raidList[i]];
+          var newRaid = $dailyRaid.clone();
+          newRaid.data('id', raidList[i]);
+          newRaid.attr('id', 'daily-raid-' + raidList[i]);
+          newRaid.children('.quest-img').first().attr('src', raid.url);
+          newRaid.children('.quest-name').first().text(raid.name);
+          //newRaid.children('.quest-count').first().text(raid.max + '/' + raid.max);
+          newRaid.children('.quest-count').first().attr('id', 'remaining-' + raidList[i]);
+          newRaid.children('.quest-count').first().data('id', raidList[i]);
+          if(raid.animeID !== null) {
+            newRaid.find('.item-img').first().attr('src', imageURL + 'items/' + raid.animeID + '.jpg');
+            var amount = Supplies.Get(raid.animeID, 'raid', updateAnimes);
+            newRaid.find('.item-count').first().text(amount);
+            newRaid.find('.item-count').first().attr('id', 'count-' + raid.animeID);
+          } else {
+            newRaid.children('.quest-item').first().remove();
+          }
+          $dailyRaidList.append(newRaid);
         }
-        var id;
-        $dailyRaidList.find('.quest-count').each(function(index) {
-          id = $(this).data('id');
-          $(this).text(remainingQuests[id] + '/' + raidInfo[id].max);
+      Storage.GetMultiple(['quests'], function(response) {
+        if(response['quests'] !== undefined) {
+          isMagFest = response['quests'].isMagFest;
+          for(var i = 0; i < raidList.length; i++) {
+            setRemainingRaids(raidList[i], response['quests'].dailies[raidList[i]]);
+          }
+          //remainingQuests = response['quests'].dailies;
+
+        } else {
+          for(var i = 0; i < raidList.length; i++) {
+            setRemainingRaids(raidList[i], raidInfo[raidList[i]].max);
+          }
+          saveRemainingRaids();
+        }
+
+
+        $currQuestCollapse.find('.quest-panel').click(function() {
+          if(currQuest !== null) {
+            if(currQuest.roomURL !== null) {
+              Message.OpenURL(currQuest.roomURL);
+            }
+          }
+        });
+        $currRaidCollapse.find('.quest-panel').each(function(index) {
+          $(this).click(function() {
+            if(index < currRaids.length && currRaids[index] !== undefined) {
+              Message.OpenURL(currRaids[index].roomURL);
+            }
+          });
+        });
+
+              Profile.Get('level', hideHLRaids);
+        for(var i = 0; i < raidList.length; i++) {
+          Message.GetOption({
+            id: raidList[i],
+            response: filterRaid
+          }, function(response) {
+            //Message.ConsoleLog(response.id, response.value);
+            filterRaid(response.id, response.value);
+          });
+        }
+      
+
+      $raidsPanel.find('.daily-quest-panel').each(function(index) {
+        $(this).click(function() {
+          var id = $(this).data('id');
+          var url = Default.GetURL() + '#quest/supporter/' + id + '/1';
+          if(raidInfo[id].animeID !== null) {
+            url += '/0/' + raidInfo[id].animeID;
+          }
+          Message.OpenURL(url);
         });
       });
 
-      for(var i = 0; i < raidList.length; i++) {
-        var raid = raidInfo[raidList[i]];
-        var newRaid = $dailyRaid.clone();
-        newRaid.data('id', raidList[i]);
-        newRaid.children('.quest-img').first().attr('src', raid.url);
-        newRaid.children('.quest-name').first().text(raid.name);
-        //newRaid.children('.quest-count').first().text(raid.max + '/' + raid.max);
-        newRaid.children('.quest-count').first().attr('id', 'remaining-' + raidList[i]);
-        newRaid.children('.quest-count').first().data('id', raidList[i]);
-        if(raid.animeID !== null) {
-          newRaid.find('.item-img').first().attr('src', imageURL + 'items/' + raid.animeID + '.jpg');
-          var amount = Supplies.Get(raid.animeID, 'raid', updateAnimes);
-          newRaid.find('.item-count').first().text(amount);
-          newRaid.find('.item-count').first().attr('id', 'count-' + raid.animeID);
-        } else {
-          newRaid.children('.quest-item').first().remove();
+      Message.GetOption({
+        id: 'isMagFest',
+        response: updateMagFest
+      }, function(response) {
+        updateMagFest('isMagFest', response.value);
+      });
+      });
+
+
+
+    },
+
+    DailyReset: function() {
+      for(var key in remainingQuests) {
+        if(remainingQuests.hasOwnProperty(key)) {
+         
+          if(!isMagFest) {
+            setRemainingRaids(key, raidInfo[key].max);
+          } else {
+            setRemainingRaids(key, raidInfo[key].max + raidInfo[key].magDelta);
+          }
         }
-        $dailyRaidList.append(newRaid);
       }
-      $currQuestCollapse.find('.quest-panel').click(function() {
-        if(currQuest !== null) {
-          if(currQuest.roomURL !== null) {
-            Message.OpenURL(currQuest.roomURL);
-          }
-        }
-      });
-
-      $currRaidCollapse.find('.quest-panel').each(function(index) {
-        $(this).click(function() {
-          if(index < currRaids.length && currRaids[index] !== undefined) {
-            Message.OpenURL(currRaids[index].roomURL);
-          }
-        });
-      });
-
-      $dailyRaidList.find('.daily-quest-panel').each(function(index) {
-        $(this).click(function() {
-          Message.ConsoleLog('quest.js', $(this).data('id'));
-          Message.OpenURL(Default.GetURL() + '#quest/supporter/' + $(this).data('id') + '/1');
-        });
-      });
+      saveRemainingRaids();
     },
 
     InitializeQuest: function(json, url) {
@@ -185,6 +304,7 @@
       currQuest = nextQuest;
       if(remainingQuests[currQuest.questID] !== undefined && remainingQuests[currQuest.questID] > 0) {
         setRemainingRaids(currQuest.questID, remainingQuests[currQuest.questID] - 1);
+        saveRemainingRaids();
       }
       setQuest();
     },
@@ -337,6 +457,7 @@
           setRemainingRaids(id, 0);
         }
       }
+      saveRemainingRaids();
     },
     InitializeCoop: function(json) {
       nextCoop = json.quest_info.chapter_name;
@@ -358,14 +479,66 @@
 
   var setRemainingRaids = function(id, amount) {
     if(remainingQuests[id] !== undefined) {
-      Message.ConsoleLog('quest.js', remainingQuests[id]);
+        if(amount < 0) {
+          amount = 0;
+        }
+        if(remainingQuests[id] !== amount && amount <= 0) {
+          var currIndex = currRaidList.indexOf(id);
+          currRaidList.splice(currIndex, 1);
+          var newIndex = completedRaidList.length;
+          for(var i = 0; i < completedRaidList.length; i++) {
+            if(raidInfo[id].sequence < raidInfo[completedRaidList[i]].sequence) {
+              newIndex = i;
+              break;
+            }
+          }
+          if(newIndex !== completedRaidList.length) {
+            $completedRaidList.find('#daily-raid-' + completedRaidList[newIndex]).before($dailyRaidList.find('#daily-raid-' + id));
+            completedRaidList.splice(newIndex, 0, id);
+          } else {
+            $completedRaidList.append($dailyRaidList.find('#daily-raid-' + id));
+            completedRaidList.push(id);
+          }
+      } else if(remainingQuests[id] !== amount && amount > 0 && completedRaidList.indexOf(id) !== -1) {
+        var currIndex = completedRaidList.indexOf(id);
+        completedRaidList.splice(currIndex, 1);
+        var newIndex = currRaidList.length;
+        for(var i = 0; i < currRaidList.length; i++) {
+          if(raidInfo[id].sequence < raidInfo[currRaidList[i]].sequence) {
+            newIndex = i;
+            break;
+          }
+        }
+        if(newIndex !== currRaidList.length) {
+          $dailyRaidList.find('#daily-raid-' + currRaidList[newIndex]).before($completedRaidList.find('#daily-raid-' + id));
+          currRaidList.splice(newIndex, 0, id);
+        } else {
+          $dailyRaidList.append($completedRaidList.find('#daily-raid-' + id));
+          currRaidList.push(id);
+        }
+      }
+      Message.ConsoleLog('complete:', completedRaidList.length);
+
+
       remainingQuests[id] = amount;
-      Message.ConsoleLog('quest.js', JSON.stringify(remainingQuests));
-      $dailyRaidList.find('#remaining-' + id).first().text(amount + '/' + raidInfo[id].max);
-      Message.ConsoleLog('quest.js', JSON.stringify(remainingQuests));
-      Storage.Set('dailyRaids', remainingQuests);
+      if(!isMagFest) {
+        $raidsPanel.find('#remaining-' + id).first().text(amount + '/' + raidInfo[id].max);
+      } else {
+        $raidsPanel.find('#remaining-' + id).first().text(amount + '/' + (raidInfo[id].max + raidInfo[id].magDelta));
+      }
+
+
     }
   }
+
+  var saveRemainingRaids = function() {
+      Storage.Set('quests', {
+        'dailies': remainingQuests,
+        'isMagFest': isMagFest
+      });
+  }
+
+
   var setQuest = function() {
     if(currQuest !== null) {
       $currQuestName.text(currQuest.name);

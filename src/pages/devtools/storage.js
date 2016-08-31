@@ -3,7 +3,7 @@
   window.Storage = {
 
     Set: function(key, value) {
-      Message.ConsoleLog('storage.js' , 'attempting to store key: ' + JSON.stringify(key) + ' with value: ' + JSON.stringify(value));
+      //Message.ConsoleLog('storage.js' , 'attempting to store key: ' + JSON.stringify(key) + ' with value: ' + JSON.stringify(value));
       if(cache[key] !== value) {
         Message.ConsoleLog('storage.js' , 'replacing old cache: ' + JSON.stringify(cache[key]) + 'with new cache: ' + JSON.stringify(value));
         cache[key] = value;

@@ -1,5 +1,4 @@
 (function() {
-  Message.ConsoleLog('supplies.js', 'test1');
   var supplies = {
     treasureHash: {},
     recovery: {},
@@ -13,11 +12,20 @@
     draw: {},
     other: {}
   }
+  var responseList = {
+  }
 
   var updatedSupplies = [];
   var sortedSupplies = [];
   var filter = 'all';
   var search = '';
+  var nextUncap = null;
+  var nextNpcUncap = null;
+  var nextRaid = {
+    id: null,
+    items: {},
+    next: {}
+  }
 
   var $supplyList = $('#supply-list');
   var $supplyItem = $supplyList.find('.supply-item').first().clone();
@@ -48,27 +56,40 @@
 
   window.Supplies = {
     Initialize: function() {
-      var categories = ['supplyrecovery', 'supplypowerUp', 'supplytreasure', 'supplyraid', 'supplymaterial', 'supplyevent', 'supplycoop'];
+      var categories = ['supplyrecovery', 'supplypowerUp', 'supplytreasure', 'supplyraid', 'supplymaterial', 'supplyevent', 'supplycoop', 'supplymisc', 'supplydraw'];
       Storage.GetMultiple(categories, function(response) {
         var category;
         for(var i = 0; i < categories.length; i++) {
           category = categories[i].replace('supply', '');
           if(response[categories[i]] !== undefined) {
-            for(var key in response[categories[i]]) {
-              if(response[categories[i]].hasOwnProperty(key)) {
-                newSupply(key, category, response[categories[i]][key].count, response[categories[i]][key].name, response[categories[i]][key].sequence);
+            var hash = response[categories[i]].supplies
+            for(var key in hash) {
+              if(hash.hasOwnProperty(key)) {
+                newSupply(key, category, hash[key].count, hash[key].name, hash[key].sequence);
               }
             }
           }
         }
         Quest.Initialize();
+        Profile.Initialize(); 
       });
     },
     Get: function(id, category, response) {
-      if(supplies[category][id] !== undefined) { 
-        if(response !== undefined) {
-          supplies[category][id].responseList.push(response);
+      if(response !== undefined) {
+        if(responseList[category] === undefined) {
+          responseList[category] = {};
         }
+        if(responseList[category][id] === undefined) {
+          responseList[category][id] = [];
+        }
+        responseList[category][id].push(response);
+      }
+      
+      if(supplies[category][id] !== undefined) { 
+
+        // if(response !== undefined) {
+        //   supplies[category][id].responseList.push(response);
+        // }
         return supplies[category][id].count;
       }
       return 0;
@@ -96,7 +117,9 @@
               updated = true;
             }
           } else {
+            Message.ConsoleLog('supplies.js', 'working?');
             updated = newSupply(id, 'recovery', json[i].number, json[i].name, id);
+            Message.ConsoleLog('supplies.js', 'okay..');
           }
         }
         if(updated) {
@@ -202,7 +225,7 @@
         if(list.hasOwnProperty(property)) {
           for(var i = 0; i < list[property].length; i++) {
             item = list[property][i];
-            Message.ConsoleLog('supplies.js', JSON.stringify(item));
+            //Message.ConsoleLog('supplies.js', JSON.stringify(item));
             category = getCategory(item.id, item.item_kind);
             if(category !== undefined && incrementSupply(item.id, category, 1)) {
               if(updated.indexOf(category) === -1) {
@@ -216,7 +239,7 @@
       for(var property in list) {
         if(list.hasOwnProperty(property)) {
           item = list[property];
-          category = getCategory(item.id, item.item_kind);
+          category = getCategory(item.id, '' + item.kind);
           if(category !== undefined && incrementSupply(item.id, category, item.count)) {
             if(updated.indexOf(category) === -1) {
               updated.push(category);
@@ -228,14 +251,26 @@
         saveSupply(updated[i]);
       }
     },
-    GetGifts: function(json) {
+    GetGift: function(json) {
+      Message.ConsoleLog('supplies.js', 'gift1');
+      var id = json.item_id;
+      Message.ConsoleLog('supplies.js', id);
+      var category = getCategory(id, json.item_kind_id);
+      Message.ConsoleLog('supplies.js', category);
+      if(category !== undefined && incrementSupply(id, category, parseInt(json.number))) {
+        Message.ConsoleLog('supplies.js', parseInt(json.number));
+        saveSupply(category);
+      }
+    },
+    GetAllGifts: function(json) {
+      Message.ConsoleLog('good');
       var item;
       var category;
       var updated = [];
       for(var i = 0; i < json.presents.length; i++) {
         item = json.presents[i];
-        category = getCategory(item.id, item.item_kind_id);
-        if(category !== undefined && incrementSupply(item.item_id, category, item.number)) {
+        category = getCategory(item.item_id, item.item_kind_id);
+        if(category !== undefined && incrementSupply(item.item_id, category, parseInt(item.number))) {
           if(updated.indexOf(category) === -1) {
             updated.push(category);
           }
@@ -274,7 +309,180 @@
           saveSupply(updated[i]);
         }
       }   
-    }
+    },
+    UseRecovery: function(json, url) {
+      if(json.success && json.result.use_flag) {
+        var id = url.substring(url.indexOf('item/') + 5, url.indexOf('.json'));
+        Message.ConsoleLog('supplies.js', id);
+        incrementSupply(id, 'recovery', -parseInt(json.result.recovery));
+      }
+    },
+    SellCoop: function(array) {
+      for(var i = 0; i < array.length; i++) {
+        Message.ConsoleLog(i, array[i]);
+      }
+      
+      var id = '' + array[5];
+      var amt;
+      if(array[8] !== '') {
+         amt = parseInt(array[8]);
+      } else if(array[9] !== '') {
+        amt = parseInt(array[9]);
+      } else {
+        amt = 0;
+      }
+      incrementSupply(id, 'coop', - amt)
+      saveSupply('coop');
+      var lupi;
+      switch(array[5]) {
+        //bronze
+        case '20001':
+          lupi = 50;
+          break;
+        //silver
+        case '20002':
+          lupi = 300;
+          break;
+        //gold
+        case '20003':
+          lupi = 1000;
+          break;
+        case '20111':
+        case '20121':
+        case '20131':
+        case '20141':
+          lupi = 5000;
+          break;
+      }
+      Profile.AddLupi(lupi * amt);
+    },
+
+    RaidTreasureInfo: function(json) {
+      var updated = [];
+      var id;
+      var category;
+      nextRaid.items = {};
+      nextRaid.id = json.chapter_id;
+      for(var i = 0; i < json.treasure_id.length; i++) {
+        id = json.treasure_id[i];
+        category = getCategory(id, '10');
+        nextRaid.items[id] = json.consume[i];
+        if(category !== undefined && updateSupply(id, category, json.num[i])) {
+          if(updated.indexOf(category) === -1) {
+            updated.push(category);
+          }
+        }
+      }
+      for(var i = 0; i < updated.length; i++) {
+        saveSupply(updated[i]);
+      }
+    },
+    RaidTreasureCheck: function(json, url) {
+      if(json.result) {
+        var id = url.substring(url.lastIndexOf('/') + 1, url.indexOf('?'));
+        Message.ConsoleLog('supplies.js', id);
+        if(nextRaid.items[id] !== undefined) {
+          nextRaid.next = {
+            'id': id,
+            'count': parseInt(nextRaid.items[id])
+          }
+          Message.ConsoleLog('supplies.js', JSON.stringify(nextRaid.next));
+        } else {
+          nextRaid.next = undefined;
+        }
+      }
+    },
+    InitializeRaid: function(json, url) {
+      if(url.substring(url.indexOf('data/') + 5, url.lastIndexOf('/')) !== nextRaid.id) {
+        nextRaid.next = undefined;
+      }
+    },
+    EnterRaid: function(json) {
+      if(nextRaid.next !== undefined) {
+        var category = getCategory(nextRaid.next.id, '10');
+        if(incrementSupply(nextRaid.next.id, category, -nextRaid.next.count)) {
+          saveSupply(category);
+        }
+      }
+    },
+    BuyCasino: function(json, array) {
+      for(var i = 0; i < array.length; i++) {
+        Message.ConsoleLog(i, array[i]);
+      }
+      var id = json.article.item_ids[0];
+      var category = getCategory(id, json.article.item_kind[0]);
+      var fuckyou;
+      if(array[8] !== '') {
+        fuckyou = 8;
+      } else if(array[9] !== '') {
+        fuckyou = 9;
+      }
+      if(incrementSupply(id, category, parseInt(array[fuckyou]))) {
+        saveSupply();
+      }
+    },
+    CheckUncapItem: function(json) {
+      var updated = false;
+      var item;
+      for(var i = 0; i < json.items.length; i++) {
+        item = json.items[i];
+        if(updateSupply(item.item_id, 'powerUp', item.number)) {
+          updated = true;
+        }
+      }
+      if(updated) {
+        saveSupply('powerUp');
+      }
+    },
+    SetUncapItem: function(json) {
+      nextUncap = json.item_id;
+
+    },
+    SetUncap: function(json) {
+      nextUncap = null;
+    },
+    Uncap: function(json) {
+      if(nextUncap !== null && nextUncap !== undefined) {
+        incrementSupply(nextUncap, 'powerUp', -1);
+      }
+    },
+    SetNpcUncap: function(json) {
+      nextNpcUncap = [];
+      var updated = [];
+      var item;
+      var category;
+      for(var i = 0; i < json.requirements.length; i++) {
+        item = json.requirements[i];
+        nextNpcUncap.push({
+          id: item.item_id,
+          item_kind: item.item_kind.id,
+          cost: item.item_number,
+        });
+        category = getCategory(item.item_id, item.item_kind.id);
+        if(category !== undefined && updateSupply(item.item_id, category, parseInt(item.item_possessed))) {
+          if(updated.indexOf(category) === -1) {
+            updated.push(category);
+          }
+        }
+      }
+      for(var i = 0; i < updated.length; i++) {
+        saveSupply(updated[i]);
+      }
+    },
+    NpcUncap: function(json) {
+      var updated = [];
+      var category;
+      for(var i = 0; i < nextNpcUncap.length; i++) {
+        category = getCategory(nextNpcUncap[i].id, nextNpcUncap[i].item_kind);
+        incrementSupply(nextNpcUncap[i].id, category, -nextNpcUncap[i].cost);
+        if(updated.indexOf(category) === -1) {
+          updated.push(category);
+        }
+      }
+      for(var i = 0; i < updated.length; i++) {
+        saveSupply(updated[i]);
+      }
+    } 
   }
 
   var getCategory = function(id, item_kind) {
@@ -292,7 +500,7 @@
   }
 
   var saveSupply = function(category) {
-    Storage.Set('supply' + category, supplies[category]);
+    Storage.Set('supply' + category, {'supplies': supplies[category]});
   }
 
   var saveUpdateSupply = function(id, category, number) {
@@ -314,8 +522,13 @@
       Message.ConsoleLog('supplies.js', 'updating: ' + supply.name + ': '+supply.count + ' ' + intNum);
       $supplyList.children('#supply-' + supply.sequence + '-' + id).children('.item-count').first().text(intNum);
       updatedSupplies.push(id);
-      for(var i = 0; i < supply.responseList.length; i++) {
-        supply.responseList[i](id, intNum);
+      // for(var i = 0; i < supply.responseList.length; i++) {
+      //   supply.responseList[i](id, intNum);
+      // }
+      if(responseList[category] !== undefined && responseList[category][id] !== undefined) {
+        for(var i = 0; i < responseList[category][id].length; i++) {
+          responseList[category][id][i](id, intNum);
+        }
       }
       ret = true;
     }
@@ -331,7 +544,7 @@
       name: name,
       count: parseInt(number),
       sequence: sequence,
-      responseList: []
+      //responseList: []
     };
     if(category !== 'recovery' && category !== 'powerUp' && category !== 'draw') {
       supplies.treasureHash[id] = category;
@@ -387,6 +600,11 @@
           'id': parseInt(id)
         });
       }
+      if(responseList[category] !== undefined && responseList[category][id] !== undefined) {
+        for(var i = 0; i < responseList[category][id].length; i++) {
+          responseList[category][id][i](id, parseInt(number));
+        }
+      }
     return true;
   }
 
@@ -425,5 +643,4 @@
   //     }
   //   }
   // }
-  Message.ConsoleLog('supplies.js', 'test1');
 })();

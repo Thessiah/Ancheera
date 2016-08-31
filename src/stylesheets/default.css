@@ -1436,7 +1436,7 @@ img {
   height: auto;
 }
 
-.img-rounded, #contents, .container, .quest-panel > .quest-img, .daily-quest-panel > .quest-img, .daily-quest-panel > .quest-item > .item-img, .casino-div > .item-img, .supply-item > .item-img, #profile .profile-item > .item-img {
+.img-rounded, #contents, .container, #ap-bp-panel > #special, #ap-bp-panel > #special > .item-img, .quest-panel > .quest-img, .daily-quest-panel > .quest-img, .daily-quest-panel > .quest-item > .item-img, .casino-div > .item-img, .supply-item > .item-img, .profile-item > .item-img, #profile #inventory-list > .inventory-category > .inventory-img, #time-buffs #buffs .buff-item > .item-img, .vertical-text {
   border-radius: 6px;
 }
 
@@ -3232,7 +3232,7 @@ input[type="search"] {
     line-height: 46px;
   }
 }
-.form-group, .form-group-new {
+.form-group {
   margin-bottom: 15px;
 }
 
@@ -3553,7 +3553,7 @@ select[multiple].input-lg,
 }
 
 @media (min-width: 768px) {
-  .form-inline .form-group, .form-inline .form-group-new {
+  .form-inline .form-group {
     display: inline-block;
     margin-bottom: 0;
     vertical-align: middle;
@@ -3615,15 +3615,15 @@ select[multiple].input-lg,
 .form-horizontal .checkbox {
   min-height: 27px;
 }
-.form-horizontal .form-group, .form-horizontal .form-group-new {
+.form-horizontal .form-group {
   margin-left: -15px;
   margin-right: -15px;
 }
-.form-horizontal .form-group:before, .form-horizontal .form-group-new:before, .form-horizontal .form-group:after, .form-horizontal .form-group-new:after {
+.form-horizontal .form-group:before, .form-horizontal .form-group:after {
   content: " ";
   display: table;
 }
-.form-horizontal .form-group:after, .form-horizontal .form-group-new:after {
+.form-horizontal .form-group:after {
   clear: both;
 }
 @media (min-width: 768px) {
@@ -4638,7 +4638,7 @@ tbody.collapse.in {
   }
 }
 
-.tab-content > .tab-pane {
+.tab-content > .tab-pane, .tab-content > .scroll-pane, .tab-content > .scroll-pane-2, .tab-content > .tab-tab-pane {
   display: none;
 }
 .tab-content > .active {
@@ -4889,7 +4889,7 @@ tbody.collapse.in {
   margin-bottom: 8px;
 }
 @media (min-width: 768px) {
-  .navbar-form .form-group, .navbar-form .form-group-new {
+  .navbar-form .form-group {
     display: inline-block;
     margin-bottom: 0;
     vertical-align: middle;
@@ -4939,10 +4939,10 @@ tbody.collapse.in {
   }
 }
 @media (max-width: 767px) {
-  .navbar-form .form-group, .navbar-form .form-group-new {
+  .navbar-form .form-group {
     margin-bottom: 5px;
   }
-  .navbar-form .form-group:last-child, .navbar-form .form-group-new:last-child {
+  .navbar-form .form-group:last-child {
     margin-bottom: 0;
   }
 }
@@ -5951,7 +5951,7 @@ button.list-group-item-danger.active:focus {
   line-height: 1.3;
 }
 
-.panel, .sky-panel, #time, .white-panel, .buttonPanel {
+.panel, .sky-panel, .white-panel, #time-buffs #time, #time-buffs #buffs, .buttonPanel {
   margin-bottom: 20px;
   background-color: #fff;
   border: 1px solid transparent;
@@ -6003,44 +6003,48 @@ button.list-group-item-danger.active:focus {
   border-bottom-left-radius: 3px;
 }
 
-.panel > .list-group, .sky-panel > .list-group, #time > .list-group, .white-panel > .list-group, .buttonPanel > .list-group,
+.panel > .list-group, .sky-panel > .list-group, .white-panel > .list-group, #time-buffs #time > .list-group, #time-buffs #buffs > .list-group, .buttonPanel > .list-group,
 .panel > .panel-collapse > .list-group,
 .sky-panel > .panel-collapse > .list-group,
-#time > .panel-collapse > .list-group,
 .white-panel > .panel-collapse > .list-group,
+#time-buffs #time > .panel-collapse > .list-group,
+#time-buffs #buffs > .panel-collapse > .list-group,
 .buttonPanel > .panel-collapse > .list-group {
   margin-bottom: 0;
 }
-.panel > .list-group .list-group-item, .sky-panel > .list-group .list-group-item, #time > .list-group .list-group-item, .white-panel > .list-group .list-group-item, .buttonPanel > .list-group .list-group-item,
+.panel > .list-group .list-group-item, .sky-panel > .list-group .list-group-item, .white-panel > .list-group .list-group-item, #time-buffs #time > .list-group .list-group-item, #time-buffs #buffs > .list-group .list-group-item, .buttonPanel > .list-group .list-group-item,
 .panel > .panel-collapse > .list-group .list-group-item,
 .sky-panel > .panel-collapse > .list-group .list-group-item,
-#time > .panel-collapse > .list-group .list-group-item,
 .white-panel > .panel-collapse > .list-group .list-group-item,
+#time-buffs #time > .panel-collapse > .list-group .list-group-item,
+#time-buffs #buffs > .panel-collapse > .list-group .list-group-item,
 .buttonPanel > .panel-collapse > .list-group .list-group-item {
   border-width: 1px 0;
   border-radius: 0;
 }
-.panel > .list-group:first-child .list-group-item:first-child, .sky-panel > .list-group:first-child .list-group-item:first-child, #time > .list-group:first-child .list-group-item:first-child, .white-panel > .list-group:first-child .list-group-item:first-child, .buttonPanel > .list-group:first-child .list-group-item:first-child,
+.panel > .list-group:first-child .list-group-item:first-child, .sky-panel > .list-group:first-child .list-group-item:first-child, .white-panel > .list-group:first-child .list-group-item:first-child, #time-buffs #time > .list-group:first-child .list-group-item:first-child, #time-buffs #buffs > .list-group:first-child .list-group-item:first-child, .buttonPanel > .list-group:first-child .list-group-item:first-child,
 .panel > .panel-collapse > .list-group:first-child .list-group-item:first-child,
 .sky-panel > .panel-collapse > .list-group:first-child .list-group-item:first-child,
-#time > .panel-collapse > .list-group:first-child .list-group-item:first-child,
 .white-panel > .panel-collapse > .list-group:first-child .list-group-item:first-child,
+#time-buffs #time > .panel-collapse > .list-group:first-child .list-group-item:first-child,
+#time-buffs #buffs > .panel-collapse > .list-group:first-child .list-group-item:first-child,
 .buttonPanel > .panel-collapse > .list-group:first-child .list-group-item:first-child {
   border-top: 0;
   border-top-right-radius: 3px;
   border-top-left-radius: 3px;
 }
-.panel > .list-group:last-child .list-group-item:last-child, .sky-panel > .list-group:last-child .list-group-item:last-child, #time > .list-group:last-child .list-group-item:last-child, .white-panel > .list-group:last-child .list-group-item:last-child, .buttonPanel > .list-group:last-child .list-group-item:last-child,
+.panel > .list-group:last-child .list-group-item:last-child, .sky-panel > .list-group:last-child .list-group-item:last-child, .white-panel > .list-group:last-child .list-group-item:last-child, #time-buffs #time > .list-group:last-child .list-group-item:last-child, #time-buffs #buffs > .list-group:last-child .list-group-item:last-child, .buttonPanel > .list-group:last-child .list-group-item:last-child,
 .panel > .panel-collapse > .list-group:last-child .list-group-item:last-child,
 .sky-panel > .panel-collapse > .list-group:last-child .list-group-item:last-child,
-#time > .panel-collapse > .list-group:last-child .list-group-item:last-child,
 .white-panel > .panel-collapse > .list-group:last-child .list-group-item:last-child,
+#time-buffs #time > .panel-collapse > .list-group:last-child .list-group-item:last-child,
+#time-buffs #buffs > .panel-collapse > .list-group:last-child .list-group-item:last-child,
 .buttonPanel > .panel-collapse > .list-group:last-child .list-group-item:last-child {
   border-bottom: 0;
   border-bottom-right-radius: 3px;
   border-bottom-left-radius: 3px;
 }
-.panel > .panel-heading + .panel-collapse > .list-group .list-group-item:first-child, .sky-panel > .panel-heading + .panel-collapse > .list-group .list-group-item:first-child, #time > .panel-heading + .panel-collapse > .list-group .list-group-item:first-child, .white-panel > .panel-heading + .panel-collapse > .list-group .list-group-item:first-child, .buttonPanel > .panel-heading + .panel-collapse > .list-group .list-group-item:first-child, .panel > .panel-heading-new + .panel-collapse > .list-group .list-group-item:first-child, .sky-panel > .panel-heading-new + .panel-collapse > .list-group .list-group-item:first-child, #time > .panel-heading-new + .panel-collapse > .list-group .list-group-item:first-child, .white-panel > .panel-heading-new + .panel-collapse > .list-group .list-group-item:first-child, .buttonPanel > .panel-heading-new + .panel-collapse > .list-group .list-group-item:first-child {
+.panel > .panel-heading + .panel-collapse > .list-group .list-group-item:first-child, .sky-panel > .panel-heading + .panel-collapse > .list-group .list-group-item:first-child, .white-panel > .panel-heading + .panel-collapse > .list-group .list-group-item:first-child, #time-buffs #time > .panel-heading + .panel-collapse > .list-group .list-group-item:first-child, #time-buffs #buffs > .panel-heading + .panel-collapse > .list-group .list-group-item:first-child, .buttonPanel > .panel-heading + .panel-collapse > .list-group .list-group-item:first-child, .panel > .panel-heading-new + .panel-collapse > .list-group .list-group-item:first-child, .sky-panel > .panel-heading-new + .panel-collapse > .list-group .list-group-item:first-child, .white-panel > .panel-heading-new + .panel-collapse > .list-group .list-group-item:first-child, #time-buffs #time > .panel-heading-new + .panel-collapse > .list-group .list-group-item:first-child, #time-buffs #buffs > .panel-heading-new + .panel-collapse > .list-group .list-group-item:first-child, .buttonPanel > .panel-heading-new + .panel-collapse > .list-group .list-group-item:first-child {
   border-top-right-radius: 0;
   border-top-left-radius: 0;
 }
@@ -6053,483 +6057,567 @@ button.list-group-item-danger.active:focus {
   border-top-width: 0;
 }
 
-.panel > .table, .sky-panel > .table, #time > .table, .white-panel > .table, .buttonPanel > .table,
+.panel > .table, .sky-panel > .table, .white-panel > .table, #time-buffs #time > .table, #time-buffs #buffs > .table, .buttonPanel > .table,
 .panel > .table-responsive > .table,
 .sky-panel > .table-responsive > .table,
-#time > .table-responsive > .table,
 .white-panel > .table-responsive > .table,
+#time-buffs #time > .table-responsive > .table,
+#time-buffs #buffs > .table-responsive > .table,
 .buttonPanel > .table-responsive > .table,
 .panel > .panel-collapse > .table,
 .sky-panel > .panel-collapse > .table,
-#time > .panel-collapse > .table,
 .white-panel > .panel-collapse > .table,
+#time-buffs #time > .panel-collapse > .table,
+#time-buffs #buffs > .panel-collapse > .table,
 .buttonPanel > .panel-collapse > .table {
   margin-bottom: 0;
 }
-.panel > .table caption, .sky-panel > .table caption, #time > .table caption, .white-panel > .table caption, .buttonPanel > .table caption,
+.panel > .table caption, .sky-panel > .table caption, .white-panel > .table caption, #time-buffs #time > .table caption, #time-buffs #buffs > .table caption, .buttonPanel > .table caption,
 .panel > .table-responsive > .table caption,
 .sky-panel > .table-responsive > .table caption,
-#time > .table-responsive > .table caption,
 .white-panel > .table-responsive > .table caption,
+#time-buffs #time > .table-responsive > .table caption,
+#time-buffs #buffs > .table-responsive > .table caption,
 .buttonPanel > .table-responsive > .table caption,
 .panel > .panel-collapse > .table caption,
 .sky-panel > .panel-collapse > .table caption,
-#time > .panel-collapse > .table caption,
 .white-panel > .panel-collapse > .table caption,
+#time-buffs #time > .panel-collapse > .table caption,
+#time-buffs #buffs > .panel-collapse > .table caption,
 .buttonPanel > .panel-collapse > .table caption {
   padding-left: 3px;
   padding-right: 3px;
 }
-.panel > .table:first-child, .sky-panel > .table:first-child, #time > .table:first-child, .white-panel > .table:first-child, .buttonPanel > .table:first-child,
+.panel > .table:first-child, .sky-panel > .table:first-child, .white-panel > .table:first-child, #time-buffs #time > .table:first-child, #time-buffs #buffs > .table:first-child, .buttonPanel > .table:first-child,
 .panel > .table-responsive:first-child > .table:first-child,
 .sky-panel > .table-responsive:first-child > .table:first-child,
-#time > .table-responsive:first-child > .table:first-child,
 .white-panel > .table-responsive:first-child > .table:first-child,
+#time-buffs #time > .table-responsive:first-child > .table:first-child,
+#time-buffs #buffs > .table-responsive:first-child > .table:first-child,
 .buttonPanel > .table-responsive:first-child > .table:first-child {
   border-top-right-radius: 3px;
   border-top-left-radius: 3px;
 }
-.panel > .table:first-child > thead:first-child > tr:first-child, .sky-panel > .table:first-child > thead:first-child > tr:first-child, #time > .table:first-child > thead:first-child > tr:first-child, .white-panel > .table:first-child > thead:first-child > tr:first-child, .buttonPanel > .table:first-child > thead:first-child > tr:first-child,
+.panel > .table:first-child > thead:first-child > tr:first-child, .sky-panel > .table:first-child > thead:first-child > tr:first-child, .white-panel > .table:first-child > thead:first-child > tr:first-child, #time-buffs #time > .table:first-child > thead:first-child > tr:first-child, #time-buffs #buffs > .table:first-child > thead:first-child > tr:first-child, .buttonPanel > .table:first-child > thead:first-child > tr:first-child,
 .panel > .table:first-child > tbody:first-child > tr:first-child,
 .sky-panel > .table:first-child > tbody:first-child > tr:first-child,
-#time > .table:first-child > tbody:first-child > tr:first-child,
 .white-panel > .table:first-child > tbody:first-child > tr:first-child,
+#time-buffs #time > .table:first-child > tbody:first-child > tr:first-child,
+#time-buffs #buffs > .table:first-child > tbody:first-child > tr:first-child,
 .buttonPanel > .table:first-child > tbody:first-child > tr:first-child,
 .panel > .table-responsive:first-child > .table:first-child > thead:first-child > tr:first-child,
 .sky-panel > .table-responsive:first-child > .table:first-child > thead:first-child > tr:first-child,
-#time > .table-responsive:first-child > .table:first-child > thead:first-child > tr:first-child,
 .white-panel > .table-responsive:first-child > .table:first-child > thead:first-child > tr:first-child,
+#time-buffs #time > .table-responsive:first-child > .table:first-child > thead:first-child > tr:first-child,
+#time-buffs #buffs > .table-responsive:first-child > .table:first-child > thead:first-child > tr:first-child,
 .buttonPanel > .table-responsive:first-child > .table:first-child > thead:first-child > tr:first-child,
 .panel > .table-responsive:first-child > .table:first-child > tbody:first-child > tr:first-child,
 .sky-panel > .table-responsive:first-child > .table:first-child > tbody:first-child > tr:first-child,
-#time > .table-responsive:first-child > .table:first-child > tbody:first-child > tr:first-child,
 .white-panel > .table-responsive:first-child > .table:first-child > tbody:first-child > tr:first-child,
+#time-buffs #time > .table-responsive:first-child > .table:first-child > tbody:first-child > tr:first-child,
+#time-buffs #buffs > .table-responsive:first-child > .table:first-child > tbody:first-child > tr:first-child,
 .buttonPanel > .table-responsive:first-child > .table:first-child > tbody:first-child > tr:first-child {
   border-top-left-radius: 3px;
   border-top-right-radius: 3px;
 }
-.panel > .table:first-child > thead:first-child > tr:first-child td:first-child, .sky-panel > .table:first-child > thead:first-child > tr:first-child td:first-child, #time > .table:first-child > thead:first-child > tr:first-child td:first-child, .white-panel > .table:first-child > thead:first-child > tr:first-child td:first-child, .buttonPanel > .table:first-child > thead:first-child > tr:first-child td:first-child,
+.panel > .table:first-child > thead:first-child > tr:first-child td:first-child, .sky-panel > .table:first-child > thead:first-child > tr:first-child td:first-child, .white-panel > .table:first-child > thead:first-child > tr:first-child td:first-child, #time-buffs #time > .table:first-child > thead:first-child > tr:first-child td:first-child, #time-buffs #buffs > .table:first-child > thead:first-child > tr:first-child td:first-child, .buttonPanel > .table:first-child > thead:first-child > tr:first-child td:first-child,
 .panel > .table:first-child > thead:first-child > tr:first-child th:first-child,
 .sky-panel > .table:first-child > thead:first-child > tr:first-child th:first-child,
-#time > .table:first-child > thead:first-child > tr:first-child th:first-child,
 .white-panel > .table:first-child > thead:first-child > tr:first-child th:first-child,
+#time-buffs #time > .table:first-child > thead:first-child > tr:first-child th:first-child,
+#time-buffs #buffs > .table:first-child > thead:first-child > tr:first-child th:first-child,
 .buttonPanel > .table:first-child > thead:first-child > tr:first-child th:first-child,
 .panel > .table:first-child > tbody:first-child > tr:first-child td:first-child,
 .sky-panel > .table:first-child > tbody:first-child > tr:first-child td:first-child,
-#time > .table:first-child > tbody:first-child > tr:first-child td:first-child,
 .white-panel > .table:first-child > tbody:first-child > tr:first-child td:first-child,
+#time-buffs #time > .table:first-child > tbody:first-child > tr:first-child td:first-child,
+#time-buffs #buffs > .table:first-child > tbody:first-child > tr:first-child td:first-child,
 .buttonPanel > .table:first-child > tbody:first-child > tr:first-child td:first-child,
 .panel > .table:first-child > tbody:first-child > tr:first-child th:first-child,
 .sky-panel > .table:first-child > tbody:first-child > tr:first-child th:first-child,
-#time > .table:first-child > tbody:first-child > tr:first-child th:first-child,
 .white-panel > .table:first-child > tbody:first-child > tr:first-child th:first-child,
+#time-buffs #time > .table:first-child > tbody:first-child > tr:first-child th:first-child,
+#time-buffs #buffs > .table:first-child > tbody:first-child > tr:first-child th:first-child,
 .buttonPanel > .table:first-child > tbody:first-child > tr:first-child th:first-child,
 .panel > .table-responsive:first-child > .table:first-child > thead:first-child > tr:first-child td:first-child,
 .sky-panel > .table-responsive:first-child > .table:first-child > thead:first-child > tr:first-child td:first-child,
-#time > .table-responsive:first-child > .table:first-child > thead:first-child > tr:first-child td:first-child,
 .white-panel > .table-responsive:first-child > .table:first-child > thead:first-child > tr:first-child td:first-child,
+#time-buffs #time > .table-responsive:first-child > .table:first-child > thead:first-child > tr:first-child td:first-child,
+#time-buffs #buffs > .table-responsive:first-child > .table:first-child > thead:first-child > tr:first-child td:first-child,
 .buttonPanel > .table-responsive:first-child > .table:first-child > thead:first-child > tr:first-child td:first-child,
 .panel > .table-responsive:first-child > .table:first-child > thead:first-child > tr:first-child th:first-child,
 .sky-panel > .table-responsive:first-child > .table:first-child > thead:first-child > tr:first-child th:first-child,
-#time > .table-responsive:first-child > .table:first-child > thead:first-child > tr:first-child th:first-child,
 .white-panel > .table-responsive:first-child > .table:first-child > thead:first-child > tr:first-child th:first-child,
+#time-buffs #time > .table-responsive:first-child > .table:first-child > thead:first-child > tr:first-child th:first-child,
+#time-buffs #buffs > .table-responsive:first-child > .table:first-child > thead:first-child > tr:first-child th:first-child,
 .buttonPanel > .table-responsive:first-child > .table:first-child > thead:first-child > tr:first-child th:first-child,
 .panel > .table-responsive:first-child > .table:first-child > tbody:first-child > tr:first-child td:first-child,
 .sky-panel > .table-responsive:first-child > .table:first-child > tbody:first-child > tr:first-child td:first-child,
-#time > .table-responsive:first-child > .table:first-child > tbody:first-child > tr:first-child td:first-child,
 .white-panel > .table-responsive:first-child > .table:first-child > tbody:first-child > tr:first-child td:first-child,
+#time-buffs #time > .table-responsive:first-child > .table:first-child > tbody:first-child > tr:first-child td:first-child,
+#time-buffs #buffs > .table-responsive:first-child > .table:first-child > tbody:first-child > tr:first-child td:first-child,
 .buttonPanel > .table-responsive:first-child > .table:first-child > tbody:first-child > tr:first-child td:first-child,
 .panel > .table-responsive:first-child > .table:first-child > tbody:first-child > tr:first-child th:first-child,
 .sky-panel > .table-responsive:first-child > .table:first-child > tbody:first-child > tr:first-child th:first-child,
-#time > .table-responsive:first-child > .table:first-child > tbody:first-child > tr:first-child th:first-child,
 .white-panel > .table-responsive:first-child > .table:first-child > tbody:first-child > tr:first-child th:first-child,
+#time-buffs #time > .table-responsive:first-child > .table:first-child > tbody:first-child > tr:first-child th:first-child,
+#time-buffs #buffs > .table-responsive:first-child > .table:first-child > tbody:first-child > tr:first-child th:first-child,
 .buttonPanel > .table-responsive:first-child > .table:first-child > tbody:first-child > tr:first-child th:first-child {
   border-top-left-radius: 3px;
 }
-.panel > .table:first-child > thead:first-child > tr:first-child td:last-child, .sky-panel > .table:first-child > thead:first-child > tr:first-child td:last-child, #time > .table:first-child > thead:first-child > tr:first-child td:last-child, .white-panel > .table:first-child > thead:first-child > tr:first-child td:last-child, .buttonPanel > .table:first-child > thead:first-child > tr:first-child td:last-child,
+.panel > .table:first-child > thead:first-child > tr:first-child td:last-child, .sky-panel > .table:first-child > thead:first-child > tr:first-child td:last-child, .white-panel > .table:first-child > thead:first-child > tr:first-child td:last-child, #time-buffs #time > .table:first-child > thead:first-child > tr:first-child td:last-child, #time-buffs #buffs > .table:first-child > thead:first-child > tr:first-child td:last-child, .buttonPanel > .table:first-child > thead:first-child > tr:first-child td:last-child,
 .panel > .table:first-child > thead:first-child > tr:first-child th:last-child,
 .sky-panel > .table:first-child > thead:first-child > tr:first-child th:last-child,
-#time > .table:first-child > thead:first-child > tr:first-child th:last-child,
 .white-panel > .table:first-child > thead:first-child > tr:first-child th:last-child,
+#time-buffs #time > .table:first-child > thead:first-child > tr:first-child th:last-child,
+#time-buffs #buffs > .table:first-child > thead:first-child > tr:first-child th:last-child,
 .buttonPanel > .table:first-child > thead:first-child > tr:first-child th:last-child,
 .panel > .table:first-child > tbody:first-child > tr:first-child td:last-child,
 .sky-panel > .table:first-child > tbody:first-child > tr:first-child td:last-child,
-#time > .table:first-child > tbody:first-child > tr:first-child td:last-child,
 .white-panel > .table:first-child > tbody:first-child > tr:first-child td:last-child,
+#time-buffs #time > .table:first-child > tbody:first-child > tr:first-child td:last-child,
+#time-buffs #buffs > .table:first-child > tbody:first-child > tr:first-child td:last-child,
 .buttonPanel > .table:first-child > tbody:first-child > tr:first-child td:last-child,
 .panel > .table:first-child > tbody:first-child > tr:first-child th:last-child,
 .sky-panel > .table:first-child > tbody:first-child > tr:first-child th:last-child,
-#time > .table:first-child > tbody:first-child > tr:first-child th:last-child,
 .white-panel > .table:first-child > tbody:first-child > tr:first-child th:last-child,
+#time-buffs #time > .table:first-child > tbody:first-child > tr:first-child th:last-child,
+#time-buffs #buffs > .table:first-child > tbody:first-child > tr:first-child th:last-child,
 .buttonPanel > .table:first-child > tbody:first-child > tr:first-child th:last-child,
 .panel > .table-responsive:first-child > .table:first-child > thead:first-child > tr:first-child td:last-child,
 .sky-panel > .table-responsive:first-child > .table:first-child > thead:first-child > tr:first-child td:last-child,
-#time > .table-responsive:first-child > .table:first-child > thead:first-child > tr:first-child td:last-child,
 .white-panel > .table-responsive:first-child > .table:first-child > thead:first-child > tr:first-child td:last-child,
+#time-buffs #time > .table-responsive:first-child > .table:first-child > thead:first-child > tr:first-child td:last-child,
+#time-buffs #buffs > .table-responsive:first-child > .table:first-child > thead:first-child > tr:first-child td:last-child,
 .buttonPanel > .table-responsive:first-child > .table:first-child > thead:first-child > tr:first-child td:last-child,
 .panel > .table-responsive:first-child > .table:first-child > thead:first-child > tr:first-child th:last-child,
 .sky-panel > .table-responsive:first-child > .table:first-child > thead:first-child > tr:first-child th:last-child,
-#time > .table-responsive:first-child > .table:first-child > thead:first-child > tr:first-child th:last-child,
 .white-panel > .table-responsive:first-child > .table:first-child > thead:first-child > tr:first-child th:last-child,
+#time-buffs #time > .table-responsive:first-child > .table:first-child > thead:first-child > tr:first-child th:last-child,
+#time-buffs #buffs > .table-responsive:first-child > .table:first-child > thead:first-child > tr:first-child th:last-child,
 .buttonPanel > .table-responsive:first-child > .table:first-child > thead:first-child > tr:first-child th:last-child,
 .panel > .table-responsive:first-child > .table:first-child > tbody:first-child > tr:first-child td:last-child,
 .sky-panel > .table-responsive:first-child > .table:first-child > tbody:first-child > tr:first-child td:last-child,
-#time > .table-responsive:first-child > .table:first-child > tbody:first-child > tr:first-child td:last-child,
 .white-panel > .table-responsive:first-child > .table:first-child > tbody:first-child > tr:first-child td:last-child,
+#time-buffs #time > .table-responsive:first-child > .table:first-child > tbody:first-child > tr:first-child td:last-child,
+#time-buffs #buffs > .table-responsive:first-child > .table:first-child > tbody:first-child > tr:first-child td:last-child,
 .buttonPanel > .table-responsive:first-child > .table:first-child > tbody:first-child > tr:first-child td:last-child,
 .panel > .table-responsive:first-child > .table:first-child > tbody:first-child > tr:first-child th:last-child,
 .sky-panel > .table-responsive:first-child > .table:first-child > tbody:first-child > tr:first-child th:last-child,
-#time > .table-responsive:first-child > .table:first-child > tbody:first-child > tr:first-child th:last-child,
 .white-panel > .table-responsive:first-child > .table:first-child > tbody:first-child > tr:first-child th:last-child,
+#time-buffs #time > .table-responsive:first-child > .table:first-child > tbody:first-child > tr:first-child th:last-child,
+#time-buffs #buffs > .table-responsive:first-child > .table:first-child > tbody:first-child > tr:first-child th:last-child,
 .buttonPanel > .table-responsive:first-child > .table:first-child > tbody:first-child > tr:first-child th:last-child {
   border-top-right-radius: 3px;
 }
-.panel > .table:last-child, .sky-panel > .table:last-child, #time > .table:last-child, .white-panel > .table:last-child, .buttonPanel > .table:last-child,
+.panel > .table:last-child, .sky-panel > .table:last-child, .white-panel > .table:last-child, #time-buffs #time > .table:last-child, #time-buffs #buffs > .table:last-child, .buttonPanel > .table:last-child,
 .panel > .table-responsive:last-child > .table:last-child,
 .sky-panel > .table-responsive:last-child > .table:last-child,
-#time > .table-responsive:last-child > .table:last-child,
 .white-panel > .table-responsive:last-child > .table:last-child,
+#time-buffs #time > .table-responsive:last-child > .table:last-child,
+#time-buffs #buffs > .table-responsive:last-child > .table:last-child,
 .buttonPanel > .table-responsive:last-child > .table:last-child {
   border-bottom-right-radius: 3px;
   border-bottom-left-radius: 3px;
 }
-.panel > .table:last-child > tbody:last-child > tr:last-child, .sky-panel > .table:last-child > tbody:last-child > tr:last-child, #time > .table:last-child > tbody:last-child > tr:last-child, .white-panel > .table:last-child > tbody:last-child > tr:last-child, .buttonPanel > .table:last-child > tbody:last-child > tr:last-child,
+.panel > .table:last-child > tbody:last-child > tr:last-child, .sky-panel > .table:last-child > tbody:last-child > tr:last-child, .white-panel > .table:last-child > tbody:last-child > tr:last-child, #time-buffs #time > .table:last-child > tbody:last-child > tr:last-child, #time-buffs #buffs > .table:last-child > tbody:last-child > tr:last-child, .buttonPanel > .table:last-child > tbody:last-child > tr:last-child,
 .panel > .table:last-child > tfoot:last-child > tr:last-child,
 .sky-panel > .table:last-child > tfoot:last-child > tr:last-child,
-#time > .table:last-child > tfoot:last-child > tr:last-child,
 .white-panel > .table:last-child > tfoot:last-child > tr:last-child,
+#time-buffs #time > .table:last-child > tfoot:last-child > tr:last-child,
+#time-buffs #buffs > .table:last-child > tfoot:last-child > tr:last-child,
 .buttonPanel > .table:last-child > tfoot:last-child > tr:last-child,
 .panel > .table-responsive:last-child > .table:last-child > tbody:last-child > tr:last-child,
 .sky-panel > .table-responsive:last-child > .table:last-child > tbody:last-child > tr:last-child,
-#time > .table-responsive:last-child > .table:last-child > tbody:last-child > tr:last-child,
 .white-panel > .table-responsive:last-child > .table:last-child > tbody:last-child > tr:last-child,
+#time-buffs #time > .table-responsive:last-child > .table:last-child > tbody:last-child > tr:last-child,
+#time-buffs #buffs > .table-responsive:last-child > .table:last-child > tbody:last-child > tr:last-child,
 .buttonPanel > .table-responsive:last-child > .table:last-child > tbody:last-child > tr:last-child,
 .panel > .table-responsive:last-child > .table:last-child > tfoot:last-child > tr:last-child,
 .sky-panel > .table-responsive:last-child > .table:last-child > tfoot:last-child > tr:last-child,
-#time > .table-responsive:last-child > .table:last-child > tfoot:last-child > tr:last-child,
 .white-panel > .table-responsive:last-child > .table:last-child > tfoot:last-child > tr:last-child,
+#time-buffs #time > .table-responsive:last-child > .table:last-child > tfoot:last-child > tr:last-child,
+#time-buffs #buffs > .table-responsive:last-child > .table:last-child > tfoot:last-child > tr:last-child,
 .buttonPanel > .table-responsive:last-child > .table:last-child > tfoot:last-child > tr:last-child {
   border-bottom-left-radius: 3px;
   border-bottom-right-radius: 3px;
 }
-.panel > .table:last-child > tbody:last-child > tr:last-child td:first-child, .sky-panel > .table:last-child > tbody:last-child > tr:last-child td:first-child, #time > .table:last-child > tbody:last-child > tr:last-child td:first-child, .white-panel > .table:last-child > tbody:last-child > tr:last-child td:first-child, .buttonPanel > .table:last-child > tbody:last-child > tr:last-child td:first-child,
+.panel > .table:last-child > tbody:last-child > tr:last-child td:first-child, .sky-panel > .table:last-child > tbody:last-child > tr:last-child td:first-child, .white-panel > .table:last-child > tbody:last-child > tr:last-child td:first-child, #time-buffs #time > .table:last-child > tbody:last-child > tr:last-child td:first-child, #time-buffs #buffs > .table:last-child > tbody:last-child > tr:last-child td:first-child, .buttonPanel > .table:last-child > tbody:last-child > tr:last-child td:first-child,
 .panel > .table:last-child > tbody:last-child > tr:last-child th:first-child,
 .sky-panel > .table:last-child > tbody:last-child > tr:last-child th:first-child,
-#time > .table:last-child > tbody:last-child > tr:last-child th:first-child,
 .white-panel > .table:last-child > tbody:last-child > tr:last-child th:first-child,
+#time-buffs #time > .table:last-child > tbody:last-child > tr:last-child th:first-child,
+#time-buffs #buffs > .table:last-child > tbody:last-child > tr:last-child th:first-child,
 .buttonPanel > .table:last-child > tbody:last-child > tr:last-child th:first-child,
 .panel > .table:last-child > tfoot:last-child > tr:last-child td:first-child,
 .sky-panel > .table:last-child > tfoot:last-child > tr:last-child td:first-child,
-#time > .table:last-child > tfoot:last-child > tr:last-child td:first-child,
 .white-panel > .table:last-child > tfoot:last-child > tr:last-child td:first-child,
+#time-buffs #time > .table:last-child > tfoot:last-child > tr:last-child td:first-child,
+#time-buffs #buffs > .table:last-child > tfoot:last-child > tr:last-child td:first-child,
 .buttonPanel > .table:last-child > tfoot:last-child > tr:last-child td:first-child,
 .panel > .table:last-child > tfoot:last-child > tr:last-child th:first-child,
 .sky-panel > .table:last-child > tfoot:last-child > tr:last-child th:first-child,
-#time > .table:last-child > tfoot:last-child > tr:last-child th:first-child,
 .white-panel > .table:last-child > tfoot:last-child > tr:last-child th:first-child,
+#time-buffs #time > .table:last-child > tfoot:last-child > tr:last-child th:first-child,
+#time-buffs #buffs > .table:last-child > tfoot:last-child > tr:last-child th:first-child,
 .buttonPanel > .table:last-child > tfoot:last-child > tr:last-child th:first-child,
 .panel > .table-responsive:last-child > .table:last-child > tbody:last-child > tr:last-child td:first-child,
 .sky-panel > .table-responsive:last-child > .table:last-child > tbody:last-child > tr:last-child td:first-child,
-#time > .table-responsive:last-child > .table:last-child > tbody:last-child > tr:last-child td:first-child,
 .white-panel > .table-responsive:last-child > .table:last-child > tbody:last-child > tr:last-child td:first-child,
+#time-buffs #time > .table-responsive:last-child > .table:last-child > tbody:last-child > tr:last-child td:first-child,
+#time-buffs #buffs > .table-responsive:last-child > .table:last-child > tbody:last-child > tr:last-child td:first-child,
 .buttonPanel > .table-responsive:last-child > .table:last-child > tbody:last-child > tr:last-child td:first-child,
 .panel > .table-responsive:last-child > .table:last-child > tbody:last-child > tr:last-child th:first-child,
 .sky-panel > .table-responsive:last-child > .table:last-child > tbody:last-child > tr:last-child th:first-child,
-#time > .table-responsive:last-child > .table:last-child > tbody:last-child > tr:last-child th:first-child,
 .white-panel > .table-responsive:last-child > .table:last-child > tbody:last-child > tr:last-child th:first-child,
+#time-buffs #time > .table-responsive:last-child > .table:last-child > tbody:last-child > tr:last-child th:first-child,
+#time-buffs #buffs > .table-responsive:last-child > .table:last-child > tbody:last-child > tr:last-child th:first-child,
 .buttonPanel > .table-responsive:last-child > .table:last-child > tbody:last-child > tr:last-child th:first-child,
 .panel > .table-responsive:last-child > .table:last-child > tfoot:last-child > tr:last-child td:first-child,
 .sky-panel > .table-responsive:last-child > .table:last-child > tfoot:last-child > tr:last-child td:first-child,
-#time > .table-responsive:last-child > .table:last-child > tfoot:last-child > tr:last-child td:first-child,
 .white-panel > .table-responsive:last-child > .table:last-child > tfoot:last-child > tr:last-child td:first-child,
+#time-buffs #time > .table-responsive:last-child > .table:last-child > tfoot:last-child > tr:last-child td:first-child,
+#time-buffs #buffs > .table-responsive:last-child > .table:last-child > tfoot:last-child > tr:last-child td:first-child,
 .buttonPanel > .table-responsive:last-child > .table:last-child > tfoot:last-child > tr:last-child td:first-child,
 .panel > .table-responsive:last-child > .table:last-child > tfoot:last-child > tr:last-child th:first-child,
 .sky-panel > .table-responsive:last-child > .table:last-child > tfoot:last-child > tr:last-child th:first-child,
-#time > .table-responsive:last-child > .table:last-child > tfoot:last-child > tr:last-child th:first-child,
 .white-panel > .table-responsive:last-child > .table:last-child > tfoot:last-child > tr:last-child th:first-child,
+#time-buffs #time > .table-responsive:last-child > .table:last-child > tfoot:last-child > tr:last-child th:first-child,
+#time-buffs #buffs > .table-responsive:last-child > .table:last-child > tfoot:last-child > tr:last-child th:first-child,
 .buttonPanel > .table-responsive:last-child > .table:last-child > tfoot:last-child > tr:last-child th:first-child {
   border-bottom-left-radius: 3px;
 }
-.panel > .table:last-child > tbody:last-child > tr:last-child td:last-child, .sky-panel > .table:last-child > tbody:last-child > tr:last-child td:last-child, #time > .table:last-child > tbody:last-child > tr:last-child td:last-child, .white-panel > .table:last-child > tbody:last-child > tr:last-child td:last-child, .buttonPanel > .table:last-child > tbody:last-child > tr:last-child td:last-child,
+.panel > .table:last-child > tbody:last-child > tr:last-child td:last-child, .sky-panel > .table:last-child > tbody:last-child > tr:last-child td:last-child, .white-panel > .table:last-child > tbody:last-child > tr:last-child td:last-child, #time-buffs #time > .table:last-child > tbody:last-child > tr:last-child td:last-child, #time-buffs #buffs > .table:last-child > tbody:last-child > tr:last-child td:last-child, .buttonPanel > .table:last-child > tbody:last-child > tr:last-child td:last-child,
 .panel > .table:last-child > tbody:last-child > tr:last-child th:last-child,
 .sky-panel > .table:last-child > tbody:last-child > tr:last-child th:last-child,
-#time > .table:last-child > tbody:last-child > tr:last-child th:last-child,
 .white-panel > .table:last-child > tbody:last-child > tr:last-child th:last-child,
+#time-buffs #time > .table:last-child > tbody:last-child > tr:last-child th:last-child,
+#time-buffs #buffs > .table:last-child > tbody:last-child > tr:last-child th:last-child,
 .buttonPanel > .table:last-child > tbody:last-child > tr:last-child th:last-child,
 .panel > .table:last-child > tfoot:last-child > tr:last-child td:last-child,
 .sky-panel > .table:last-child > tfoot:last-child > tr:last-child td:last-child,
-#time > .table:last-child > tfoot:last-child > tr:last-child td:last-child,
 .white-panel > .table:last-child > tfoot:last-child > tr:last-child td:last-child,
+#time-buffs #time > .table:last-child > tfoot:last-child > tr:last-child td:last-child,
+#time-buffs #buffs > .table:last-child > tfoot:last-child > tr:last-child td:last-child,
 .buttonPanel > .table:last-child > tfoot:last-child > tr:last-child td:last-child,
 .panel > .table:last-child > tfoot:last-child > tr:last-child th:last-child,
 .sky-panel > .table:last-child > tfoot:last-child > tr:last-child th:last-child,
-#time > .table:last-child > tfoot:last-child > tr:last-child th:last-child,
 .white-panel > .table:last-child > tfoot:last-child > tr:last-child th:last-child,
+#time-buffs #time > .table:last-child > tfoot:last-child > tr:last-child th:last-child,
+#time-buffs #buffs > .table:last-child > tfoot:last-child > tr:last-child th:last-child,
 .buttonPanel > .table:last-child > tfoot:last-child > tr:last-child th:last-child,
 .panel > .table-responsive:last-child > .table:last-child > tbody:last-child > tr:last-child td:last-child,
 .sky-panel > .table-responsive:last-child > .table:last-child > tbody:last-child > tr:last-child td:last-child,
-#time > .table-responsive:last-child > .table:last-child > tbody:last-child > tr:last-child td:last-child,
 .white-panel > .table-responsive:last-child > .table:last-child > tbody:last-child > tr:last-child td:last-child,
+#time-buffs #time > .table-responsive:last-child > .table:last-child > tbody:last-child > tr:last-child td:last-child,
+#time-buffs #buffs > .table-responsive:last-child > .table:last-child > tbody:last-child > tr:last-child td:last-child,
 .buttonPanel > .table-responsive:last-child > .table:last-child > tbody:last-child > tr:last-child td:last-child,
 .panel > .table-responsive:last-child > .table:last-child > tbody:last-child > tr:last-child th:last-child,
 .sky-panel > .table-responsive:last-child > .table:last-child > tbody:last-child > tr:last-child th:last-child,
-#time > .table-responsive:last-child > .table:last-child > tbody:last-child > tr:last-child th:last-child,
 .white-panel > .table-responsive:last-child > .table:last-child > tbody:last-child > tr:last-child th:last-child,
+#time-buffs #time > .table-responsive:last-child > .table:last-child > tbody:last-child > tr:last-child th:last-child,
+#time-buffs #buffs > .table-responsive:last-child > .table:last-child > tbody:last-child > tr:last-child th:last-child,
 .buttonPanel > .table-responsive:last-child > .table:last-child > tbody:last-child > tr:last-child th:last-child,
 .panel > .table-responsive:last-child > .table:last-child > tfoot:last-child > tr:last-child td:last-child,
 .sky-panel > .table-responsive:last-child > .table:last-child > tfoot:last-child > tr:last-child td:last-child,
-#time > .table-responsive:last-child > .table:last-child > tfoot:last-child > tr:last-child td:last-child,
 .white-panel > .table-responsive:last-child > .table:last-child > tfoot:last-child > tr:last-child td:last-child,
+#time-buffs #time > .table-responsive:last-child > .table:last-child > tfoot:last-child > tr:last-child td:last-child,
+#time-buffs #buffs > .table-responsive:last-child > .table:last-child > tfoot:last-child > tr:last-child td:last-child,
 .buttonPanel > .table-responsive:last-child > .table:last-child > tfoot:last-child > tr:last-child td:last-child,
 .panel > .table-responsive:last-child > .table:last-child > tfoot:last-child > tr:last-child th:last-child,
 .sky-panel > .table-responsive:last-child > .table:last-child > tfoot:last-child > tr:last-child th:last-child,
-#time > .table-responsive:last-child > .table:last-child > tfoot:last-child > tr:last-child th:last-child,
 .white-panel > .table-responsive:last-child > .table:last-child > tfoot:last-child > tr:last-child th:last-child,
+#time-buffs #time > .table-responsive:last-child > .table:last-child > tfoot:last-child > tr:last-child th:last-child,
+#time-buffs #buffs > .table-responsive:last-child > .table:last-child > tfoot:last-child > tr:last-child th:last-child,
 .buttonPanel > .table-responsive:last-child > .table:last-child > tfoot:last-child > tr:last-child th:last-child {
   border-bottom-right-radius: 3px;
 }
-.panel > .panel-body + .table, .sky-panel > .panel-body + .table, #time > .panel-body + .table, .white-panel > .panel-body + .table, .buttonPanel > .panel-body + .table, .panel > .panel-body-new + .table, .sky-panel > .panel-body-new + .table, #time > .panel-body-new + .table, .white-panel > .panel-body-new + .table, .buttonPanel > .panel-body-new + .table,
+.panel > .panel-body + .table, .sky-panel > .panel-body + .table, .white-panel > .panel-body + .table, #time-buffs #time > .panel-body + .table, #time-buffs #buffs > .panel-body + .table, .buttonPanel > .panel-body + .table, .panel > .panel-body-new + .table, .sky-panel > .panel-body-new + .table, .white-panel > .panel-body-new + .table, #time-buffs #time > .panel-body-new + .table, #time-buffs #buffs > .panel-body-new + .table, .buttonPanel > .panel-body-new + .table,
 .panel > .panel-body + .table-responsive,
 .sky-panel > .panel-body + .table-responsive,
-#time > .panel-body + .table-responsive,
 .white-panel > .panel-body + .table-responsive,
+#time-buffs #time > .panel-body + .table-responsive,
+#time-buffs #buffs > .panel-body + .table-responsive,
 .buttonPanel > .panel-body + .table-responsive,
 .panel > .panel-body-new + .table-responsive,
 .sky-panel > .panel-body-new + .table-responsive,
-#time > .panel-body-new + .table-responsive,
 .white-panel > .panel-body-new + .table-responsive,
+#time-buffs #time > .panel-body-new + .table-responsive,
+#time-buffs #buffs > .panel-body-new + .table-responsive,
 .buttonPanel > .panel-body-new + .table-responsive,
 .panel > .table + .panel-body,
 .sky-panel > .table + .panel-body,
-#time > .table + .panel-body,
 .white-panel > .table + .panel-body,
+#time-buffs #time > .table + .panel-body,
+#time-buffs #buffs > .table + .panel-body,
 .buttonPanel > .table + .panel-body,
 .panel > .table + .panel-body-new,
 .sky-panel > .table + .panel-body-new,
-#time > .table + .panel-body-new,
 .white-panel > .table + .panel-body-new,
+#time-buffs #time > .table + .panel-body-new,
+#time-buffs #buffs > .table + .panel-body-new,
 .buttonPanel > .table + .panel-body-new,
 .panel > .table-responsive + .panel-body,
 .sky-panel > .table-responsive + .panel-body,
-#time > .table-responsive + .panel-body,
 .white-panel > .table-responsive + .panel-body,
+#time-buffs #time > .table-responsive + .panel-body,
+#time-buffs #buffs > .table-responsive + .panel-body,
 .buttonPanel > .table-responsive + .panel-body,
 .panel > .table-responsive + .panel-body-new,
 .sky-panel > .table-responsive + .panel-body-new,
-#time > .table-responsive + .panel-body-new,
 .white-panel > .table-responsive + .panel-body-new,
+#time-buffs #time > .table-responsive + .panel-body-new,
+#time-buffs #buffs > .table-responsive + .panel-body-new,
 .buttonPanel > .table-responsive + .panel-body-new {
   border-top: 1px solid #ddd;
 }
-.panel > .table > tbody:first-child > tr:first-child th, .sky-panel > .table > tbody:first-child > tr:first-child th, #time > .table > tbody:first-child > tr:first-child th, .white-panel > .table > tbody:first-child > tr:first-child th, .buttonPanel > .table > tbody:first-child > tr:first-child th,
+.panel > .table > tbody:first-child > tr:first-child th, .sky-panel > .table > tbody:first-child > tr:first-child th, .white-panel > .table > tbody:first-child > tr:first-child th, #time-buffs #time > .table > tbody:first-child > tr:first-child th, #time-buffs #buffs > .table > tbody:first-child > tr:first-child th, .buttonPanel > .table > tbody:first-child > tr:first-child th,
 .panel > .table > tbody:first-child > tr:first-child td,
 .sky-panel > .table > tbody:first-child > tr:first-child td,
-#time > .table > tbody:first-child > tr:first-child td,
 .white-panel > .table > tbody:first-child > tr:first-child td,
+#time-buffs #time > .table > tbody:first-child > tr:first-child td,
+#time-buffs #buffs > .table > tbody:first-child > tr:first-child td,
 .buttonPanel > .table > tbody:first-child > tr:first-child td {
   border-top: 0;
 }
-.panel > .table-bordered, .sky-panel > .table-bordered, #time > .table-bordered, .white-panel > .table-bordered, .buttonPanel > .table-bordered,
+.panel > .table-bordered, .sky-panel > .table-bordered, .white-panel > .table-bordered, #time-buffs #time > .table-bordered, #time-buffs #buffs > .table-bordered, .buttonPanel > .table-bordered,
 .panel > .table-responsive > .table-bordered,
 .sky-panel > .table-responsive > .table-bordered,
-#time > .table-responsive > .table-bordered,
 .white-panel > .table-responsive > .table-bordered,
+#time-buffs #time > .table-responsive > .table-bordered,
+#time-buffs #buffs > .table-responsive > .table-bordered,
 .buttonPanel > .table-responsive > .table-bordered {
   border: 0;
 }
-.panel > .table-bordered > thead > tr > th:first-child, .sky-panel > .table-bordered > thead > tr > th:first-child, #time > .table-bordered > thead > tr > th:first-child, .white-panel > .table-bordered > thead > tr > th:first-child, .buttonPanel > .table-bordered > thead > tr > th:first-child,
+.panel > .table-bordered > thead > tr > th:first-child, .sky-panel > .table-bordered > thead > tr > th:first-child, .white-panel > .table-bordered > thead > tr > th:first-child, #time-buffs #time > .table-bordered > thead > tr > th:first-child, #time-buffs #buffs > .table-bordered > thead > tr > th:first-child, .buttonPanel > .table-bordered > thead > tr > th:first-child,
 .panel > .table-bordered > thead > tr > td:first-child,
 .sky-panel > .table-bordered > thead > tr > td:first-child,
-#time > .table-bordered > thead > tr > td:first-child,
 .white-panel > .table-bordered > thead > tr > td:first-child,
+#time-buffs #time > .table-bordered > thead > tr > td:first-child,
+#time-buffs #buffs > .table-bordered > thead > tr > td:first-child,
 .buttonPanel > .table-bordered > thead > tr > td:first-child,
 .panel > .table-bordered > tbody > tr > th:first-child,
 .sky-panel > .table-bordered > tbody > tr > th:first-child,
-#time > .table-bordered > tbody > tr > th:first-child,
 .white-panel > .table-bordered > tbody > tr > th:first-child,
+#time-buffs #time > .table-bordered > tbody > tr > th:first-child,
+#time-buffs #buffs > .table-bordered > tbody > tr > th:first-child,
 .buttonPanel > .table-bordered > tbody > tr > th:first-child,
 .panel > .table-bordered > tbody > tr > td:first-child,
 .sky-panel > .table-bordered > tbody > tr > td:first-child,
-#time > .table-bordered > tbody > tr > td:first-child,
 .white-panel > .table-bordered > tbody > tr > td:first-child,
+#time-buffs #time > .table-bordered > tbody > tr > td:first-child,
+#time-buffs #buffs > .table-bordered > tbody > tr > td:first-child,
 .buttonPanel > .table-bordered > tbody > tr > td:first-child,
 .panel > .table-bordered > tfoot > tr > th:first-child,
 .sky-panel > .table-bordered > tfoot > tr > th:first-child,
-#time > .table-bordered > tfoot > tr > th:first-child,
 .white-panel > .table-bordered > tfoot > tr > th:first-child,
+#time-buffs #time > .table-bordered > tfoot > tr > th:first-child,
+#time-buffs #buffs > .table-bordered > tfoot > tr > th:first-child,
 .buttonPanel > .table-bordered > tfoot > tr > th:first-child,
 .panel > .table-bordered > tfoot > tr > td:first-child,
 .sky-panel > .table-bordered > tfoot > tr > td:first-child,
-#time > .table-bordered > tfoot > tr > td:first-child,
 .white-panel > .table-bordered > tfoot > tr > td:first-child,
+#time-buffs #time > .table-bordered > tfoot > tr > td:first-child,
+#time-buffs #buffs > .table-bordered > tfoot > tr > td:first-child,
 .buttonPanel > .table-bordered > tfoot > tr > td:first-child,
 .panel > .table-responsive > .table-bordered > thead > tr > th:first-child,
 .sky-panel > .table-responsive > .table-bordered > thead > tr > th:first-child,
-#time > .table-responsive > .table-bordered > thead > tr > th:first-child,
 .white-panel > .table-responsive > .table-bordered > thead > tr > th:first-child,
+#time-buffs #time > .table-responsive > .table-bordered > thead > tr > th:first-child,
+#time-buffs #buffs > .table-responsive > .table-bordered > thead > tr > th:first-child,
 .buttonPanel > .table-responsive > .table-bordered > thead > tr > th:first-child,
 .panel > .table-responsive > .table-bordered > thead > tr > td:first-child,
 .sky-panel > .table-responsive > .table-bordered > thead > tr > td:first-child,
-#time > .table-responsive > .table-bordered > thead > tr > td:first-child,
 .white-panel > .table-responsive > .table-bordered > thead > tr > td:first-child,
+#time-buffs #time > .table-responsive > .table-bordered > thead > tr > td:first-child,
+#time-buffs #buffs > .table-responsive > .table-bordered > thead > tr > td:first-child,
 .buttonPanel > .table-responsive > .table-bordered > thead > tr > td:first-child,
 .panel > .table-responsive > .table-bordered > tbody > tr > th:first-child,
 .sky-panel > .table-responsive > .table-bordered > tbody > tr > th:first-child,
-#time > .table-responsive > .table-bordered > tbody > tr > th:first-child,
 .white-panel > .table-responsive > .table-bordered > tbody > tr > th:first-child,
+#time-buffs #time > .table-responsive > .table-bordered > tbody > tr > th:first-child,
+#time-buffs #buffs > .table-responsive > .table-bordered > tbody > tr > th:first-child,
 .buttonPanel > .table-responsive > .table-bordered > tbody > tr > th:first-child,
 .panel > .table-responsive > .table-bordered > tbody > tr > td:first-child,
 .sky-panel > .table-responsive > .table-bordered > tbody > tr > td:first-child,
-#time > .table-responsive > .table-bordered > tbody > tr > td:first-child,
 .white-panel > .table-responsive > .table-bordered > tbody > tr > td:first-child,
+#time-buffs #time > .table-responsive > .table-bordered > tbody > tr > td:first-child,
+#time-buffs #buffs > .table-responsive > .table-bordered > tbody > tr > td:first-child,
 .buttonPanel > .table-responsive > .table-bordered > tbody > tr > td:first-child,
 .panel > .table-responsive > .table-bordered > tfoot > tr > th:first-child,
 .sky-panel > .table-responsive > .table-bordered > tfoot > tr > th:first-child,
-#time > .table-responsive > .table-bordered > tfoot > tr > th:first-child,
 .white-panel > .table-responsive > .table-bordered > tfoot > tr > th:first-child,
+#time-buffs #time > .table-responsive > .table-bordered > tfoot > tr > th:first-child,
+#time-buffs #buffs > .table-responsive > .table-bordered > tfoot > tr > th:first-child,
 .buttonPanel > .table-responsive > .table-bordered > tfoot > tr > th:first-child,
 .panel > .table-responsive > .table-bordered > tfoot > tr > td:first-child,
 .sky-panel > .table-responsive > .table-bordered > tfoot > tr > td:first-child,
-#time > .table-responsive > .table-bordered > tfoot > tr > td:first-child,
 .white-panel > .table-responsive > .table-bordered > tfoot > tr > td:first-child,
+#time-buffs #time > .table-responsive > .table-bordered > tfoot > tr > td:first-child,
+#time-buffs #buffs > .table-responsive > .table-bordered > tfoot > tr > td:first-child,
 .buttonPanel > .table-responsive > .table-bordered > tfoot > tr > td:first-child {
   border-left: 0;
 }
-.panel > .table-bordered > thead > tr > th:last-child, .sky-panel > .table-bordered > thead > tr > th:last-child, #time > .table-bordered > thead > tr > th:last-child, .white-panel > .table-bordered > thead > tr > th:last-child, .buttonPanel > .table-bordered > thead > tr > th:last-child,
+.panel > .table-bordered > thead > tr > th:last-child, .sky-panel > .table-bordered > thead > tr > th:last-child, .white-panel > .table-bordered > thead > tr > th:last-child, #time-buffs #time > .table-bordered > thead > tr > th:last-child, #time-buffs #buffs > .table-bordered > thead > tr > th:last-child, .buttonPanel > .table-bordered > thead > tr > th:last-child,
 .panel > .table-bordered > thead > tr > td:last-child,
 .sky-panel > .table-bordered > thead > tr > td:last-child,
-#time > .table-bordered > thead > tr > td:last-child,
 .white-panel > .table-bordered > thead > tr > td:last-child,
+#time-buffs #time > .table-bordered > thead > tr > td:last-child,
+#time-buffs #buffs > .table-bordered > thead > tr > td:last-child,
 .buttonPanel > .table-bordered > thead > tr > td:last-child,
 .panel > .table-bordered > tbody > tr > th:last-child,
 .sky-panel > .table-bordered > tbody > tr > th:last-child,
-#time > .table-bordered > tbody > tr > th:last-child,
 .white-panel > .table-bordered > tbody > tr > th:last-child,
+#time-buffs #time > .table-bordered > tbody > tr > th:last-child,
+#time-buffs #buffs > .table-bordered > tbody > tr > th:last-child,
 .buttonPanel > .table-bordered > tbody > tr > th:last-child,
 .panel > .table-bordered > tbody > tr > td:last-child,
 .sky-panel > .table-bordered > tbody > tr > td:last-child,
-#time > .table-bordered > tbody > tr > td:last-child,
 .white-panel > .table-bordered > tbody > tr > td:last-child,
+#time-buffs #time > .table-bordered > tbody > tr > td:last-child,
+#time-buffs #buffs > .table-bordered > tbody > tr > td:last-child,
 .buttonPanel > .table-bordered > tbody > tr > td:last-child,
 .panel > .table-bordered > tfoot > tr > th:last-child,
 .sky-panel > .table-bordered > tfoot > tr > th:last-child,
-#time > .table-bordered > tfoot > tr > th:last-child,
 .white-panel > .table-bordered > tfoot > tr > th:last-child,
+#time-buffs #time > .table-bordered > tfoot > tr > th:last-child,
+#time-buffs #buffs > .table-bordered > tfoot > tr > th:last-child,
 .buttonPanel > .table-bordered > tfoot > tr > th:last-child,
 .panel > .table-bordered > tfoot > tr > td:last-child,
 .sky-panel > .table-bordered > tfoot > tr > td:last-child,
-#time > .table-bordered > tfoot > tr > td:last-child,
 .white-panel > .table-bordered > tfoot > tr > td:last-child,
+#time-buffs #time > .table-bordered > tfoot > tr > td:last-child,
+#time-buffs #buffs > .table-bordered > tfoot > tr > td:last-child,
 .buttonPanel > .table-bordered > tfoot > tr > td:last-child,
 .panel > .table-responsive > .table-bordered > thead > tr > th:last-child,
 .sky-panel > .table-responsive > .table-bordered > thead > tr > th:last-child,
-#time > .table-responsive > .table-bordered > thead > tr > th:last-child,
 .white-panel > .table-responsive > .table-bordered > thead > tr > th:last-child,
+#time-buffs #time > .table-responsive > .table-bordered > thead > tr > th:last-child,
+#time-buffs #buffs > .table-responsive > .table-bordered > thead > tr > th:last-child,
 .buttonPanel > .table-responsive > .table-bordered > thead > tr > th:last-child,
 .panel > .table-responsive > .table-bordered > thead > tr > td:last-child,
 .sky-panel > .table-responsive > .table-bordered > thead > tr > td:last-child,
-#time > .table-responsive > .table-bordered > thead > tr > td:last-child,
 .white-panel > .table-responsive > .table-bordered > thead > tr > td:last-child,
+#time-buffs #time > .table-responsive > .table-bordered > thead > tr > td:last-child,
+#time-buffs #buffs > .table-responsive > .table-bordered > thead > tr > td:last-child,
 .buttonPanel > .table-responsive > .table-bordered > thead > tr > td:last-child,
 .panel > .table-responsive > .table-bordered > tbody > tr > th:last-child,
 .sky-panel > .table-responsive > .table-bordered > tbody > tr > th:last-child,
-#time > .table-responsive > .table-bordered > tbody > tr > th:last-child,
 .white-panel > .table-responsive > .table-bordered > tbody > tr > th:last-child,
+#time-buffs #time > .table-responsive > .table-bordered > tbody > tr > th:last-child,
+#time-buffs #buffs > .table-responsive > .table-bordered > tbody > tr > th:last-child,
 .buttonPanel > .table-responsive > .table-bordered > tbody > tr > th:last-child,
 .panel > .table-responsive > .table-bordered > tbody > tr > td:last-child,
 .sky-panel > .table-responsive > .table-bordered > tbody > tr > td:last-child,
-#time > .table-responsive > .table-bordered > tbody > tr > td:last-child,
 .white-panel > .table-responsive > .table-bordered > tbody > tr > td:last-child,
+#time-buffs #time > .table-responsive > .table-bordered > tbody > tr > td:last-child,
+#time-buffs #buffs > .table-responsive > .table-bordered > tbody > tr > td:last-child,
 .buttonPanel > .table-responsive > .table-bordered > tbody > tr > td:last-child,
 .panel > .table-responsive > .table-bordered > tfoot > tr > th:last-child,
 .sky-panel > .table-responsive > .table-bordered > tfoot > tr > th:last-child,
-#time > .table-responsive > .table-bordered > tfoot > tr > th:last-child,
 .white-panel > .table-responsive > .table-bordered > tfoot > tr > th:last-child,
+#time-buffs #time > .table-responsive > .table-bordered > tfoot > tr > th:last-child,
+#time-buffs #buffs > .table-responsive > .table-bordered > tfoot > tr > th:last-child,
 .buttonPanel > .table-responsive > .table-bordered > tfoot > tr > th:last-child,
 .panel > .table-responsive > .table-bordered > tfoot > tr > td:last-child,
 .sky-panel > .table-responsive > .table-bordered > tfoot > tr > td:last-child,
-#time > .table-responsive > .table-bordered > tfoot > tr > td:last-child,
 .white-panel > .table-responsive > .table-bordered > tfoot > tr > td:last-child,
+#time-buffs #time > .table-responsive > .table-bordered > tfoot > tr > td:last-child,
+#time-buffs #buffs > .table-responsive > .table-bordered > tfoot > tr > td:last-child,
 .buttonPanel > .table-responsive > .table-bordered > tfoot > tr > td:last-child {
   border-right: 0;
 }
-.panel > .table-bordered > thead > tr:first-child > td, .sky-panel > .table-bordered > thead > tr:first-child > td, #time > .table-bordered > thead > tr:first-child > td, .white-panel > .table-bordered > thead > tr:first-child > td, .buttonPanel > .table-bordered > thead > tr:first-child > td,
+.panel > .table-bordered > thead > tr:first-child > td, .sky-panel > .table-bordered > thead > tr:first-child > td, .white-panel > .table-bordered > thead > tr:first-child > td, #time-buffs #time > .table-bordered > thead > tr:first-child > td, #time-buffs #buffs > .table-bordered > thead > tr:first-child > td, .buttonPanel > .table-bordered > thead > tr:first-child > td,
 .panel > .table-bordered > thead > tr:first-child > th,
 .sky-panel > .table-bordered > thead > tr:first-child > th,
-#time > .table-bordered > thead > tr:first-child > th,
 .white-panel > .table-bordered > thead > tr:first-child > th,
+#time-buffs #time > .table-bordered > thead > tr:first-child > th,
+#time-buffs #buffs > .table-bordered > thead > tr:first-child > th,
 .buttonPanel > .table-bordered > thead > tr:first-child > th,
 .panel > .table-bordered > tbody > tr:first-child > td,
 .sky-panel > .table-bordered > tbody > tr:first-child > td,
-#time > .table-bordered > tbody > tr:first-child > td,
 .white-panel > .table-bordered > tbody > tr:first-child > td,
+#time-buffs #time > .table-bordered > tbody > tr:first-child > td,
+#time-buffs #buffs > .table-bordered > tbody > tr:first-child > td,
 .buttonPanel > .table-bordered > tbody > tr:first-child > td,
 .panel > .table-bordered > tbody > tr:first-child > th,
 .sky-panel > .table-bordered > tbody > tr:first-child > th,
-#time > .table-bordered > tbody > tr:first-child > th,
 .white-panel > .table-bordered > tbody > tr:first-child > th,
+#time-buffs #time > .table-bordered > tbody > tr:first-child > th,
+#time-buffs #buffs > .table-bordered > tbody > tr:first-child > th,
 .buttonPanel > .table-bordered > tbody > tr:first-child > th,
 .panel > .table-responsive > .table-bordered > thead > tr:first-child > td,
 .sky-panel > .table-responsive > .table-bordered > thead > tr:first-child > td,
-#time > .table-responsive > .table-bordered > thead > tr:first-child > td,
 .white-panel > .table-responsive > .table-bordered > thead > tr:first-child > td,
+#time-buffs #time > .table-responsive > .table-bordered > thead > tr:first-child > td,
+#time-buffs #buffs > .table-responsive > .table-bordered > thead > tr:first-child > td,
 .buttonPanel > .table-responsive > .table-bordered > thead > tr:first-child > td,
 .panel > .table-responsive > .table-bordered > thead > tr:first-child > th,
 .sky-panel > .table-responsive > .table-bordered > thead > tr:first-child > th,
-#time > .table-responsive > .table-bordered > thead > tr:first-child > th,
 .white-panel > .table-responsive > .table-bordered > thead > tr:first-child > th,
+#time-buffs #time > .table-responsive > .table-bordered > thead > tr:first-child > th,
+#time-buffs #buffs > .table-responsive > .table-bordered > thead > tr:first-child > th,
 .buttonPanel > .table-responsive > .table-bordered > thead > tr:first-child > th,
 .panel > .table-responsive > .table-bordered > tbody > tr:first-child > td,
 .sky-panel > .table-responsive > .table-bordered > tbody > tr:first-child > td,
-#time > .table-responsive > .table-bordered > tbody > tr:first-child > td,
 .white-panel > .table-responsive > .table-bordered > tbody > tr:first-child > td,
+#time-buffs #time > .table-responsive > .table-bordered > tbody > tr:first-child > td,
+#time-buffs #buffs > .table-responsive > .table-bordered > tbody > tr:first-child > td,
 .buttonPanel > .table-responsive > .table-bordered > tbody > tr:first-child > td,
 .panel > .table-responsive > .table-bordered > tbody > tr:first-child > th,
 .sky-panel > .table-responsive > .table-bordered > tbody > tr:first-child > th,
-#time > .table-responsive > .table-bordered > tbody > tr:first-child > th,
 .white-panel > .table-responsive > .table-bordered > tbody > tr:first-child > th,
+#time-buffs #time > .table-responsive > .table-bordered > tbody > tr:first-child > th,
+#time-buffs #buffs > .table-responsive > .table-bordered > tbody > tr:first-child > th,
 .buttonPanel > .table-responsive > .table-bordered > tbody > tr:first-child > th {
   border-bottom: 0;
 }
-.panel > .table-bordered > tbody > tr:last-child > td, .sky-panel > .table-bordered > tbody > tr:last-child > td, #time > .table-bordered > tbody > tr:last-child > td, .white-panel > .table-bordered > tbody > tr:last-child > td, .buttonPanel > .table-bordered > tbody > tr:last-child > td,
+.panel > .table-bordered > tbody > tr:last-child > td, .sky-panel > .table-bordered > tbody > tr:last-child > td, .white-panel > .table-bordered > tbody > tr:last-child > td, #time-buffs #time > .table-bordered > tbody > tr:last-child > td, #time-buffs #buffs > .table-bordered > tbody > tr:last-child > td, .buttonPanel > .table-bordered > tbody > tr:last-child > td,
 .panel > .table-bordered > tbody > tr:last-child > th,
 .sky-panel > .table-bordered > tbody > tr:last-child > th,
-#time > .table-bordered > tbody > tr:last-child > th,
 .white-panel > .table-bordered > tbody > tr:last-child > th,
+#time-buffs #time > .table-bordered > tbody > tr:last-child > th,
+#time-buffs #buffs > .table-bordered > tbody > tr:last-child > th,
 .buttonPanel > .table-bordered > tbody > tr:last-child > th,
 .panel > .table-bordered > tfoot > tr:last-child > td,
 .sky-panel > .table-bordered > tfoot > tr:last-child > td,
-#time > .table-bordered > tfoot > tr:last-child > td,
 .white-panel > .table-bordered > tfoot > tr:last-child > td,
+#time-buffs #time > .table-bordered > tfoot > tr:last-child > td,
+#time-buffs #buffs > .table-bordered > tfoot > tr:last-child > td,
 .buttonPanel > .table-bordered > tfoot > tr:last-child > td,
 .panel > .table-bordered > tfoot > tr:last-child > th,
 .sky-panel > .table-bordered > tfoot > tr:last-child > th,
-#time > .table-bordered > tfoot > tr:last-child > th,
 .white-panel > .table-bordered > tfoot > tr:last-child > th,
+#time-buffs #time > .table-bordered > tfoot > tr:last-child > th,
+#time-buffs #buffs > .table-bordered > tfoot > tr:last-child > th,
 .buttonPanel > .table-bordered > tfoot > tr:last-child > th,
 .panel > .table-responsive > .table-bordered > tbody > tr:last-child > td,
 .sky-panel > .table-responsive > .table-bordered > tbody > tr:last-child > td,
-#time > .table-responsive > .table-bordered > tbody > tr:last-child > td,
 .white-panel > .table-responsive > .table-bordered > tbody > tr:last-child > td,
+#time-buffs #time > .table-responsive > .table-bordered > tbody > tr:last-child > td,
+#time-buffs #buffs > .table-responsive > .table-bordered > tbody > tr:last-child > td,
 .buttonPanel > .table-responsive > .table-bordered > tbody > tr:last-child > td,
 .panel > .table-responsive > .table-bordered > tbody > tr:last-child > th,
 .sky-panel > .table-responsive > .table-bordered > tbody > tr:last-child > th,
-#time > .table-responsive > .table-bordered > tbody > tr:last-child > th,
 .white-panel > .table-responsive > .table-bordered > tbody > tr:last-child > th,
+#time-buffs #time > .table-responsive > .table-bordered > tbody > tr:last-child > th,
+#time-buffs #buffs > .table-responsive > .table-bordered > tbody > tr:last-child > th,
 .buttonPanel > .table-responsive > .table-bordered > tbody > tr:last-child > th,
 .panel > .table-responsive > .table-bordered > tfoot > tr:last-child > td,
 .sky-panel > .table-responsive > .table-bordered > tfoot > tr:last-child > td,
-#time > .table-responsive > .table-bordered > tfoot > tr:last-child > td,
 .white-panel > .table-responsive > .table-bordered > tfoot > tr:last-child > td,
+#time-buffs #time > .table-responsive > .table-bordered > tfoot > tr:last-child > td,
+#time-buffs #buffs > .table-responsive > .table-bordered > tfoot > tr:last-child > td,
 .buttonPanel > .table-responsive > .table-bordered > tfoot > tr:last-child > td,
 .panel > .table-responsive > .table-bordered > tfoot > tr:last-child > th,
 .sky-panel > .table-responsive > .table-bordered > tfoot > tr:last-child > th,
-#time > .table-responsive > .table-bordered > tfoot > tr:last-child > th,
 .white-panel > .table-responsive > .table-bordered > tfoot > tr:last-child > th,
+#time-buffs #time > .table-responsive > .table-bordered > tfoot > tr:last-child > th,
+#time-buffs #buffs > .table-responsive > .table-bordered > tfoot > tr:last-child > th,
 .buttonPanel > .table-responsive > .table-bordered > tfoot > tr:last-child > th {
   border-bottom: 0;
 }
-.panel > .table-responsive, .sky-panel > .table-responsive, #time > .table-responsive, .white-panel > .table-responsive, .buttonPanel > .table-responsive {
+.panel > .table-responsive, .sky-panel > .table-responsive, .white-panel > .table-responsive, #time-buffs #time > .table-responsive, #time-buffs #buffs > .table-responsive, .buttonPanel > .table-responsive {
   border: 0;
   margin-bottom: 0;
 }
@@ -6537,11 +6625,11 @@ button.list-group-item-danger.active:focus {
 .panel-group {
   margin-bottom: 20px;
 }
-.panel-group .panel, .panel-group .sky-panel, .panel-group #time, .panel-group .white-panel, .panel-group .buttonPanel {
+.panel-group .panel, .panel-group .sky-panel, .panel-group .white-panel, .panel-group #time-buffs #time, #time-buffs .panel-group #time, .panel-group #time-buffs #buffs, #time-buffs .panel-group #buffs, .panel-group .buttonPanel {
   margin-bottom: 0;
   border-radius: 4px;
 }
-.panel-group .panel + .panel, .panel-group .sky-panel + .panel, .panel-group #time + .panel, .panel-group .white-panel + .panel, .panel-group .buttonPanel + .panel, .panel-group .panel + .sky-panel, .panel-group .sky-panel + .sky-panel, .panel-group #time + .sky-panel, .panel-group .white-panel + .sky-panel, .panel-group .buttonPanel + .sky-panel, .panel-group .panel + #time, .panel-group .sky-panel + #time, .panel-group #time + #time, .panel-group .white-panel + #time, .panel-group .buttonPanel + #time, .panel-group .panel + .white-panel, .panel-group .sky-panel + .white-panel, .panel-group #time + .white-panel, .panel-group .white-panel + .white-panel, .panel-group .buttonPanel + .white-panel, .panel-group .panel + .buttonPanel, .panel-group .sky-panel + .buttonPanel, .panel-group #time + .buttonPanel, .panel-group .white-panel + .buttonPanel, .panel-group .buttonPanel + .buttonPanel {
+.panel-group .panel + .panel, .panel-group .sky-panel + .panel, .panel-group .white-panel + .panel, .panel-group #time-buffs #time + .panel, #time-buffs .panel-group #time + .panel, .panel-group #time-buffs #buffs + .panel, #time-buffs .panel-group #buffs + .panel, .panel-group .buttonPanel + .panel, .panel-group .panel + .sky-panel, .panel-group .sky-panel + .sky-panel, .panel-group .white-panel + .sky-panel, .panel-group #time-buffs #time + .sky-panel, #time-buffs .panel-group #time + .sky-panel, .panel-group #time-buffs #buffs + .sky-panel, #time-buffs .panel-group #buffs + .sky-panel, .panel-group .buttonPanel + .sky-panel, .panel-group .panel + .white-panel, .panel-group .sky-panel + .white-panel, .panel-group .white-panel + .white-panel, .panel-group #time-buffs #time + .white-panel, #time-buffs .panel-group #time + .white-panel, .panel-group #time-buffs #buffs + .white-panel, #time-buffs .panel-group #buffs + .white-panel, .panel-group .buttonPanel + .white-panel, .panel-group #time-buffs .panel + #time, #time-buffs .panel-group .panel + #time, .panel-group #time-buffs .sky-panel + #time, #time-buffs .panel-group .sky-panel + #time, .panel-group #time-buffs .white-panel + #time, #time-buffs .panel-group .white-panel + #time, .panel-group #time-buffs #time + #time, #time-buffs .panel-group #time + #time, .panel-group #time-buffs #buffs + #time, #time-buffs .panel-group #buffs + #time, .panel-group #time-buffs .buttonPanel + #time, #time-buffs .panel-group .buttonPanel + #time, .panel-group #time-buffs .panel + #buffs, #time-buffs .panel-group .panel + #buffs, .panel-group #time-buffs .sky-panel + #buffs, #time-buffs .panel-group .sky-panel + #buffs, .panel-group #time-buffs .white-panel + #buffs, #time-buffs .panel-group .white-panel + #buffs, .panel-group #time-buffs #time + #buffs, #time-buffs .panel-group #time + #buffs, .panel-group #time-buffs #buffs + #buffs, #time-buffs .panel-group #buffs + #buffs, .panel-group #time-buffs .buttonPanel + #buffs, #time-buffs .panel-group .buttonPanel + #buffs, .panel-group .panel + .buttonPanel, .panel-group .sky-panel + .buttonPanel, .panel-group .white-panel + .buttonPanel, .panel-group #time-buffs #time + .buttonPanel, #time-buffs .panel-group #time + .buttonPanel, .panel-group #time-buffs #buffs + .buttonPanel, #time-buffs .panel-group #buffs + .buttonPanel, .panel-group .buttonPanel + .buttonPanel {
   margin-top: 5px;
 }
 .panel-group .panel-heading, .panel-group .panel-heading-new {
@@ -7690,6 +7778,18 @@ button.close {
     display: none !important;
   }
 }
+#contents {
+  display: none;
+}
+
+#wait {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  margin-top: 200px;
+}
+
 .sky-panel {
   max-height: 50%;
   color: white;
@@ -7698,7 +7798,7 @@ button.close {
 }
 
 body {
-  color: black;
+  color: #2a3439;
   font-size: 16px;
   font-family: source-sans-pro, "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-weight: 400;
@@ -7709,7 +7809,7 @@ body {
 
 #contents {
   position: absolute;
-  margin: 10px;
+  width: 400px;
   bottom: 3px;
   top: 3px;
   left: 3px;
@@ -7717,7 +7817,7 @@ body {
   background-color: #9fbede;
 }
 
-.vertical-table {
+.vertical-table, .vertical-table-small {
   list-style-type: none;
   display: flex;
   flex-direction: column;
@@ -7725,6 +7825,10 @@ body {
   width: 100%;
   height: 94px;
   padding: 1px;
+}
+
+.vertical-table-small {
+  height: 48px;
 }
 
 .table {
@@ -7736,77 +7840,141 @@ body {
   padding: 1px;
 }
 
-#time {
-  background-color: #f5f5f5;
-  margin: 5px;
-}
-#time > #jst-zone {
-  display: inline-block;
-}
-
-.white-panel {
+.white-panel, #time-buffs #time, #time-buffs #buffs {
   margin: 3px 1px;
   vertical-align: top;
   display: inline-block;
-  width: 120px;
   background-color: #f5f5f5;
-}
-
-.nav-tabs li {
-  width: 80px;
 }
 
 .container {
+  position: absolute;
+  overflow: hidden;
+  top: 233px;
+  bottom: 0;
   margin: 5px;
+  width: 390px;
   background-color: #f5f5f5;
+}
+
+.scroll-pane {
+  position: absolute;
+  top: 50px;
+  bottom: 10px;
+  right: 10px;
+  left: 10px;
+  overflow-y: hidden;
+  overflow-x: hidden;
+}
+.scroll-pane > .tab-tab-pane {
+  top: 75px;
+  bottom: 0px;
+  right: 0px;
+  left: 0px;
+}
+
+.scroll-pane-2 {
+  position: absolute;
+  top: 50px;
+  bottom: 10px;
+  right: 10px;
+  left: 10px;
+  padding-left: -40px !important;
+  overflow-y: hidden;
+  overflow-x: hidden;
+}
+
+.tab-tab-pane {
+  position: absolute;
+  top: 50px;
+  bottom: 10px;
+  right: 10px;
+  left: 10px;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 #ap-bp-panel {
   width: 400px;
+  clear: both;
+  display: block;
 }
-#ap-bp-panel > .panel, #ap-bp-panel > .sky-panel, #ap-bp-panel > #time, #ap-bp-panel > .white-panel, #ap-bp-panel > .buttonPanel {
-  margin: 5px;
+#ap-bp-panel > #ap {
+  float: left;
+}
+#ap-bp-panel > #bp {
+  display: inline-block;
+}
+#ap-bp-panel > #special {
+  background-color: #f5f5f5;
+  display: inline-block;
+  width: 52px;
+  height: 52px;
+  margin-top: 5px;
+  margin-bottom: -30px !important;
+  padding-top: 1px;
+  margin-left: 2px;
+}
+#ap-bp-panel > #special > .item-img {
+  margin-bottom: 0px;
+  height: 25px;
+  width: 25px;
+}
+#ap-bp-panel > #special > .left {
+  float: left;
+  margin-left: 1px;
+}
+#ap-bp-panel > #special > .right {
+  float: right;
+  margin-right: 1px;
+}
+#ap-bp-panel > .panel, #ap-bp-panel > .sky-panel, #ap-bp-panel > .white-panel, #time-buffs #ap-bp-panel > #time, #time-buffs #ap-bp-panel > #buffs, #ap-bp-panel > .buttonPanel {
+  margin-left: 7px;
+  margin-right: 1px;
+  margin-top: 6px;
+  margin-bottom: 4px;
   vertical-align: top;
   display: inline-block;
   width: 160px;
   height: 50px;
   background-color: #f5f5f5;
 }
-#ap-bp-panel > .panel > #ap-bar, #ap-bp-panel > .sky-panel > #ap-bar, #ap-bp-panel > #time > #ap-bar, #ap-bp-panel > .white-panel > #ap-bar, #ap-bp-panel > .buttonPanel > #ap-bar {
+#ap-bp-panel > .panel > #ap-bar, #ap-bp-panel > .sky-panel > #ap-bar, #ap-bp-panel > .white-panel > #ap-bar, #time-buffs #ap-bp-panel > #time > #ap-bar, #time-buffs #ap-bp-panel > #buffs > #ap-bar, #ap-bp-panel > .buttonPanel > #ap-bar {
   background-color: #e1e1e1;
   margin: 25px 5px;
 }
-#ap-bp-panel > .panel > #bp-bar, #ap-bp-panel > .sky-panel > #bp-bar, #ap-bp-panel > #time > #bp-bar, #ap-bp-panel > .white-panel > #bp-bar, #ap-bp-panel > .buttonPanel > #bp-bar {
+#ap-bp-panel > .panel > #bp-bar, #ap-bp-panel > .sky-panel > #bp-bar, #ap-bp-panel > .white-panel > #bp-bar, #time-buffs #ap-bp-panel > #time > #bp-bar, #time-buffs #ap-bp-panel > #buffs > #bp-bar, #ap-bp-panel > .buttonPanel > #bp-bar {
   margin: 20px 15px;
 }
-#ap-bp-panel > .panel > #bp-bar > #active-circle-icons, #ap-bp-panel > .sky-panel > #bp-bar > #active-circle-icons, #ap-bp-panel > #time > #bp-bar > #active-circle-icons, #ap-bp-panel > .white-panel > #bp-bar > #active-circle-icons, #ap-bp-panel > .buttonPanel > #bp-bar > #active-circle-icons {
+#ap-bp-panel > .panel > #bp-bar > #active-circle-icons, #ap-bp-panel > .sky-panel > #bp-bar > #active-circle-icons, #ap-bp-panel > .white-panel > #bp-bar > #active-circle-icons, #time-buffs #ap-bp-panel > #time > #bp-bar > #active-circle-icons, #time-buffs #ap-bp-panel > #buffs > #bp-bar > #active-circle-icons, #ap-bp-panel > .buttonPanel > #bp-bar > #active-circle-icons {
   z-index: 2;
 }
-#ap-bp-panel > .panel > #bp-bar > .circle-icons, #ap-bp-panel > .sky-panel > #bp-bar > .circle-icons, #ap-bp-panel > #time > #bp-bar > .circle-icons, #ap-bp-panel > .white-panel > #bp-bar > .circle-icons, #ap-bp-panel > .buttonPanel > #bp-bar > .circle-icons {
+#ap-bp-panel > .panel > #bp-bar > .circle-icons, #ap-bp-panel > .sky-panel > #bp-bar > .circle-icons, #ap-bp-panel > .white-panel > #bp-bar > .circle-icons, #time-buffs #ap-bp-panel > #time > #bp-bar > .circle-icons, #time-buffs #ap-bp-panel > #buffs > #bp-bar > .circle-icons, #ap-bp-panel > .buttonPanel > #bp-bar > .circle-icons {
   position: absolute;
 }
-#ap-bp-panel > .panel > .bar, #ap-bp-panel > .sky-panel > .bar, #ap-bp-panel > #time > .bar, #ap-bp-panel > .white-panel > .bar, #ap-bp-panel > .buttonPanel > .bar {
+#ap-bp-panel > .panel > .bar, #ap-bp-panel > .sky-panel > .bar, #ap-bp-panel > .white-panel > .bar, #time-buffs #ap-bp-panel > #time > .bar, #time-buffs #ap-bp-panel > #buffs > .bar, #ap-bp-panel > .buttonPanel > .bar {
   width: 150px;
   position: absolute;
 }
-#ap-bp-panel > .panel > .ap-bp-info, #ap-bp-panel > .sky-panel > .ap-bp-info, #ap-bp-panel > #time > .ap-bp-info, #ap-bp-panel > .white-panel > .ap-bp-info, #ap-bp-panel > .buttonPanel > .ap-bp-info {
+#ap-bp-panel > .panel > .ap-bp-info, #ap-bp-panel > .sky-panel > .ap-bp-info, #ap-bp-panel > .white-panel > .ap-bp-info, #time-buffs #ap-bp-panel > #time > .ap-bp-info, #time-buffs #ap-bp-panel > #buffs > .ap-bp-info, #ap-bp-panel > .buttonPanel > .ap-bp-info {
   position: relative;
 }
-#ap-bp-panel > .panel > .ap-bp-info > .ap-bp-number, #ap-bp-panel > .sky-panel > .ap-bp-info > .ap-bp-number, #ap-bp-panel > #time > .ap-bp-info > .ap-bp-number, #ap-bp-panel > .white-panel > .ap-bp-info > .ap-bp-number, #ap-bp-panel > .buttonPanel > .ap-bp-info > .ap-bp-number {
+#ap-bp-panel > .panel > .ap-bp-info > .ap-bp-number, #ap-bp-panel > .sky-panel > .ap-bp-info > .ap-bp-number, #ap-bp-panel > .white-panel > .ap-bp-info > .ap-bp-number, #time-buffs #ap-bp-panel > #time > .ap-bp-info > .ap-bp-number, #time-buffs #ap-bp-panel > #buffs > .ap-bp-info > .ap-bp-number, #ap-bp-panel > .buttonPanel > .ap-bp-info > .ap-bp-number {
   left: 5px;
   top: 0px;
   position: absolute;
   display: inline-block;
 }
-#ap-bp-panel > .panel > .ap-bp-info > .ap-bp-time, #ap-bp-panel > .sky-panel > .ap-bp-info > .ap-bp-time, #ap-bp-panel > #time > .ap-bp-info > .ap-bp-time, #ap-bp-panel > .white-panel > .ap-bp-info > .ap-bp-time, #ap-bp-panel > .buttonPanel > .ap-bp-info > .ap-bp-time {
+#ap-bp-panel > .panel > .ap-bp-info > .ap-bp-time, #ap-bp-panel > .sky-panel > .ap-bp-info > .ap-bp-time, #ap-bp-panel > .white-panel > .ap-bp-info > .ap-bp-time, #time-buffs #ap-bp-panel > #time > .ap-bp-info > .ap-bp-time, #time-buffs #ap-bp-panel > #buffs > .ap-bp-info > .ap-bp-time, #ap-bp-panel > .buttonPanel > .ap-bp-info > .ap-bp-time {
   right: 5px;
   top: 0px;
   position: absolute;
   display: inline-block;
 }
 
-#curr-raids-collapse li:not(:first-child) {
-  display: none;
+.collapse-default {
+  margin-top: 0px !important;
+  margin-bottom: 10px !important;
 }
 
 .quest-panel, .daily-quest-panel {
@@ -7846,7 +8014,6 @@ body {
 
 .casino-div {
   margin: 2px;
-  max-width: 110px;
   height: 42px;
 }
 .casino-div > .item-img {
@@ -7855,6 +8022,12 @@ body {
 }
 .casino-div > .casino-item {
   display: inline-block;
+}
+
+.misc-div {
+  margin: 2px;
+  width: 300px;
+  display: inline-flex;
 }
 
 .coop-div {
@@ -7882,18 +8055,13 @@ body {
   padding-left: 7px;
 }
 
-.panel, .sky-panel, #time, .white-panel, .buttonPanel {
-  max-width: 330px;
-}
-
 .panel-body-new {
   margin: 3px;
 }
 
-.panel > .panel-heading, .sky-panel > .panel-heading, #time > .panel-heading, .white-panel > .panel-heading, .buttonPanel > .panel-heading, .panel > .panel-heading-new, .sky-panel > .panel-heading-new, #time > .panel-heading-new, .white-panel > .panel-heading-new, .buttonPanel > .panel-heading-new {
+.panel > .panel-heading, .sky-panel > .panel-heading, .white-panel > .panel-heading, #time-buffs #time > .panel-heading, #time-buffs #buffs > .panel-heading, .buttonPanel > .panel-heading, .panel > .panel-heading-new, .sky-panel > .panel-heading-new, .white-panel > .panel-heading-new, #time-buffs #time > .panel-heading-new, #time-buffs #buffs > .panel-heading-new, .buttonPanel > .panel-heading-new {
   background-image: none;
   background-color: #f8e5be;
-  color: dimgrey;
 }
 
 .buttonPanel {
@@ -7906,30 +8074,53 @@ body {
 }
 
 .nav-pills > li > a {
-  padding-top: 4px;
-  padding-bottom: 4px;
+  padding: 4px 0px;
+  text-align: center;
+}
+
+.nav-pills-supply > li:nth-child(2) {
+  margin-left: 0 !important;
+}
+
+.nav-pills-supply > li {
+  margin-top: 2px !important;
+  width: 60px;
+}
+
+.form-group {
+  margin-bottom: 0px !important;
+  margin-left: 0px !important;
+  float: right;
+  width: 310px;
+}
+
+.nav-pills-daily > li {
+  width: 80px;
+  margin-bottom: 10px !important;
 }
 
 .nav-pills > li.active > a, .nav-pills > li.active > a:hover {
   background-color: #9fbede !important;
 }
 
-.supply-item, #profile .profile-item {
-  margin: 2px;
-}
-.supply-item > .item-img, #profile .profile-item > .item-img {
-  width: 40px;
-  height: 40px;
-}
-.supply-item > .item-count, #profile .profile-item > .item-count {
+.nav-tabs > li > a {
+  padding: 8px 0px;
   text-align: center;
 }
 
-.form-group-new > .search-label {
-  display: inline-block;
+.nav-tabs > li {
+  width: 60px;
 }
-.form-group-new > .form-control {
-  display: inline-block;
+
+.supply-item, .profile-item {
+  margin: 1px;
+}
+.supply-item > .item-img, .profile-item > .item-img {
+  width: 40px;
+  height: 40px;
+}
+.supply-item > .item-count, .profile-item > .item-count {
+  text-align: center;
 }
 
 .link-heading {
@@ -7937,15 +8128,17 @@ body {
   text-decoration: none !important;
 }
 
-#next-assault #left-assault {
-  float: left;
+.collapse-wrapper {
+  margin-top: 10px;
 }
-#next-assault #right-assault {
-  float: right;
+
+.profile-item {
+  display: inline-block;
 }
 
 #profile .profile-bar {
-  width: 200px;
+  margin-left: 5px;
+  width: 180px;
 }
 #profile .profile-bar > .number {
   float: left;
@@ -7954,18 +8147,33 @@ body {
   float: right;
 }
 #profile .profile-bar > .bar {
-  width: 200px;
+  background-color: #e1e1e1;
+  width: 180px;
+  margin-bottom: 5px;
 }
-#profile .profile-item {
+#profile #inventory-list > .inventory-category {
+  margin-right: -8px;
+  width: 64px;
   display: inline-block;
 }
+#profile #inventory-list > .inventory-category > .inventory-img {
+  display: block;
+  margin: 0 auto;
+  height: 40px;
+  width: 40px;
+}
+#profile #inventory-list > .inventory-category > .inventory-count {
+  text-align: center;
+}
 #profile #left-profile {
-  width: 200px;
+  width: 190px;
   float: left;
 }
 #profile #right-profile {
-  width: 200px;
-  float: right;
+  margin-top: -3px;
+  margin-left: 10px;
+  width: 150px;
+  display: inline-block;
 }
 
 .profile-currency > .currency-amount {
@@ -7976,4 +8184,92 @@ body {
   display: inline-block;
   height: 20px;
   width: 20px;
+}
+
+#time-buffs {
+  width: 400px;
+  clear: both;
+  display: block;
+}
+#time-buffs #time-zone {
+  margin-left: 5px;
+  padding-left: 8px;
+  padding-right: 8px;
+  width: 27px;
+  line-height: 100%;
+  height: 53px;
+}
+#time-buffs #time {
+  text-align: center;
+  width: 100px;
+  float: left;
+  height: 52px;
+}
+#time-buffs #buffs {
+  width: 250px;
+  height: 52px;
+  margin-right: 10px;
+  float: right;
+}
+#time-buffs #buffs .buff-item {
+  vertical-align: top;
+  display: inline-block;
+  width: 75px;
+  height: 52px;
+  margin: 1px;
+  padding-top: 5px;
+}
+#time-buffs #buffs .buff-item > .item-img {
+  width: 40px;
+  height: 40px;
+  padding-bottom: -5px;
+}
+#time-buffs #buffs .buff-item > .item-count {
+  width: 35px;
+  text-align: center;
+  line-height: 120%;
+  float: right;
+  word-wrap: break-word;
+}
+
+.time-container {
+  margin-left: 5px;
+}
+
+#left-assault {
+  display: inline-block;
+}
+
+#right-assault {
+  display: inline-block;
+}
+
+.time-panel {
+  width: 125px;
+  padding-left: 1px;
+}
+.time-panel > .top {
+  padding-left: 2px;
+}
+.time-panel > .bottom {
+  padding-left: 2px;
+}
+
+.vertical-text {
+  padding-top: 4px;
+  padding-right: 3px;
+  padding-left: 1px;
+  word-wrap: break-word;
+  width: 24px;
+  height: 46px;
+  line-height: 120%;
+  float: left;
+  margin: 2px;
+  text-align: center;
+  vertical-align: middle;
+  background-color: #f5f5f5;
+}
+
+#copmleted-raid-list {
+  margin-top: 20px;
 }

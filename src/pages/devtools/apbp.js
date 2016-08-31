@@ -133,16 +133,26 @@
   //   }
 
   var spendAP = function(amt) {
-    setAP(currAP - amt, maxAP);
-    apTime.minute += amt * 5 % 60;
-    if(apTime.minute >= 60) {
-      apTime.minute -= 60;
-      apTime.hour++;
+    var full;
+    if(currAP >= maxAP) {
+      full = true;
     }
-    apTime.hour += Math.floor(amt * 5 / 60); 
-    setAPTime();
-    if(!apTimer) {
-      resetAPTimer();
+    setAP(currAP - amt, maxAP);
+    if(currAP < maxAP) {
+      apTime.minute += amt * 5 % 60;
+      if(full) {
+        apTime.minute--;
+        apTime.second = 59;
+      }
+      if(apTime.minute >= 60) {
+        apTime.minute -= 60;
+        apTime.hour++;
+      }
+      apTime.hour += Math.floor(amt * 5 / 60); 
+      setAPTime();
+      if(!apTimer) {
+        resetAPTimer();
+      }
     }
   }
 
@@ -162,16 +172,26 @@
   }
 
   var spendBP = function(amt) {
-    setBP(currBP - amt, maxBP);
-    bpTime.minute += amt * 20 % 60;
-    if(bpTime.minute >= 60) {
-      bpTime.minute -= 60;
-      bpTime.hour++;
+    var full = false;
+    if(currBP >= maxBP) {
+      full = true;
     }
-    bpTime.hour += Math.floor(amt * 20 / 60); 
-    setBPTime();
-    if(!bpTimer) {
-      resetBPTimer();
+    setBP(currBP - amt, maxBP);
+    if(currBP < maxBP) {
+      bpTime.minute += amt * 20 % 60;
+      if(full) {
+        bpTime.minute--;
+        bpTime.second = 59;
+      }
+      if(bpTime.minute >= 60) {
+        bpTime.minute -= 60;
+        bpTime.hour++;
+      }
+      bpTime.hour += Math.floor(amt * 20 / 60); 
+      setBPTime();
+      if(!bpTimer) {
+        resetBPTimer();
+      }
     }
   }
 
@@ -263,7 +283,7 @@
             stopAPTimer();
             setAP(currAP + 1, maxAP);
             setAPTime();
-            Message.Notify('Your AP is full!', currAP + '/' + maxAP + ' AP\n' + currBP + '/' + maxBP + ' EP');
+            Message.Notify('Your AP is full!', currAP + '/' + maxAP + ' AP\n' + currBP + '/' + maxBP + ' EP', 'apNotifications');
             return;
           }
           apTime.minute = 59;
@@ -271,9 +291,9 @@
         var max = maxAP * 20;
         if((apTime.minute % 10 === 4 || apTime.minute % 10 === 9) && !(apTime.hour === Math.floor((maxAP * 5 - 1) / 60) && apTime.minute === (maxAP * 5 - 1) % 60)) {
           setAP(currAP + 1, maxAP);
-          if(currAP == 50) {
-            Message.Notify('You have 50 AP!', currAP + '/' + maxAP + ' AP\n' + currBP + '/' + maxBP + ' EP');
-          }
+          // if(currAP == 50) {
+          //   Message.Notify('You have 50 AP!', currAP + '/' + maxAP + ' AP\n' + currBP + '/' + maxBP + ' EP');
+          // }
         }         
         apTime.second = 59;
       }
@@ -302,7 +322,7 @@
             setBP(currBP + 1, maxBP);
             stopBPTimer();
             setBPTime();
-            Message.Notify('Your EP is full!', currAP + '/' + maxAP + ' AP\n' + currBP + '/' + maxBP + ' EP');
+            Message.Notify('Your EP is full!', currAP + '/' + maxAP + ' AP\n' + currBP + '/' + maxBP + ' EP', 'epNotifications');
             return;
           }
           bpTime.minute = 59;

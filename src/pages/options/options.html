@@ -1,37 +1,113 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>My Test Extension Options</title>
-  <style>
-    body: { padding: 10px; }
+  <!--<link href="../../stylesheets/default.css" rel="stylesheet">-->
+    <style>
+    .in-line { display: inline; margin-right: 10px; margin-left: 4px;}
+    body { min-width:600px; }
+    td {padding-right: 10px;}
+    .bottom-padding {padding-bottom: 10px;}
+    #is-magfest {margin-left: 3px; margin-bottom: 10px;}
   </style>
 </head>
 
 <body>
-  <label>
-    <input type="checkbox" id="enable-notifications">
-    Enable Notifications
-  </label>
-  <label>
-    <input type="checkbox" id="mute-notifications">
-    Mute Notifications
-  </label>
-  Favorite color:
-  <select id="color">
-   <option value="red">red</option>
-   <option value="green">green</option>
-   <option value="blue">blue</option>
-   <option value="yellow">yellow</option>
-  </select>
-
-  <label>
-    <input type="checkbox" id="like">
-    I like colors.
-  </label>
-
+  <div class="main-wrapper">
+    <h3> Notifications </h1>
+    <table id="notifications">
+      <tr id="enable-row" class="wrapper">
+        <td  class="notification bottom-padding">
+          <input type="checkbox" id="enableNotifications">
+          <label>Enable Notifications</label>      
+        </td>
+        <td  class="notification bottom-padding">
+          <input type="checkbox" id="muteNotifications" class="check">
+          <label class="name">Mute Notifications</label>      
+        </td>
+      </tr>
+      <tr  class="wrapper">
+        <td  class="notification">
+          <input type="checkbox" id="apNotifications" class="check">
+          <label class="name">AP Notifications</label>      
+        </td>
+        <td  class="notification">
+          <input type="checkbox" id="epNotifications" class="check">
+          <label class="name">EP Notifications</label>      
+        </td>
+        <td  class="notification">
+          <input type="checkbox" id="dailyResetNotifications" class="check">
+          <label class="name">Daily Reset Notifications</label>      
+        </td>
+      </tr>
+      <tr  class="wrapper">
+        <td  class="notification">
+          <input type="checkbox" id="strikeTimeNotifications" class="check">
+          <label class="name">Strike Time Notifications</label>      
+        </td>
+        <td  class="notification">
+          <input type="checkbox" id="angelHaloNotifications" class="check">
+          <label class="name">Angel Halo Notifications</label>      
+        </td>
+        <td  class="notification">
+          <input type="checkbox" id="defenseOrderNotifications" class="check">
+          <label class="name">Defense Order Notifications</label>      
+        </td>
+      </tr>
+    </table>
+    <!--<div class="wrapper">
+      <label  class="in-line">
+        <input type="checkbox" id="enableNotifications">
+        Enable Notifications
+      </label>
+      <label class="in-line">
+        <input type="checkbox" id="muteNotifications">
+        Mute Notifications
+      </label>
+    </div>
+    <div class="wrapper">
+      <label  class="in-line">
+        <input type="checkbox" id="apNotifications">
+        AP Notifications
+      </label>
+      <label class="in-line">
+        <input type="checkbox" id="epNotifications">
+        EP Notifications
+      </label>
+    </div>-->
+  </div>
+  
+  <h3> Daily Raids </h1>
+  <div class="main-wrapper">
+    <div id="is-magfest">
+      <label>
+        <input type="checkbox" id="isMagFest"  >
+        Increased Raid Limit
+      </label>
+    </div>
+    <table id="raids">
+      <tr id="tiamat"  class="wrapper">
+        <td  class="raid">
+          <input type="checkbox" class="check">
+          <label class="name">Tiamat (N)</label>      
+        </td>
+      </tr>
+      <tr id="colossus" class="wrapper">
+      </tr>
+      <tr id="leviathan" class="wrapper">
+      </tr>
+      <tr id="yggdrasil" class="wrapper">
+      </tr>
+      <tr id="luminiera" class="wrapper">
+      </tr>
+      <tr id="celeste" class="wrapper">
+      </tr>
+    </table>
+  </div>
+  
+<!--
   <div id="status"></div>
-  <button id="save">Save</button>
-
+  <button id="save">Save</button>-->
+  <script src="../../../lib/jquery-3.0.0.min.js"></script>
   <script src="options.js"></script>
 </body>
 </html>

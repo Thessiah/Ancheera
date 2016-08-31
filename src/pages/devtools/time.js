@@ -15,19 +15,76 @@
   var isAngelHalo = false;
   var nextAngelHalo = null;
   
+  var timeZone;
+
+  var isJST = true;
+  var $jstDate = $('#jst-date');
+  var $jstTime = $('#jst-time');
+  var $dailyReset = $('#daily-reset');
+  var $dailyDate = $('#daily-date');
+  var $weeklyDate = $('#weekly-date');
+  var $monthlyDate = $('#monthly-date');
+  var $weeklyReset = $('#weekly-reset');
+  var $monthlyReset = $('#monthly-reset');
+  var $nextAssault = $('#next-assault');
+  var $isAssault = $('#is-assault');
+  var $angelHalo = $('#angel-halo');
+  var $angelDate = $('#angel-date');
+  var $isAngel = $('#is-angel');
+  var $defenseOrder = $('#defense-order');
+  var $defenseDate = $('#defense-date');
+  var $isDefense = $('#is-defense');
+  var $assaultTime = $('.assault-time');
+  var $isDaily = $('#is-daily');
+  var $isWeekly = $('#is-weekly');
+  var $isMonthly = $('#is-monthly');
+
+  var $timeZone = $('#time-zone');
+  var $lightPink = '#f5f5f5';
+  var $darkPink = '#ffd4e3';
+  // var $lightPink = '#ffd4e3';
+  // var $darkPink = '#f0c0cb';
+  var $lightYellow = '#f8e5be';
+
+  $timeZone.click(function() {
+    isJST = !isJST;
+    //Message.Notify('test', '', 'epNotifications');
+    if(isJST) {
+      $(this).text('JST');
+      //$(this).css('background-color', $lightPink);
+    } else {
+      $(this).text(timeZone);
+      //$(this).css('background-color', $lightYellow);
+    }
+    setDate();
+    setAssaultTime();
+  });
+  
   window.Time = {
     Initialize: function() {
       date = new Date();
+      var temp = /\((.*)\)/.exec(date.toString())[1].split(' ');
+      timeZone = '';
+      for(var i = 0; i < temp.length; i++) {
+        timeZone += temp[i][0];
+      }
       date.setMinutes(date.getMinutes() + date.getTimezoneOffset() + 540);
+      Message.ConsoleLog('time.js', 'test1');
       Storage.GetMultiple(['daily', 'weekly', 'monthly', 'assault', 'angel', 'defense'], function(response) {
         if(response['daily'] !== undefined) {
           dailyReset = new Date(response['daily']);
+        } else {
+          newDaily();
         }
         if(response['weekly'] !== undefined) {
           weeklyReset = new Date(response['weekly']);
+        } else {
+          newWeekly();
         }
         if(response['monthly'] !== undefined) {
           monthlyReset = new Date(response['monthly']);
+        } else {
+          newMonthly();
         }
         if(response['assault'] !== undefined) {
           assaultTimes = response['assault']['times'];
@@ -42,20 +99,26 @@
           isDefenseOrder = response['defense'].active;
           nextDefenseOrder = new Date(response['defense'].time);
         }
+        Message.ConsoleLog('time.js', 'test2');
         if(dailyReset !== null && weeklyReset !== null && monthlyReset !== null) {
-          if(Date.parse(date) >= Date.parse(dailyReset)) {
-            if(Date.parse(date) >= Date.parse(monthlyReset) && Date.parse(date) >= Date.parse(weeklyReset)) {
-            } else if(Date.parse(date) >= Date.parse(monthlyReset)) {
-            } else if(Date.parse(date) >= Date.parse(weeklyReset)) {
-            } else {
+          if(Date.parse(date) >= Date.parse(dailyReset)) { 
+
+            if(Date.parse(date) >= Date.parse(monthlyReset)) {
+              Message.ConsoleLog('time.js', 'm reset');
+              Dailies.MonthlyReset();
+              newMonthly();
+            } 
+            if(Date.parse(date) >= Date.parse(weeklyReset)) {
+              Message.ConsoleLog('time.js', 'w reset');
+              Dailies.WeeklyReset();
+              newWeekly();
             }
-            Message.ConsoleLog('time.js', 'reset1');
+            Message.ConsoleLog('time.js', 'd reset');
             Dailies.Reset();
+            newDaily();
           }
-        } else {
-          Message.ConsoleLog('time.js', dailyReset + ' ' + weeklyReset + ' ' + monthlyReset);
-          Dailies.Reset();
         }
+        Message.ConsoleLog('time.js', 'good');
         newDate();
         startClock();
       });
@@ -68,7 +131,7 @@
       isDefenseOrder = active;
       if(active && minutes === -1) {
         if(nextDefenseOrder === null) {
-          newDefenseTime(30);
+          newDefenseTime(29);
         }
       } else {
         newDefenseTime(minutes);
@@ -77,6 +140,49 @@
     SetAngelHalo: function(delta, active) {
       isAngelHalo = active;
       newAngelTime(delta);
+      setDate();
+    }, 
+    ParseTime: function(diff, unit) {
+      str = "";
+      var time;
+      var times = ['d', 'h', 'm', 's'];
+      var index = times.indexOf(unit);
+      if(index !== -1) {
+        for(var i = index, count = 0; i < times.length && count < 2; i++) {
+          switch(times[i]) {
+            case 'd':
+              time = parseInt(diff / (1000 * 60 * 60 * 24));
+              break;
+            case 'h':
+              time = parseInt(diff / (1000 * 60 * 60)) % 24;
+              break;
+            case 'm':
+              time = parseInt(diff / (1000 * 60)) % 60;
+              break;
+            case 's':
+              time = parseInt((diff / 1000) % 60);
+              break;
+          }
+          if(i < times.length - 1 || count > 0 || time > 0) {
+            if(count > 0) {
+              count++;
+              str += time + times[i];
+            } else {
+              if(time > 0 && i < times.length - 1) {
+                str += time  + times[i] + ', ';
+                count++;
+              } else if(time > 0 && i === times.length - 1) {
+                str += time + times[i];
+              }
+            }
+          } else {
+            str = '<1s';
+          }
+        }
+      } else {
+        str = "PARSETIME ERROR";
+      }
+      return str;
     }
   }
 
@@ -86,11 +192,9 @@
       date.setSeconds(date.getSeconds() + 1);
       checkNewDay();
       var now = Date.now() + (date.getTimezoneOffset() + 540) * 60000;
-      if(date.getTime() - 10 <= now && date.getTime() + 10 >= now && (date.getMilliseconds() <= 10 || date.getMilliseconds() >= 990)) {
+      if(date.getTime() - 100 <= now && date.getTime() + 100 >= now && (date.getMilliseconds() <= 100 || date.getMilliseconds() >= 900)) {
         setDate();
-        //$('#test').text('good');
       } else {
-        //$('#test').text('bad');
         refreshClock();
       }
     }, 1000);
@@ -110,12 +214,12 @@
   var newDate = function() {
     date = new Date();
     date.setMinutes(date.getMinutes() + date.getTimezoneOffset() + 540);
-    newDaily();
-    newWeekly();
-    newMonthly();
-    newAssaultTime();
-    checkAngelTime();
-    checkDefenseOrder();
+    // newDaily();
+    // newWeekly();
+    // newMonthly();
+    // newAssaultTime();
+    // checkAngelTime();
+    // checkDefenseOrder();
     setDate();
   }
 
@@ -128,15 +232,20 @@
   }
   var newWeekly = function() {
     weeklyReset = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 5, 0, 0, 0);
-    if(date.getDay() !== 0) {
-      weeklyReset.setDate(date.getDate() + (8 - date.getDay()));
-    } else {
+    if(date.getDay() === 0) {
       weeklyReset.setDate(date.getDate() + 1);
+    } else if(date.getDay() === 1 && date.getHours() < 5) {
+    } else {
+      weeklyReset.setDate(date.getDate() + (8 - date.getDay()));
     }
     Storage.Set('weekly', Date.parse(weeklyReset));
   }
   var newMonthly = function() {
-    monthlyReset = new Date(date.getFullYear(), date.getMonth() + 1, 1, 5, 0, 0, 0);
+    if(date.getDate() === 1 && date.getHours() < 5) {
+      monthlyReset = new Date(date.getFullYear(), date.getMonth(), 1, 5, 0, 0, 0);
+    } else {
+      monthlyReset = new Date(date.getFullYear(), date.getMonth() + 1, 1, 5, 0, 0, 0);
+    }
     Storage.Set('monthly', Date.parse(monthlyReset));
   }
   var newAssaultTime = function() {
@@ -192,7 +301,7 @@
 
   var newAngelTime = function(delta) {
     if(delta !== -1) {
-      nextAngelHalo = new Date(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours() + delta + 1, 0, 0, 0);
+      nextAngelHalo = new Date(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours() + delta, 0, 0, 0);
       Storage.Set('angel', {
         active: isAngelHalo,
         time: Date.parse(nextAngelHalo)
@@ -222,7 +331,7 @@
 
   var newDefenseTime = function(time) {
     if(time !== -1) {
-      nextDefenseOrder = new Date(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes() + time, 0, 0);
+      nextDefenseOrder = new Date(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes() + time, 59, 0);
       Storage.Set('defense', {
         active: isDefenseOrder,
         time: Date.parse(nextDefenseOrder)
@@ -241,7 +350,7 @@
     if(nextDefenseOrder !== null && Date.parse(date) >= Date.parse(nextDefenseOrder)) {
       if(!isDefenseOrder && Date.parse(date) < Date.parse(nextDefenseOrder) + 1800000) {
         isDefenseOrder = true;
-        newDefenseTime(30);
+        newDefenseTime(29);
         return true;
       } else {
         newDefenseTime(-1);
@@ -252,7 +361,7 @@
   var checkNewDay = function() {
     if(Date.parse(date) >= Date.parse(nextAssaultTime) && Date.parse(date) < Date.parse(nextAssaultTime) + 3600000) {
       if(!isAssaultTime) {
-        Message.Notify('Strike time has begun!', '');
+        Message.Notify('Strike time has begun!', '', 'strikeTimeNotifications');
       }
       newAssaultTime();
     } else if(Date.parse(date) >= Date.parse(nextAssaultTime) + 3600000) {
@@ -279,29 +388,130 @@
     //   }
     // }
     if(checkAngelTime()) {
-      Message.Notify('Angel Halo has begun!', '');
+      Message.Notify('Angel Halo has begun!', '', 'angelHaloNotifications');
     }
     if(checkDefenseOrder()) {
-      Message.Notify('Defense Order has begun!', '');
+      Message.Notify('Defense Order has begun!', '', 'defenseOrderNotifications');
     }
     if(Date.parse(date) >= Date.parse(dailyReset)) {
       if(Date.parse(date) >= Date.parse(monthlyReset) && Date.parse(date) >= Date.parse(weeklyReset)) {
-        Message.Notify('Monthly and weekly reset!', '');
+        Dailies.WeeklyReset();
+        Dailies.MonthlyReset();
+        newWeekly();
+        newMonthly();
+        Message.Notify('Monthly and weekly reset!', '' ,'dailyResetNotifications');
       } else if(Date.parse(date) >= Date.parse(monthlyReset)) {
-        Message.Notify('Monthly reset!', '');
+        Dailies.MonthlyReset();
+        newMonthly();
+        Message.Notify('Monthly reset!', '' ,'dailyResetNotifications');
       } else if(Date.parse(date) >= Date.parse(weeklyReset)) {
-        Message.Notify('Weekly reset!', '');
+        Dailies.WeeklyReset();
+        newWeekly();
+        Message.Notify('Weekly reset!', '' ,'dailyResetNotifications');
       } else {
-        Message.Notify('Daily reset!', '');
+        Message.Notify('Daily reset!', '' ,'dailyResetNotifications');
       }
       Dailies.Reset();
+      newDaily();
       newDate();
     }
   }
 
   var setDate = function() {
-    $('#jst-date').text(date.toDateString());
-    var str = (date.getHours() % 12 || 12) + ':';
+    var str = "";
+    str = Time.ParseTime(Math.abs(dailyReset - date), 'h');
+    if(str.indexOf('h') === -1) {
+      $isDaily.css('background-color', $darkPink);
+    } else {
+      $isDaily.css('background-color', $lightPink);
+    }
+    $dailyReset.text(str);
+
+    str = Time.ParseTime(Math.abs(weeklyReset - date), 'd' );
+    if(str.indexOf('d') === -1) {
+      $isWeekly.css('background-color', $darkPink);
+    } else {
+      $isWeekly.css('background-color', $lightPink);
+    }
+    $weeklyReset.text(str);
+
+    str = Time.ParseTime(Math.abs(monthlyReset - date), 'd');
+    if(str.indexOf('d') === -1) {
+      $isMonthly.css('background-color', $darkPink);
+    } else {
+      $isMonthly.css('background-color', $lightPink);
+    }
+    $monthlyReset.text(str);
+
+    if(nextAssaultTime !== null) {
+      if(isAssaultTime) {
+        $isAssault.css('background-color', $darkPink);
+        str = Time.ParseTime(Math.abs(nextAssaultTime - date), 'm');
+      } else {
+        $isAssault.css('background-color', $lightPink);
+        str = Time.ParseTime(Math.abs(nextAssaultTime - date), 'h');
+      }
+    } else {
+      //str = 'Next Strike Time: ???';
+      $isAssault.css('background-color', $lightPink);
+      str = '???';
+    }
+    $nextAssault.text(str);
+    if(nextAngelHalo !== null) {
+      if(isAngelHalo) {
+        $isAngel.css('background-color', $darkPink);
+        str = Time.ParseTime(Math.abs(nextAngelHalo - date), 'm');
+      } else {
+        $isAngel.css('background-color', $lightPink);
+        str = Time.ParseTime(Math.abs(nextAngelHalo - date), 'h');
+      }
+    } else {
+      $isAngel.css('background-color', $lightPink);
+      str = '???'
+    }
+    $angelHalo.text(str);
+    if(nextDefenseOrder !== null) {
+      if(isDefenseOrder) {
+        $isDefense.css('background-color', $darkPink);
+        //str = 'Remaining Defense Order: ';
+        str = Time.ParseTime(Math.abs(nextDefenseOrder - date), 'm');
+      } else {
+        $isDefense.css('background-color', $lightPink);
+        //str = 'Next Defense Order: ';
+        str = Time.ParseTime(Math.abs(nextDefenseOrder - date), 'h');
+      }
+    } else {
+      $isDefense.css('background-color', $lightPink);
+      //str = 'Next Defense Order: ???';
+      str = '???';
+    }
+    $defenseOrder.text(str);
+
+
+
+
+    var offset = - (date.getTimezoneOffset() + 540);
+    if(!isJST) {
+      date.setMinutes(date.getMinutes() + offset);
+      if(nextAngelHalo !== null) {
+        nextAngelHalo.setMinutes(nextAngelHalo.getMinutes() + offset);
+      }
+      if(nextDefenseOrder !== null) {
+        nextDefenseOrder.setMinutes(nextDefenseOrder.getMinutes() + offset);
+      }
+      dailyReset.setMinutes(dailyReset.getMinutes() + offset);
+      weeklyReset.setMinutes(weeklyReset.getMinutes() + offset);
+      monthlyReset.setMinutes(monthlyReset.getMinutes() + offset);
+    }
+    str = "";
+    var array = date.toDateString().split(' ');
+    for(var i = 0; i < array.length; i++) {
+      if(i !== 3) {
+        str += array[i] + ' ';
+      }
+    }
+    $jstDate.text(str);
+    str = (date.getHours() % 12 || 12) + ':';
     if(date.getMinutes() < 10) {
       str += '0';
     }
@@ -315,90 +525,123 @@
     } else {
       str += 'PM';
     }
-    $('#jst-time').text(str);
+    $jstTime.text(str);
+    // Message.ConsoleLog(nextAngelHalo);
+    // Message.ConsoleLog(nextAngelHalo + offset);
 
-    str = 'Daily reset in: ';
-    str += parseTime(Math.abs(dailyReset - date), ['hour', 'minute']);
-    $('#daily-reset').text(str);
-    str = 'Weekly reset in: ';
-    str += parseTime(Math.abs(weeklyReset - date), ['day', 'hour']);
-    $('#weekly-reset').text(str);
-    str = 'Monthly reset in: ';
-    str += parseTime(Math.abs(monthlyReset - date), ['day', 'hour']);
-    $('#monthly-reset').text(str);
-    if(nextAssaultTime !== null) {
-      if(isAssaultTime) {
-        str = 'Remaining Strike Time: ';
-        str += parseTime(Math.abs(nextAssaultTime - date), ['minute', 'second']);
-      } else {
-        str = 'Next Strike Time: ';
-        str += parseTime(Math.abs(nextAssaultTime - date), ['hour', 'minute']);
+      $angelDate.text(parseDate(nextAngelHalo));
+      $defenseDate.text(parseDate(nextDefenseOrder));
+      $dailyDate.text(parseDate(dailyReset));
+      $weeklyDate.text(parseDate(weeklyReset));
+      $monthlyDate.text(parseDate(monthlyReset));
+
+    if(!isJST) {
+      date.setMinutes(date.getMinutes() - offset);
+      if(nextAngelHalo !== null) {
+        nextAngelHalo.setMinutes(nextAngelHalo.getMinutes() - offset);
       }
-    } else {
-      str = 'Next Strike Time: ???';
-    }
-    $('#next-assault').text(str);
-    if(nextAngelHalo !== null) {
-      if(isAngelHalo) {
-        str = 'Remaining Angel Halo: ';
-        str += parseTime(Math.abs(nextAngelHalo - date), ['minute', 'second']);
-      } else {
-        str = 'Next Angel Halo: ';
-        str += parseTime(Math.abs(nextAngelHalo - date), ['hour', 'minute']);
+      if(nextDefenseOrder !== null) {
+        nextDefenseOrder.setMinutes(nextDefenseOrder.getMinutes() - offset);
       }
-    } else {
-      str = 'Next Angel Halo: ???';
+      dailyReset.setMinutes(dailyReset.getMinutes() - offset);
+      weeklyReset.setMinutes(weeklyReset.getMinutes() - offset);
+      monthlyReset.setMinutes(monthlyReset.getMinutes() - offset);
     }
-    $('#angel-halo').text(str);
-    if(nextDefenseOrder !== null) {
-      if(isDefenseOrder) {
-        str = 'Remaining Defense Order: ';
-        str += parseTime(Math.abs(nextDefenseOrder - date), ['minute', 'second']);
-      } else {
-        str = 'Next Defense Order: ';
-        str += parseTime(Math.abs(nextDefenseOrder - date), ['hour', 'minute']);
-      }
-    } else {
-      str = 'Next Defense Order: ???';
-    }
-    $('#defense-order').text(str);
   }
-  parseTime = function(diff, units) {
-    str = "";
-    var time;
-    for(var i = 0; i < units.length; i++) {
-      switch(units[i]) {
-        case 'day':
-          time = parseInt(diff / (1000 * 60 * 60 * 24));
-          break;
-        case 'hour':
-          time = parseInt(diff / (1000 * 60 * 60)) % 24;
-          break;
-        case 'minute':
-          time = parseInt(diff / (1000 * 60)) % 60;
-          break;
-        case 'second':
-          time = parseInt((diff / 1000) % 60);
-          break;
-      }
-      if(i !== units.length - 1) {
-        if(time > 1) {
-          str += time + ' ' + units[i] +'s, ';
-        } else if(time === 1) {
-          str += '1 ' + units[i] +', ';
-        }
-      } else {
-        if(time > 1) {
-          str += time + ' ' + units[i] + 's';
-        } else if(time === 1) {
-          str += '1 ' + units[i];
-        } else {
-          str += '<1 ' + units[i];
-        }
-      }
+
+  var parseDate = function(date) {
+    if(date === null) {
+      return '';
+    }
+    var array = date.toString().split(' ');
+    var str = '';
+    switch(array[1]) {
+      case 'Jan':
+        str += '1';
+        break;
+      case 'Feb':
+        str += '2';
+        break;
+      case 'Mar':
+        str += '3';
+        break;
+      case 'Apr':
+        str += '4';
+        break;
+      case 'May':
+        str += '5';
+        break;
+      case 'Jun':
+        str += '6';
+        break;
+      case 'Jul':
+        str += '7';
+        break;
+      case 'Aug':
+        str += '8';
+        break;
+      case 'Sep':
+        str += '9';
+        break;
+      case 'Oct':
+        str += '10';
+        break;
+      case 'Nov':
+        str += '11';
+        break;
+      case 'Dec':
+        str += '12';
+        break;
+    }
+    str += '/' + array[2] + ' ';
+    var time = parseInt(array[4][0] + array[4][1]);
+    if(time >= 1 && time <= 11) {
+      str += time + 'AM';
+    } else if(time >= 13 && time <= 23) {
+      str += (time - 12) + 'PM';
+    } else if(time === 0) {
+      str += '12AM';
+    } else {
+      str += '12PM';
     }
     return str;
   }
+  // var parseTime = function(diff, units) {
+  //   str = "";
+  //   var time;
+  //   for(var i = 0; i < units.length; i++) {
+  //     switch(units[i]) {
+  //       case 'day':
+  //         time = parseInt(diff / (1000 * 60 * 60 * 24));
+  //         break;
+  //       case 'hour':
+  //         time = parseInt(diff / (1000 * 60 * 60)) % 24;
+  //         break;
+  //       case 'minute':
+  //         time = parseInt(diff / (1000 * 60)) % 60;
+  //         break;
+  //       case 'second':
+  //         time = parseInt((diff / 1000) % 60);
+  //         break;
+  //     }
+  //     if(i !== units.length - 1) {
+  //       if(time > 1) {
+  //         str += time + ' ' + units[i] +'s, ';
+  //       } else if(time === 1) {
+  //         str += '1 ' + units[i] +', ';
+  //       }
+  //     } else {
+  //       if(time > 1) {
+  //         str += time + ' ' + units[i] + 's';
+  //       } else if(time === 1) {
+  //         str += '1 ' + units[i];
+  //       } else {
+  //         str += '<1 ' + units[i];
+  //       }
+  //     }
+  //   }
+  //   return str;
+  // }
   saveAssaultTime = function(times) {
     for(var i = 0; i < times.length; i++) {
       assaultTimes[i] = times[i];
@@ -408,18 +651,31 @@
   }
 
   setAssaultTime = function() {
-    $('.assault-time').each(function(index) {
-      var str = 'Schedule '+ (index + 1) +': ';
+    $assaultTime.each(function(index) {
+      //var str = 'Schedule '+ (index + 1) +': ';
+      var str = '';
       if(assaultTimes[index] === -1) {
-        str += '???';
-      } else if(assaultTimes[index] >= 1 && assaultTimes[index] <= 11) {
-        str += assaultTimes[index] + ':00 AM';
-      } else if(assaultTimes[index] >= 13 && assaultTimes[index] <= 23) {
-        str += (assaultTimes[index] - 12) + ':00 PM';
-      } else if(assaultTimes[index] === 0) {
-        str += '12:00 AM';
+        str += '';
       } else {
-        str += '12:00 PM';
+        var time = assaultTimes[index];
+        if(!isJST) {
+          time -= (date.getTimezoneOffset() / 60 + 9);
+        }
+        while(time < 0) {
+          time += 24;
+        }
+        while(time > 23) {
+          time -= 24;
+        }
+        if(time >= 1 && time <= 11) {
+          str += time + 'AM';
+        } else if(time >= 13 && time <= 23) {
+          str += (time - 12) + 'PM';
+        } else if(time === 0) {
+          str += '12AM';
+        } else {
+          str += '12PM';
+        }
       }
       $(this).text(str);
     });
