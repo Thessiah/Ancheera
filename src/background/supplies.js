@@ -21,38 +21,33 @@
   var search = '';
   var nextUncap = null;
   var nextNpcUncap = null;
-  var nextRaid = {
-    id: null,
-    items: {},
-    next: {}
-  }
 
-  var $supplyList = $('#supply-list');
-  var $supplyItem = $supplyList.find('.supply-item').first().clone();
-  $supplyList.find('.supply-item').first().remove();
-  $searchSupplies = $("#search-supplies");
-  $supplyCategories = $('#supply-categories');
-  $firstCategory = $supplyCategories.children('.active');
-  $currCategory = $firstCategory;
+  // var $supplyList = $('#supply-list');
+  // var $supplyItem = $supplyList.find('.supply-item').first().clone();
+  // $supplyList.find('.supply-item').first().remove();
+  // $searchSupplies = $("#search-supplies");
+  // $supplyCategories = $('#supply-categories');
+  // $firstCategory = $supplyCategories.children('.active');
+  // $currCategory = $firstCategory;
 
-  $('#supply-categories > li > a').click(function() {
-    if($(this).data('category') !== 'all') {
-      search = '';
-      $searchSupplies.val('');
-    }
-    filterSupplies($(this).data('category'));
-    $currCategory = $(this).parent('li');
-  });
+  // $('#supply-categories > li > a').click(function() {
+  //   if($(this).data('category') !== 'all') {
+  //     search = '';
+  //     $searchSupplies.val('');
+  //   }
+  //   filterSupplies($(this).data('category'));
+  //   $currCategory = $(this).parent('li');
+  // });
 
 
-  $searchSupplies.on('input paste', function(){
-    if($(this).val() !== '') {
-      $currCategory.removeClass('active');
-      $firstCategory.addClass('active');
-      filter = 'all';
-    }
-    searchSupplies($(this).val());
-  });
+  // $searchSupplies.on('input paste', function(){
+  //   if($(this).val() !== '') {
+  //     $currCategory.removeClass('active');
+  //     $firstCategory.addClass('active');
+  //     filter = 'all';
+  //   }
+  //   searchSupplies($(this).val());
+  // });
 
   window.Supplies = {
     Initialize: function() {
@@ -74,6 +69,25 @@
         Profile.Initialize(); 
       });
     },
+    InitializeDev: function() {
+      var response = [];
+      var item;
+      Object.keys(supplies).forEach(function(category) {
+        if(category !== 'treasureHash') {
+          Object.keys(supplies[category]).forEach(function(id) {
+            item = supplies[category][id];
+            response.push({addItem: {
+              'id': id,
+              'category': category,
+              'number': item.count,
+              'name': item.name,
+              'sequence': item.sequence
+            }});
+          });
+        }
+      });
+      return response;
+    },
     Get: function(id, category, response) {
       if(response !== undefined) {
         if(responseList[category] === undefined) {
@@ -83,6 +97,11 @@
           responseList[category][id] = [];
         }
         responseList[category][id].push(response);
+        if(supplies[category][id] !== undefined) { 
+          response(id, supplies[category][id].count);
+        } else {
+          response(id, 0);
+        }
       }
       
       if(supplies[category][id] !== undefined) { 
@@ -94,18 +113,18 @@
       }
       return 0;
     },
-    // Set: function(id, amount) {
-    //   var category = supplies.all[id];
-    //   if(category !== undefined) {
-    //     updateSupply(id, category, amount); 
-    //   }
-    // },
-    // Increment: function(id, amount) {
-    //   var category = supplies.all[id];
-    //   if(category !== undefined) {
-    //     updateSupply(id, category, supplies[category][id].count + amount); 
-    //   }
-    // },
+    Set: function(id, item_kind, amount) {
+      var category = getCategory(id, item_kind);
+      if(category !== undefined) {
+        updateSupply(id, category, amount); 
+      }
+    },
+    Increment: function(id, item_kind, amount) {
+      var category = getCategory(id, item_kind);
+      if(category !== undefined) {
+        updateSupply(id, category, supplies[category][id].count + amount); 
+      }
+    },
     SetRecovery: function(json) {
       if(json !== undefined) {
         var updated = false;
@@ -117,9 +136,7 @@
               updated = true;
             }
           } else {
-            Message.ConsoleLog('supplies.js', 'working?');
             updated = newSupply(id, 'recovery', json[i].number, json[i].name, id);
-            Message.ConsoleLog('supplies.js', 'okay..');
           }
         }
         if(updated) {
@@ -164,15 +181,16 @@
 
         for(var i = 0; i < json.length; i++) {
           id = json[i].item_id;
-          if(json[i].seq_id < 10001) {
+          var seq_id = parseInt(json[i].seq_id);
+          if(seq_id < 100001) {
             category = 'treasure';
-          } else if(json[i].seq_id < 20001) {
+          } else if(seq_id < 200001) {
             category = 'raid';
-          } else if(json[i].seq_id < 30001) {
+          } else if(seq_id < 300001) {
             category = 'material';
-          } else if(json[i].seq_id < 50001) {
+          } else if(seq_id < 500001) {
             category = 'event';
-          } else if(json[i].seq_id < 60001) {
+          } else if(seq_id < 600001) {
             category = 'coop';
           } else {
             category = 'misc';
@@ -182,7 +200,7 @@
               updated[category] = true;
             }
           } else {
-            updated[category] = newSupply(id, category, json[i].number, json[i].name, json[i].seq_id);
+            updated[category] = newSupply(id, category, json[i].number, json[i].name, seq_id);
           }
         }
         for(var i = 0; i < categories.length; i++) {
@@ -214,18 +232,17 @@
       }
     },
     SetOther: function(json) {
-      Message.ConsoleLog('supplies.js', JSON.stringify(supplies));
-      Message.ConsoleLog('supplies.js', sortedSupplies);
     },
     GetLoot: function(json) {
       var item;
       var updated =[];
       var list = json.rewards.reward_list;
+      console.log(list);
       for(var property in list) {
         if(list.hasOwnProperty(property)) {
           for(var i = 0; i < list[property].length; i++) {
+            console.log(item);
             item = list[property][i];
-            //Message.ConsoleLog('supplies.js', JSON.stringify(item));
             category = getCategory(item.id, item.item_kind);
             if(category !== undefined && incrementSupply(item.id, category, 1)) {
               if(updated.indexOf(category) === -1) {
@@ -236,9 +253,11 @@
         }
       }
       list = json.rewards.article_list;
+      console.log(list);
       for(var property in list) {
         if(list.hasOwnProperty(property)) {
           item = list[property];
+          console.log(item);
           category = getCategory(item.id, '' + item.kind);
           if(category !== undefined && incrementSupply(item.id, category, item.count)) {
             if(updated.indexOf(category) === -1) {
@@ -248,22 +267,18 @@
         }
       }
       for(var i = 0; i < updated.length; i++) {
+        console.log(updated);
         saveSupply(updated[i]);
       }
     },
     GetGift: function(json) {
-      Message.ConsoleLog('supplies.js', 'gift1');
       var id = json.item_id;
-      Message.ConsoleLog('supplies.js', id);
       var category = getCategory(id, json.item_kind_id);
-      Message.ConsoleLog('supplies.js', category);
       if(category !== undefined && incrementSupply(id, category, parseInt(json.number))) {
-        Message.ConsoleLog('supplies.js', parseInt(json.number));
         saveSupply(category);
       }
     },
     GetAllGifts: function(json) {
-      Message.ConsoleLog('good');
       var item;
       var category;
       var updated = [];
@@ -310,63 +325,50 @@
         }
       }   
     },
-    UseRecovery: function(json, url) {
+    UseRecovery: function(json, payload) {
       if(json.success && json.result.use_flag) {
-        var id = url.substring(url.indexOf('item/') + 5, url.indexOf('.json'));
-        Message.ConsoleLog('supplies.js', id);
-        incrementSupply(id, 'recovery', -parseInt(json.result.recovery));
+        var id = payload.item_id.toString();
+        incrementSupply(id, 'recovery', -payload.num);
       }
     },
-    SellCoop: function(array) {
-      for(var i = 0; i < array.length; i++) {
-        Message.ConsoleLog(i, array[i]);
+    SellCoop: function(json, payload) {
+      if(json.success) {      
+        var id = payload.item_id
+        var amt = parseInt(payload.number);
+        incrementSupply(id, 'coop', - amt)
+        saveSupply('coop');
+        var lupi;
+        switch(id) {
+          //bronze
+          case '20001':
+            lupi = 50;
+            break;
+          //silver
+          case '20002':
+            lupi = 300;
+            break;
+          //gold
+          case '20003':
+            lupi = 1000;
+            break;
+          case '20111':
+          case '20121':
+          case '20131':
+          case '20141':
+            lupi = 5000;
+            break;
+        }
+        Profile.AddLupi(lupi * amt);
       }
-      
-      var id = '' + array[5];
-      var amt;
-      if(array[8] !== '') {
-         amt = parseInt(array[8]);
-      } else if(array[9] !== '') {
-        amt = parseInt(array[9]);
-      } else {
-        amt = 0;
-      }
-      incrementSupply(id, 'coop', - amt)
-      saveSupply('coop');
-      var lupi;
-      switch(array[5]) {
-        //bronze
-        case '20001':
-          lupi = 50;
-          break;
-        //silver
-        case '20002':
-          lupi = 300;
-          break;
-        //gold
-        case '20003':
-          lupi = 1000;
-          break;
-        case '20111':
-        case '20121':
-        case '20131':
-        case '20141':
-          lupi = 5000;
-          break;
-      }
-      Profile.AddLupi(lupi * amt);
     },
 
     RaidTreasureInfo: function(json) {
       var updated = [];
       var id;
       var category;
-      nextRaid.items = {};
-      nextRaid.id = json.chapter_id;
       for(var i = 0; i < json.treasure_id.length; i++) {
         id = json.treasure_id[i];
         category = getCategory(id, '10');
-        nextRaid.items[id] = json.consume[i];
         if(category !== undefined && updateSupply(id, category, json.num[i])) {
           if(updated.indexOf(category) === -1) {
             updated.push(category);
@@ -377,47 +379,11 @@
         saveSupply(updated[i]);
       }
     },
-    RaidTreasureCheck: function(json, url) {
-      if(json.result) {
-        var id = url.substring(url.lastIndexOf('/') + 1, url.indexOf('?'));
-        Message.ConsoleLog('supplies.js', id);
-        if(nextRaid.items[id] !== undefined) {
-          nextRaid.next = {
-            'id': id,
-            'count': parseInt(nextRaid.items[id])
-          }
-          Message.ConsoleLog('supplies.js', JSON.stringify(nextRaid.next));
-        } else {
-          nextRaid.next = undefined;
-        }
-      }
-    },
-    InitializeRaid: function(json, url) {
-      if(url.substring(url.indexOf('data/') + 5, url.lastIndexOf('/')) !== nextRaid.id) {
-        nextRaid.next = undefined;
-      }
-    },
-    EnterRaid: function(json) {
-      if(nextRaid.next !== undefined) {
-        var category = getCategory(nextRaid.next.id, '10');
-        if(incrementSupply(nextRaid.next.id, category, -nextRaid.next.count)) {
-          saveSupply(category);
-        }
-      }
-    },
-    BuyCasino: function(json, array) {
-      for(var i = 0; i < array.length; i++) {
-        Message.ConsoleLog(i, array[i]);
-      }
+
+    BuyCasino: function(json, payload) {
       var id = json.article.item_ids[0];
       var category = getCategory(id, json.article.item_kind[0]);
-      var fuckyou;
-      if(array[8] !== '') {
-        fuckyou = 8;
-      } else if(array[9] !== '') {
-        fuckyou = 9;
-      }
-      if(incrementSupply(id, category, parseInt(array[fuckyou]))) {
+      if(incrementSupply(id, category, parseInt(payload.num))) {
         saveSupply();
       }
     },
@@ -500,6 +466,7 @@
   }
 
   var saveSupply = function(category) {
+
     Storage.Set('supply' + category, {'supplies': supplies[category]});
   }
 
@@ -519,9 +486,14 @@
     
     if(supply !== undefined && supply.count !== intNum) {
       supply.count = intNum;
-      Message.ConsoleLog('supplies.js', 'updating: ' + supply.name + ': '+supply.count + ' ' + intNum);
-      $supplyList.children('#supply-' + supply.sequence + '-' + id).children('.item-count').first().text(intNum);
-      updatedSupplies.push(id);
+      if(intNum > 9999) {
+        intNum = 9999;
+      }
+      Message.PostAll({'setText': {
+        'id': '#supply-' + supply.sequence + '-' + id + '-count',
+        'value': intNum
+      }});
+      //$supplyList.children('#supply-' + supply.sequence + '-' + id).children('.item-count').first().text(intNum);
       // for(var i = 0; i < supply.responseList.length; i++) {
       //   supply.responseList[i](id, intNum);
       // }
@@ -549,98 +521,98 @@
     if(category !== 'recovery' && category !== 'powerUp' && category !== 'draw') {
       supplies.treasureHash[id] = category;
     }
+    if(number > 9999) {
+      number = 9999;
+    }
+    Message.PostAll({addItem: {
+      'id': id,
+      'category': category,
+      'number': number,
+      'name': name,
+      'sequence': sequence
+    }});
+    if(responseList[category] !== undefined && responseList[category][id] !== undefined) {
+      for(var i = 0; i < responseList[category][id].length; i++) {
+        responseList[category][id][i](id, number);
+      }
+    }
     //supplies.all[id] = category;
-    updatedSupplies.push(id);
-    var newItem = $supplyItem.clone();
-    newItem.attr('id', 'supply-' + sequence + '-' + id);
-    if(category === 'recovery' || category === 'draw' || category === 'powerUp') {
-      newItem.data('category', 'misc');
-    } else {
-      newItem.data('category', category);
-    }
-    if((filter !== 'all' && filter !== category) || name.toLowerCase().indexOf(search) === -1) {
-      newItem.hide();
-    }
-    newItem.data('name', name.toLowerCase());
-    var imgURL;
-    if(category === 'recovery') {
-      imgURL = 'http://gbf.game-a.mbga.jp/assets_en/img/sp/assets/item/normal/s/';
-    } else if(category === 'powerUp') {
-      imgURL = 'http://gbf.game-a.mbga.jp/assets_en/img/sp/assets/item/evolution/s/';
-    } else if(category === 'draw') {
-      imgURL = 'http://gbf.game-a.mbga.jp/assets_en/img/sp/assets/item/ticket/';
-    } else {
-      imgURL = 'http://gbf.game-a.mbga.jp/assets_en/img/sp/assets/item/article/s/';
-    }
-    imgURL += id + '.jpg';
-    newItem.children('.item-img').first().attr('src', imgURL);
-    newItem.children('.item-count').first().text(number);
-    //if(sortedSupplies.length > 0) {
-      var low = 0
-      var high = sortedSupplies.length;
-      while (low < high) {
-        var mid = low + high >>> 1;
-        if (sortedSupplies[mid].sequence < parseInt(sequence)) {
-          low = mid + 1;
-        } else {
-          high = mid;
-        }
-      }
-      //Message.ConsoleLog('supplies.js', 'low: ' + low + ' low value: ' + sortedSupplies[low]);
-      if(low < sortedSupplies.length) {
-        $supplyList.children('#supply-' + sortedSupplies[low].sequence + '-' + sortedSupplies[low].id).before(newItem);
-        sortedSupplies.splice(low, 0, {
-          'sequence': parseInt(sequence),
-          'id': parseInt(id)
-        });
-      } else {
-        $supplyList.append(newItem);
-        sortedSupplies.push({
-          'sequence': parseInt(sequence),
-          'id': parseInt(id)
-        });
-      }
-      if(responseList[category] !== undefined && responseList[category][id] !== undefined) {
-        for(var i = 0; i < responseList[category][id].length; i++) {
-          responseList[category][id][i](id, parseInt(number));
-        }
-      }
+    // var newItem = $supplyItem.clone();
+    // newItem.attr('id', 'supply-' + sequence + '-' + id);
+    // if(category === 'recovery' || category === 'draw' || category === 'powerUp') {
+    //   newItem.data('category', 'misc');
+    // } else {
+    //   newItem.data('category', category);
+    // }
+    // if((filter !== 'all' && filter !== category) || name.toLowerCase().indexOf(search) === -1) {
+    //   newItem.hide();
+    // }
+    // newItem.data('name', name.toLowerCase());
+    // var imgURL;
+    // if(category === 'recovery') {
+    //   imgURL = 'http://gbf.game-a.mbga.jp/assets_en/img/sp/assets/item/normal/s/';
+    // } else if(category === 'powerUp') {
+    //   imgURL = 'http://gbf.game-a.mbga.jp/assets_en/img/sp/assets/item/evolution/s/';
+    // } else if(category === 'draw') {
+    //   imgURL = 'http://gbf.game-a.mbga.jp/assets_en/img/sp/assets/item/ticket/';
+    // } else {
+    //   imgURL = 'http://gbf.game-a.mbga.jp/assets_en/img/sp/assets/item/article/s/';
+    // }
+    // imgURL += id + '.jpg';
+    // newItem.children('.item-img').first().attr('src', imgURL);
+    // newItem.children('.item-count').first().text(number);
+    // //if(sortedSupplies.length > 0) {
+    //   var low = 0
+    //   var high = sortedSupplies.length;
+    //   while (low < high) {
+    //     var mid = low + high >>> 1;
+    //     if (sortedSupplies[mid].sequence < parseInt(sequence)) {
+    //       low = mid + 1;
+    //     } else {
+    //       high = mid;
+    //     }
+    //   }
+    //   //Message.ConsoleLog('supplies.js', 'low: ' + low + ' low value: ' + sortedSupplies[low]);
+    //   if(low < sortedSupplies.length) {
+    //     $supplyList.children('#supply-' + sortedSupplies[low].sequence + '-' + sortedSupplies[low].id).before(newItem);
+    //     sortedSupplies.splice(low, 0, {
+    //       'sequence': parseInt(sequence),
+    //       'id': parseInt(id)
+    //     });
+    //   } else {
+    //     $supplyList.append(newItem);
+    //     sortedSupplies.push({
+    //       'sequence': parseInt(sequence),
+    //       'id': parseInt(id)
+    //     });
+    //   }
+    //   if(responseList[category] !== undefined && responseList[category][id] !== undefined) {
+    //     for(var i = 0; i < responseList[category][id].length; i++) {
+    //       responseList[category][id][i](id, parseInt(number));
+    //     }
+    //   }
     return true;
   }
 
   var filterSupplies = function(category) {
     filter = category;
-    $supplyList.children().each(function(index) {
-      if(category === $(this).data('category') || category === 'all') {
-        $(this).show();
-      } else {
-        $(this).hide();
-      }
-    });
+    // $supplyList.children().each(function(index) {
+    //   if(category === $(this).data('category') || category === 'all') {
+    //     $(this).show();
+    //   } else {
+    //     $(this).hide();
+    //   }
+    // });
   }
 
   var searchSupplies = function(query) {
     search = query.toLowerCase();
-    $supplyList.children().each(function(index) {
-      if($(this).data('name').indexOf(search) !== -1) {
-        $(this).show();
-      } else {
-        $(this).hide();
-      }
-    });
+    // $supplyList.children().each(function(index) {
+    //   if($(this).data('name').indexOf(search) !== -1) {
+    //     $(this).show();
+    //   } else {
+    //     $(this).hide();
+    //   }
+    // });
   }
-
-  // var setSupplies = function() {
-  //   var id;
-  //   var element;
-  //   while(updatedSupplies.length >= 0) {
-  //     id = updatedSupplies.shift();
-  //     element = $supplyList.children('#supply-' + id);
-  //     if(element.length > 0) {
-  //       //element.first().children('.item-count').first().text(supplies.all[id].count);
-  //     } else {
-
-  //     }
-  //   }
-  // }
 })();

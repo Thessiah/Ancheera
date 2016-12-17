@@ -43,6 +43,36 @@ body {
   //background-color: $anchira-sky-color;
   background-color: $bootstrap-background-white;
   height: 100%;
+     -moz-user-select: -moz-none;
+   -khtml-user-select: none;
+   -webkit-user-select: none;
+
+   /*
+     Introduced in IE 10.
+     See http://ie.microsoft.com/testdrive/HTML5/msUserSelect/
+   */
+   -ms-user-select: none;
+   user-select: none;
+   cursor: default;
+}
+
+#quest-repeat{
+  color: white;
+  margin-top: 6px;
+  padding-left: 6px;
+  //background-color: black;
+  width: 56px;
+  height: 50px;
+  margin-bottom: -10px;
+  font-size: 36px;
+  display: inline-block;
+}
+
+.open-url {
+  cursor: pointer !important;
+}
+#time-zone {
+  cursor: pointer !important;
 }
 
 #contents {
@@ -115,7 +145,7 @@ body {
   position: absolute;
   overflow: hidden;
   //height: 100%;
-  top: 233px;
+  top: 202px;
   bottom: 0;
   margin: 5px;
   width: 390px;
@@ -208,11 +238,11 @@ body {
     height: 50px;
     //background-color: $anchira-sky-color;
     background-color: $bootstrap-background-white;
-    >#ap-bar {
+    >#ap-bar-container {
       background-color: $bootstrap-background-grey;
       margin: 25px 5px;
     }
-    >#bp-bar {
+    >#bp-bar{
       margin: 20px 15px;
       >#active-circle-icons {
         z-index: 2;
@@ -335,15 +365,7 @@ body {
     margin-right: 10px;
   }
   >.coop-progress {
-    //border-style: solid;
     width: 30px;
-    //max-height: 60px;
-    //text-align: right;
-    // display: flex;
-    // align-items: center;
-    // position: relative;
-    // top: 50%;
-    // transform: translateY(-50%);
     margin: auto 0;
   }
 }
@@ -422,7 +444,7 @@ body {
   text-align: center;
 }
 .nav-tabs > li {
-  width: 60px;
+  width: 120px;
 }
 
 .supply-item {
@@ -499,6 +521,7 @@ body {
   #right-profile {
     margin-top: -3px;
     margin-left: 10px;
+    margin-bottom: 20px;
     width: 150px;
     display: inline-block;
   }
@@ -570,23 +593,66 @@ body {
 .time-container {
   margin-left: 5px;
 }
-  #left-assault {
-    display: inline-block;
-  }
-  #right-assault {
+  .assault-time {
     display: inline-block;
   }
 
+// .time-panel {
+//   width: 125px;
+//   padding-left: 1px;
+//   >.top {
+//     padding-left: 2px;
+//   }
+//   >.bottom {
+//     padding-left: 2px;
+//   }
+// }
 .time-panel {
-  width: 125px;
-  padding-left: 1px;
-  >.top {
-    padding-left: 2px;
-  }
-  >.bottom {
-    padding-left: 2px;
-  }
+  width: 92px;
+  text-align: center;
 }
+.horizontal-text {
+  @extend .img-rounded;
+  //padding-top: 4px;
+  // padding-right: 3px;
+  //padding-left: 1px;
+  //word-wrap: break-word;
+  //width: 90px;
+  text-align: center;
+  margin-top: 2px;
+  margin-left: 2px;
+  margin-right: 2px;
+  //height: 46px;
+  //line-height: 120%;
+  //display:flex;
+  //align-items: center;
+  //justify-content: center;
+  //margin: auto;
+  //background-color: #ffd4e3;
+  background-color: $anchira-sun-color;//#f5f5f5;
+}
+// .long-panel {
+//   width: 256px;
+//   padding-left: 1px;
+//   //padding-top: 1px;
+//   >.horizontal-text {
+//     float: left;
+//   }
+//   >.top {
+//     margin-top: 2px;
+//     padding-left: 2px;
+//     display: inline-block;
+//   }
+//   >.bottom {
+//     width: 100px;
+//     margin-top: 2px;
+//     float: right;
+//     margin-right: 2px;
+//     >.assault-time {
+//       margin-right: 2px;
+//     }
+//   }
+// }
 .vertical-text {
   @extend .img-rounded;
   //color: grey;
@@ -611,6 +677,23 @@ body {
   //background-color: #ffd4e3;
   background-color: #f5f5f5;
 }
+// .horizontal-text {
+//   @extend .img-rounded;
+//   //padding-top: 4px;
+//   padding-right: 3px;
+//   padding-left: 1px;
+//   //word-wrap: break-word;
+//   width: 24px;
+//   //height: 46px;
+//   //line-height: 120%;
+//   //display:flex;
+//   //align-items: center;
+//   //justify-content: center;
+//   float: left;
+//   margin: 2px;
+//   //background-color: #ffd4e3;
+//   background-color: #f5f5f5;
+// }
 // #time {
 //   @extend .panel;
 //   background-color: $bootstrap-background-white;
@@ -623,7 +706,169 @@ body {
 //   }
 // }
 
-#copmleted-raid-list {
-  margin-top: 20px;
+#daily-raid-list {
+  margin-bottom: 10px;
   
+}
+.daily-quest-panel {
+  margin-bottom: 3px !important;
+  margin-top: 0px !important;
+  .item-img {
+    margin-bottom: 0px !important;
+    margin-top: 0px !important;
+  }
+}
+.quest-image {
+  width: 40px;
+  height: 40px;
+  margin: -4px;
+}
+.event-image {
+  width: 48px;
+  height: 48px;
+  margin: -4px;
+}
+.event-raids {
+  display: inline-block;
+  margin-left: 4px;
+  margin-top: 1px;
+}
+#event-item {
+  float: left;
+}
+.quest-top {
+  .quest-summons {
+    float: left;
+    .quest-summon {
+      display: inline-block;
+      margin-right: -4px;
+      .quest-summon-image {
+        //background: rgba(255, 255, 255, 0.5);
+        opacity: 0.6;
+      }
+      .quest-summon-text {
+        position: absolute;
+        font-weight: 600;
+        -webkit-text-fill-color: black;
+        //-webkit-text-stroke: 1px black;
+        margin-top: -28px;
+        width: 26px;
+        opacity: 0.9999999;
+        text-align: center;
+      }
+    }
+  }
+  .quest-panel {
+    float: right;
+    .quest-curr {
+      display: inline-block;
+    }
+    .quest-raids {
+      margin-left: 8px;
+      display: inline-block;
+    }
+  }
+}
+.quest-bottom {
+  margin-top: 42px;
+}
+.quest-character {
+  display: inline-block;
+  width: 87px;
+  .quest-skills {
+    height: 16px;
+    .quest-skill {
+      display: inline-block;
+      margin-right: -4px;
+      .quest-skill-image {
+        height: 20px;
+        width: 20px;
+        //background: rgba(255, 255, 255, 0.5);
+        opacity: 0.4;
+      }
+      .quest-skill-text {
+        position: absolute;
+        font-weight: 600;
+        -webkit-text-fill-color: black;
+        //-webkit-text-stroke: 1px black;
+        margin-top: -23px;
+        width: 20px;
+        opacity: 0.9999999;
+        text-align: center;
+      }
+    }
+  }
+}
+.quest-buffs-panel {
+}
+.quest-buff {
+  display: inline-block;
+  margin-right: -4px;
+  .quest-buff-icon {
+    width: 15px;
+    height: 15px;
+    position: absolute;
+    //margin-top: 10px;
+    margin-top: 15px;
+    margin-left: 15px;
+    z-index: 5;
+  }
+}
+
+.thumbnail {
+  position: relative;
+  width: 80px;
+  height: 40px;
+  margin-bottom: -5px;
+  overflow: hidden;
+}
+
+.thumbnail-small {
+  position: relative;
+  margin-bottom: -5px;
+  overflow: hidden;
+  width: 29px;
+  height: 29px;
+}
+.thumbnail-small img.landscape {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  height: auto;
+  width:  100%;
+  transform: translate(-50%,-50%);
+}
+
+.thumbnail img.landscape {
+  position: absolute;
+  left: 50%;
+  top: 80%;
+  transform: translate(-50%,-50%);
+}
+.thumbnail img.portrait {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  height: 100%;
+  //height: 200%;
+  // height: 200%;
+  // width: auto;
+  //width: 200%;
+  transform: translate(-50%,-50%);
+}
+.thumbnail-square {
+  //@extend .img-rounded;
+  margin-top: 1px;
+  position: relative;
+  width: 26px;
+  height: 34px;
+  overflow: hidden;
+}
+.thumbnail-square img.square {
+   position: absolute;
+  left: 50%;
+  top: 50%;
+  height: 100%;
+  width: auto;
+  transform: translate(-50%,-50%);
 }

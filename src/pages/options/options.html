@@ -12,8 +12,27 @@
 </head>
 
 <body>
+  <h3> Quests </h1>
   <div class="main-wrapper">
-    <h3> Notifications </h1>
+    <table id="notifications">
+      <tr id="enable-row" class="wrapper">
+        <td class="quest">
+          <input type="checkbox" id="ougiRefresh">
+          <label>Ougi Refresh</label>      
+        </td>
+        <td class="quest">
+          <input type="checkbox" id="skip">
+          <label>Skip Quest End</label>      
+        </td>
+        <td class="quest">
+          <input type="checkbox" id="skipNext">
+          <label>Skip Quest Next</label>      
+        </td>
+      </tr>
+    </table>
+  </div>
+  <h3> Notifications </h1>
+  <div class="main-wrapper">
     <table id="notifications">
       <tr id="enable-row" class="wrapper">
         <td  class="notification bottom-padding">
@@ -34,10 +53,7 @@
           <input type="checkbox" id="epNotifications" class="check">
           <label class="name">EP Notifications</label>      
         </td>
-        <td  class="notification">
-          <input type="checkbox" id="dailyResetNotifications" class="check">
-          <label class="name">Daily Reset Notifications</label>      
-        </td>
+
       </tr>
       <tr  class="wrapper">
         <td  class="notification">
@@ -45,35 +61,19 @@
           <label class="name">Strike Time Notifications</label>      
         </td>
         <td  class="notification">
+          <input type="checkbox" id="dailyResetNotifications" class="check">
+          <label class="name">Daily Reset Notifications</label>      
+        </td>
+        <!--<td  class="notification">
           <input type="checkbox" id="angelHaloNotifications" class="check">
           <label class="name">Angel Halo Notifications</label>      
-        </td>
-        <td  class="notification">
+        </td>-->
+        <!--<td  class="notification">
           <input type="checkbox" id="defenseOrderNotifications" class="check">
           <label class="name">Defense Order Notifications</label>      
-        </td>
+        </td>-->
       </tr>
     </table>
-    <!--<div class="wrapper">
-      <label  class="in-line">
-        <input type="checkbox" id="enableNotifications">
-        Enable Notifications
-      </label>
-      <label class="in-line">
-        <input type="checkbox" id="muteNotifications">
-        Mute Notifications
-      </label>
-    </div>
-    <div class="wrapper">
-      <label  class="in-line">
-        <input type="checkbox" id="apNotifications">
-        AP Notifications
-      </label>
-      <label class="in-line">
-        <input type="checkbox" id="epNotifications">
-        EP Notifications
-      </label>
-    </div>-->
   </div>
   
   <h3> Daily Raids </h1>

@@ -27,7 +27,6 @@
       list = $('#prt-multi-list');
       raids = [];
       list.find('.btn-multi-raid').each(function(index) {
-        consoleLog('script.js', index);
         if($(this).find('.ico-enter').length > 0) {
           raids.push({
             id: "" + $(this).data('raid-id'),
@@ -57,7 +56,6 @@
   });
 
   var pageLoad = function(url) {
-    consoleLog('job', url);
     if(url.indexOf('#guild') !== -1) {
       if($('.prt-assault-guildinfo').length > 0) {
         times = [];
@@ -88,7 +86,6 @@
           'active': true
         }});
       } else {
-        consoleLog('wtf even');
         messageDevTools({defense:{
           'time': -1,
           'active': false
@@ -99,9 +96,18 @@
       var $prtInfoStatus = $prtUserInfo.children('.prt-info-status');
       var $prtInfoPossessed = $prtUserInfo.children('.prt-info-possessed');
       var $prtMbpPossessed = $prtUserInfo.children('#mbp-status');
-      consoleLog('job',  $prtMbpPossessed.length);
-      consoleLog('job',  $prtMbpPossessed.find('.txt-current-point').length);
-      $prtMbpPossessed.find('.txt-current-point').eq(1).bind("DOMSubtreeModified",function(){
+      //alert('test');
+      // $prtMbpPossessed.find('.txt-current-point').eq(1).bind("DOMSubtreeModified",function(){
+      //   messageDevTools({profile: {
+      //     'rank': $prtInfoStatus.find('.txt-rank-value').attr('title'),
+      //     'rankPercent': $prtInfoStatus.find('.prt-rank-gauge-inner').attr('style'),
+      //     'job': $prtInfoStatus.find('.txt-joblv-value').attr('title'),
+      //     'jobPercent': $prtInfoStatus.find('.prt-job-gauge-inner').attr('style'),
+      //     'jobPoints': $prtInfoPossessed.eq(1).find('.prt-jp').text(),
+      //     'renown': $prtMbpPossessed.find('.txt-current-point').eq(0).text(),
+      //     'prestige': $prtMbpPossessed.find('.txt-current-point').eq(1).text()//$(this).text()
+      //   }});
+      // });
         messageDevTools({profile: {
           'rank': $prtInfoStatus.find('.txt-rank-value').attr('title'),
           'rankPercent': $prtInfoStatus.find('.prt-rank-gauge-inner').attr('style'),
@@ -109,10 +115,17 @@
           'jobPercent': $prtInfoStatus.find('.prt-job-gauge-inner').attr('style'),
           'jobPoints': $prtInfoPossessed.eq(1).find('.prt-jp').text(),
           'renown': $prtMbpPossessed.find('.txt-current-point').eq(0).text(),
-          'prestige': $(this).text()
+          'prestige': $prtMbpPossessed.find('.txt-current-point').eq(1).text()//$(this).text()
         }});
-      });
+      //alert('ok');
 
+      // var events = $('.btn-banner');
+      // events.each(function() {
+      //   var link = $(this).data('location-href');
+      //   if(link !== undefined) {
+      //     messageDevTools({'event': '#' + link});
+      //   }
+      // });
 
     } else if(url.indexOf('#defend_order') !== -1) {
       if($('.txt-remain-time').length !== 0) {
@@ -185,6 +198,10 @@
           });
         }
       });
+    } else if(url.indexOf('#quest/assist') !== -1) {
+      if($('.btn-unclaimed').length > 0) {
+        
+      }
     }
   }
 
@@ -223,7 +240,7 @@
   // }
 
   var messageDevTools = function(message) {
-    chrome.runtime.sendMessage({devtools: message});
+    chrome.runtime.sendMessage({content: message});
   }
 
   var consoleLog = function(sender, message) {

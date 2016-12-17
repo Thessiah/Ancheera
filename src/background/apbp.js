@@ -11,68 +11,65 @@
   var currRaids = {};
   var decAP = 0;
   var decBP = 0;
-
-  var $apNumber = $('#ap-number');
-  var $apTime = $('#ap-time');
-  var $bpNumber = $('#bp-number');
-  var $bpTime = $('#bp-time');
-
-  var $apBar = $('#ap-bar').find('.progress-bar');
-  var $bpBar = $('#bp-bar').find('.active-circle-icon');
+  var responseAP = [];
 
   window.APBP = {
     VerifyAPBP: function(json) {
       var status;
       if(json.status !== undefined) {
         status = json.status;
-      } else {
+      } else if(json.mydata !== undefined) {
         status = json.mydata.status;
+      } else if(json.option.mydata_assets.mydata !== undefined) {
+        status = json.option.mydata_assets.mydata.status;
       }
-      setAP(status.ap, status.max_ap);
-      setBP(status.bp, status.max_bp);
-      if(status.action_point_remain.indexOf('00:00') === -1) {
-        var index = status.action_point_remain.indexOf('h');
-        var hour = apTime.hour;
-        var minute = apTime.minute;
-        if(index !== -1) {
-          apTime.hour = Number(status.action_point_remain.substring(0, index));
+      if(status !== undefined) {
+        setAP(status.ap, status.max_ap);
+        setBP(status.bp, status.max_bp);
+        if(status.action_point_remain.indexOf('00:00') === -1) {
+          var index = status.action_point_remain.indexOf('h');
+          var hour = apTime.hour;
+          var minute = apTime.minute;
+          if(index !== -1) {
+            apTime.hour = Number(status.action_point_remain.substring(0, index));
+          } else {
+            bpTime.hour = 0;
+          }
+          if(status.action_point_remain.indexOf('m') !== -1) {
+            apTime.minute = Number(status.action_point_remain.substring(index + 1, status.action_point_remain.length - 1));
+          } else {
+            apTime.minute = 0;
+          }
+          if(hour !== apTime.hour || minute !== apTime.minute) { 
+            apTime.second = 59;
+            setAPTime();
+            resetAPTimer();
+          }
         } else {
-          bpTime.hour = 0;
+          stopAPTimer();
         }
-        if(status.action_point_remain.indexOf('m') !== -1) {
-          apTime.minute = Number(status.action_point_remain.substring(index + 1, status.action_point_remain.length - 1));
+        if(status.battle_point_remain.indexOf('00:00') === -1) {
+          index = status.battle_point_remain.indexOf('h');
+          hour = bpTime.hour;
+          minute = bpTime.minute;
+          if(index !== -1) {
+            bpTime.hour = Number(status.battle_point_remain.substring(0, index));
+          } else {
+            bpTime.hour = 0;
+          }
+          if(status.battle_point_remain.indexOf('m') !== -1) {
+            bpTime.minute = Number(status.battle_point_remain.substring(index + 1, status.battle_point_remain.length - 1));
+          } else {
+            bpTime.minute = 0;
+          }
+          if(hour !== bpTime.hour || minute !== bpTime.minute) {
+            bpTime.second = 59;
+            setBPTime();
+            resetBPTimer();
+          }
         } else {
-          apTime.minute = 0;
+          stopBPTimer();
         }
-        if(hour !== apTime.hour || minute !== apTime.minute) { 
-          apTime.second = 59;
-          setAPTime();
-          resetAPTimer();
-        }
-      } else {
-        stopAPTimer();
-      }
-      if(status.battle_point_remain.indexOf('00:00') === -1) {
-        index = status.battle_point_remain.indexOf('h');
-        hour = bpTime.hour;
-        minute = bpTime.minute;
-        if(index !== -1) {
-          bpTime.hour = Number(status.battle_point_remain.substring(0, index));
-        } else {
-          bpTime.hour = 0;
-        }
-        if(status.battle_point_remain.indexOf('m') !== -1) {
-          bpTime.minute = Number(status.battle_point_remain.substring(index + 1, status.battle_point_remain.length - 1));
-        } else {
-          bpTime.minute = 0;
-        }
-        if(hour !== bpTime.hour || minute !== bpTime.minute) {
-          bpTime.second = 59;
-          setBPTime();
-          resetBPTimer();
-        }
-      } else {
-        stopBPTimer();
       }
     },
 
@@ -81,8 +78,10 @@
     },
 
     StartQuest: function(json) {
-      spendAP(decAP);
-      decAP = 0;
+      if(json.result !== undefined && json.result === 'ok') {
+        spendAP(decAP);
+        decAP = 0;
+      }
     },
 
     InitializeRaid: function(json) {
@@ -102,10 +101,10 @@
       };
     },
 
-    StartRaid: function(json) {
+    StartRaid: function(json, payload) {
       if(json.result !== false) {
         if(json.is_host === false) {
-          spendBP(availableRaids[json.raid_id].bp);
+          spendBP(parseInt(payload.select_bp));
         }
         currRaids[json.raid_id] = availableRaids[json.raid_id];
       }
@@ -114,6 +113,7 @@
     },
 
     ClearRaid: function(json, url) {
+      
       // var index = url.indexOf('/check_reward/') + '/check_reward/'.length;
       // if(currRaids[index] !== null) {
       //   delete currRaids[index];
@@ -121,11 +121,25 @@
     },
     
     RestoreAPBP: function(json) {
-      if(json.result.recovery_str === "AP") {
-        addAP(json.result.after - json.result.before);
-      } else if(json.result.recovery_str === "EP") {
-        addBP(json.result.after - json.result.before);
+      if(json.result !== undefined && json.result.recovery_str !== undefined) {
+        if(json.result.recovery_str === "AP") {
+          addAP(json.result.after - json.result.before);
+        } else if(json.result.recovery_str === "EP") {
+          addBP(json.result.after - json.result.before);
+        }
       }
+    },
+    GetAP: function(response) {
+      if(response !== undefined) {
+        if(responseAP.indexOf(response) === -1) {
+          responseAP.push(response);
+        }
+      }
+      return currAP;
+    },
+    SetMax: function() {
+      addAP(maxAP - currAP);
+      addBP(maxBP - currBP);
     }
   }
   //   //COOP??
@@ -136,17 +150,28 @@
     var full;
     if(currAP >= maxAP) {
       full = true;
+      setAP(currAP - amt, maxAP);
+      if(currAP < maxAP) {
+        amt = maxAP - currAP;
+      } else {
+        return;
+      }
+    } else {
+      setAP(currAP - amt, maxAP);
     }
-    setAP(currAP - amt, maxAP);
     if(currAP < maxAP) {
       apTime.minute += amt * 5 % 60;
-      if(full) {
-        apTime.minute--;
-        apTime.second = 59;
-      }
       if(apTime.minute >= 60) {
         apTime.minute -= 60;
         apTime.hour++;
+      }
+      if(full) {
+        apTime.minute--;
+        if(apTime.minute < 0) {
+          apTime.minute += 60;
+          apTime.hour--;
+        }
+        apTime.second = 59;
       }
       apTime.hour += Math.floor(amt * 5 / 60); 
       setAPTime();
@@ -175,17 +200,28 @@
     var full = false;
     if(currBP >= maxBP) {
       full = true;
+      setBP(currBP - amt, maxBP);
+      if(currBP < maxBP) {
+        amt = maxBP - currBP;
+      } else {
+        return;
+      }
+    } else {
+      setBP(currBP - amt, maxBP);
     }
-    setBP(currBP - amt, maxBP);
     if(currBP < maxBP) {
       bpTime.minute += amt * 20 % 60;
-      if(full) {
-        bpTime.minute--;
-        bpTime.second = 59;
-      }
       if(bpTime.minute >= 60) {
         bpTime.minute -= 60;
         bpTime.hour++;
+      }
+      if(full) {
+        bpTime.minute--;
+        if(bpTime.minute < 0) {
+          bpTime.minute += 60;
+          bpTime.hour--;
+        }
+        bpTime.second = 59;
       }
       bpTime.hour += Math.floor(amt * 20 / 60); 
       setBPTime();
@@ -211,23 +247,42 @@
   }
 
   var setAP = function(curr, max) {
+    for(var i = 0; i < responseAP.length; i++) {
+      responseAP[i](curr);
+    }
     currAP = curr;
     maxAP = max;
-    $apNumber.text('AP: ' + currAP + '/' + maxAP);
-    $apBar.css('width', ((currAP / maxAP) * 100) + '%');
+    Message.PostAll({setText: {
+      'id': '#ap-number',
+      'value': 'AP: ' + currAP + '/' + maxAP
+    }});
+    Message.PostAll({setBar: {
+      'id': '#ap-bar',
+      'value': ((currAP / maxAP) * 100) + '%'
+    }});
+    // $apNumber.text('AP: ' + currAP + '/' + maxAP);
+    // $apBar.css('width', ((currAP / maxAP) * 100) + '%');
   }
 
   var setBP = function(curr, max) {
     currBP = curr;
     maxBP = max;
-    $bpNumber.text('EP: ' + currBP + '/' + maxBP);
-    $bpBar.each(function(index) {
-      if(index >= currBP) {
-        $(this).hide();
-      } else {
-        $(this).show();
-      }
-    });
+    Message.PostAll({setText: {
+      'id': '#bp-number',
+      'value': 'EP: ' + currBP + '/' + maxBP
+    }});
+    Message.PostAll({setBar: {
+      'id': '#bp-bar',
+      'value': currBP
+    }});
+    // $bpNumber.text('EP: ' + currBP + '/' + maxBP);
+    // $bpBar.each(function(index) {
+    //   if(index >= currBP) {
+    //     $(this).hide();
+    //   } else {
+    //     $(this).show();
+    //   }
+    // });
   }
 
   var setAPTime = function() {
@@ -248,7 +303,11 @@
     if(parseInt(str) <= 0) {
       str = "";
     }
-    $apTime.text(str);
+    Message.PostAll({setText: {
+      'id': '#ap-time',
+      'value': str
+    }});
+    // $apTime.text(str);
   }
   var setBPTime = function() {
     var str = "";
@@ -268,7 +327,11 @@
     if(parseInt(str) <= 0) {
       str = "";
     }
-    $bpTime.text(str);
+    Message.PostAll({setText: {
+      'id': '#bp-time',
+      'value': str
+    }});
+    // $bpTime.text(str);
   }
 
   var resetAPTimer = function() {

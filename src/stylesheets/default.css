@@ -1436,7 +1436,7 @@ img {
   height: auto;
 }
 
-.img-rounded, #contents, .container, #ap-bp-panel > #special, #ap-bp-panel > #special > .item-img, .quest-panel > .quest-img, .daily-quest-panel > .quest-img, .daily-quest-panel > .quest-item > .item-img, .casino-div > .item-img, .supply-item > .item-img, .profile-item > .item-img, #profile #inventory-list > .inventory-category > .inventory-img, #time-buffs #buffs .buff-item > .item-img, .vertical-text {
+.img-rounded, #contents, .container, #ap-bp-panel > #special, #ap-bp-panel > #special > .item-img, .quest-panel > .quest-img, .daily-quest-panel > .quest-img, .daily-quest-panel > .quest-item > .item-img, .casino-div > .item-img, .supply-item > .item-img, .profile-item > .item-img, #profile #inventory-list > .inventory-category > .inventory-img, #time-buffs #buffs .buff-item > .item-img, .horizontal-text, .vertical-text {
   border-radius: 6px;
 }
 
@@ -7805,6 +7805,35 @@ body {
   line-height: 1.6;
   background-color: #f5f5f5;
   height: 100%;
+  -moz-user-select: -moz-none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  /*
+    Introduced in IE 10.
+    See http://ie.microsoft.com/testdrive/HTML5/msUserSelect/
+  */
+  -ms-user-select: none;
+  user-select: none;
+  cursor: default;
+}
+
+#quest-repeat {
+  color: white;
+  margin-top: 6px;
+  padding-left: 6px;
+  width: 56px;
+  height: 50px;
+  margin-bottom: -10px;
+  font-size: 36px;
+  display: inline-block;
+}
+
+.open-url {
+  cursor: pointer !important;
+}
+
+#time-zone {
+  cursor: pointer !important;
 }
 
 #contents {
@@ -7850,7 +7879,7 @@ body {
 .container {
   position: absolute;
   overflow: hidden;
-  top: 233px;
+  top: 202px;
   bottom: 0;
   margin: 5px;
   width: 390px;
@@ -7939,7 +7968,7 @@ body {
   height: 50px;
   background-color: #f5f5f5;
 }
-#ap-bp-panel > .panel > #ap-bar, #ap-bp-panel > .sky-panel > #ap-bar, #ap-bp-panel > .white-panel > #ap-bar, #time-buffs #ap-bp-panel > #time > #ap-bar, #time-buffs #ap-bp-panel > #buffs > #ap-bar, #ap-bp-panel > .buttonPanel > #ap-bar {
+#ap-bp-panel > .panel > #ap-bar-container, #ap-bp-panel > .sky-panel > #ap-bar-container, #ap-bp-panel > .white-panel > #ap-bar-container, #time-buffs #ap-bp-panel > #time > #ap-bar-container, #time-buffs #ap-bp-panel > #buffs > #ap-bar-container, #ap-bp-panel > .buttonPanel > #ap-bar-container {
   background-color: #e1e1e1;
   margin: 25px 5px;
 }
@@ -8109,7 +8138,7 @@ body {
 }
 
 .nav-tabs > li {
-  width: 60px;
+  width: 120px;
 }
 
 .supply-item, .profile-item {
@@ -8172,6 +8201,7 @@ body {
 #profile #right-profile {
   margin-top: -3px;
   margin-left: 10px;
+  margin-bottom: 20px;
   width: 150px;
   display: inline-block;
 }
@@ -8236,23 +8266,21 @@ body {
   margin-left: 5px;
 }
 
-#left-assault {
-  display: inline-block;
-}
-
-#right-assault {
+.assault-time {
   display: inline-block;
 }
 
 .time-panel {
-  width: 125px;
-  padding-left: 1px;
+  width: 92px;
+  text-align: center;
 }
-.time-panel > .top {
-  padding-left: 2px;
-}
-.time-panel > .bottom {
-  padding-left: 2px;
+
+.horizontal-text {
+  text-align: center;
+  margin-top: 2px;
+  margin-left: 2px;
+  margin-right: 2px;
+  background-color: #f8e5be;
 }
 
 .vertical-text {
@@ -8270,6 +8298,167 @@ body {
   background-color: #f5f5f5;
 }
 
-#copmleted-raid-list {
-  margin-top: 20px;
+#daily-raid-list {
+  margin-bottom: 10px;
+}
+
+.daily-quest-panel {
+  margin-bottom: 3px !important;
+  margin-top: 0px !important;
+}
+.daily-quest-panel .item-img {
+  margin-bottom: 0px !important;
+  margin-top: 0px !important;
+}
+
+.quest-image {
+  width: 40px;
+  height: 40px;
+  margin: -4px;
+}
+
+.event-image {
+  width: 48px;
+  height: 48px;
+  margin: -4px;
+}
+
+.event-raids {
+  display: inline-block;
+  margin-left: 4px;
+  margin-top: 1px;
+}
+
+#event-item {
+  float: left;
+}
+
+.quest-top .quest-summons {
+  float: left;
+}
+.quest-top .quest-summons .quest-summon {
+  display: inline-block;
+  margin-right: -4px;
+}
+.quest-top .quest-summons .quest-summon .quest-summon-image {
+  opacity: 0.6;
+}
+.quest-top .quest-summons .quest-summon .quest-summon-text {
+  position: absolute;
+  font-weight: 600;
+  -webkit-text-fill-color: black;
+  margin-top: -28px;
+  width: 26px;
+  opacity: 0.9999999;
+  text-align: center;
+}
+.quest-top .quest-panel, .quest-top .daily-quest-panel {
+  float: right;
+}
+.quest-top .quest-panel .quest-curr, .quest-top .daily-quest-panel .quest-curr {
+  display: inline-block;
+}
+.quest-top .quest-panel .quest-raids, .quest-top .daily-quest-panel .quest-raids {
+  margin-left: 8px;
+  display: inline-block;
+}
+
+.quest-bottom {
+  margin-top: 42px;
+}
+
+.quest-character {
+  display: inline-block;
+  width: 87px;
+}
+.quest-character .quest-skills {
+  height: 16px;
+}
+.quest-character .quest-skills .quest-skill {
+  display: inline-block;
+  margin-right: -4px;
+}
+.quest-character .quest-skills .quest-skill .quest-skill-image {
+  height: 20px;
+  width: 20px;
+  opacity: 0.4;
+}
+.quest-character .quest-skills .quest-skill .quest-skill-text {
+  position: absolute;
+  font-weight: 600;
+  -webkit-text-fill-color: black;
+  margin-top: -23px;
+  width: 20px;
+  opacity: 0.9999999;
+  text-align: center;
+}
+
+.quest-buff {
+  display: inline-block;
+  margin-right: -4px;
+}
+.quest-buff .quest-buff-icon {
+  width: 15px;
+  height: 15px;
+  position: absolute;
+  margin-top: 15px;
+  margin-left: 15px;
+  z-index: 5;
+}
+
+.thumbnail {
+  position: relative;
+  width: 80px;
+  height: 40px;
+  margin-bottom: -5px;
+  overflow: hidden;
+}
+
+.thumbnail-small {
+  position: relative;
+  margin-bottom: -5px;
+  overflow: hidden;
+  width: 29px;
+  height: 29px;
+}
+
+.thumbnail-small img.landscape {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  height: auto;
+  width: 100%;
+  transform: translate(-50%, -50%);
+}
+
+.thumbnail img.landscape {
+  position: absolute;
+  left: 50%;
+  top: 80%;
+  transform: translate(-50%, -50%);
+}
+
+.thumbnail img.portrait {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  height: 100%;
+  transform: translate(-50%, -50%);
+}
+
+.thumbnail-square {
+  margin-top: 1px;
+  position: relative;
+  width: 26px;
+  height: 34px;
+  overflow: hidden;
+}
+
+.thumbnail-square img.square {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  height: 100%;
+  width: auto;
+  transform: translate(-50%, -50%);
 }
