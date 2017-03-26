@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <link href="../../stylesheets/default.css" rel="stylesheet">
+    <link id="pagestyle" href="../../stylesheets/default.css" rel="stylesheet">
   </head>
   <body>
     <div id="wait">
@@ -13,8 +13,7 @@
         <div class="line">
            ...
         </div>
-        <div class="line">
-          Tip: Click every panel!
+        <div id= "message" class="line">
         </div>
         <div class="line">
 
@@ -22,7 +21,20 @@
       </div>
     </div>
     <div id="contents">
+      
       <div id="ap-bp-panel">
+        <div id="icons">
+        <div id="quest-repeat" class=" icon open-url" data-url="">
+          <div>
+            <span class="glyphicon glyphicon-repeat"></span>
+          </div>
+        </div>
+        <div id="quest-copy" class=" icon copy-url" data-url="">
+          <div >
+            <span class="glyphicon glyphicon-copy"></span>
+          </div>
+        </div>
+      </div>
         <div id="ap" class="panel open-url" data-url="#quest">
           <div class="ap-bp-info">
             <div id="ap-number" class="ap-bp-number">AP:</div>
@@ -39,26 +51,22 @@
           </div>
           <div  id="bp-bar" class="bar">
             <div id="active-circle-icons" class="circle-icons">
-              <span class="active-circle-icon"><img src="../../assets/images/circle_full.png"></span>
-              <span class="active-circle-icon"><img src="../../assets/images/circle_full.png"></span>
-              <span class="active-circle-icon"><img src="../../assets/images/circle_full.png"></span>
-              <span class="active-circle-icon"><img src="../../assets/images/circle_full.png"></span>
-              <span class="active-circle-icon"><img src="../../assets/images/circle_full.png"></span>
+              <span class="active-circle-icon"><img class="active-circle-img" src="../../assets/images/circle_full.png"></span>
+              <span class="active-circle-icon"><img class="active-circle-img" src="../../assets/images/circle_full.png"></span>
+              <span class="active-circle-icon"><img class="active-circle-img" src="../../assets/images/circle_full.png"></span>
+              <span class="active-circle-icon"><img class="active-circle-img" src="../../assets/images/circle_full.png"></span>
+              <span class="active-circle-icon"><img class="active-circle-img" src="../../assets/images/circle_full.png"></span>
             </div>
             <div class="circle-icons">
-              <span class="inactive-circle-icon"><img src="../../assets/images/circle_empty.png"></span>
-              <span class="inactive-circle-icon"><img src="../../assets/images/circle_empty.png"></span>
-              <span class="inactive-circle-icon"><img src="../../assets/images/circle_empty.png"></span>
-              <span class="inactive-circle-icon"><img src="../../assets/images/circle_empty.png"></span>
-              <span class="inactive-circle-icon"><img src="../../assets/images/circle_empty.png"></span>
+              <span class="inactive-circle-icon"><img class="inactive-circle-img" src="../../assets/images/circle_empty.png"></span>
+              <span class="inactive-circle-icon"><img class="inactive-circle-img" src="../../assets/images/circle_empty.png"></span>
+              <span class="inactive-circle-icon"><img class="inactive-circle-img" src="../../assets/images/circle_empty.png"></span>
+              <span class="inactive-circle-icon"><img class="inactive-circle-img" src="../../assets/images/circle_empty.png"></span>
+              <span class="inactive-circle-icon"><img class="inactive-circle-img" src="../../assets/images/circle_empty.png"></span>
             </div>
           </div>
         </div>
-        <div id="quest-repeat" class="open-url" data-url="">
-          <div class="icon">
-            <span class="glyphicon glyphicon-repeat"></span>
-          </div>
-        </div>
+        
         <!--<div id="special" class="open-url" data-url= "#quest/extra"> 
           <img src="../../assets/images/items/1204.jpg" data-id="0" class="item-img left">
           <img src="../../assets/images/items/44.jpg" data-id="0" class="item-img right">
@@ -390,6 +398,9 @@
                       <li class="misc-div open-url" data-url="#mypage">
                         <div id="dailies-tweet">tweet avaialable</div>
                       </li>
+                      <li id="dailies-freeSingleRoll-Panel" class="misc-div open-url" data-url="#gacha">
+                        <div id="dailies-freeSingleRoll">tweet avaialable</div>
+                      </li>
                     </ul>
                   </div>
                 </div>
@@ -451,6 +462,18 @@
                       <li class="casino-div">
                         <img src="../../assets/images/items/5.jpg" class="item-img">
                         <div id="casino-dailies-5" class= "casino-item"></div>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                <div id="distinction-dailies" class="panel panel-default collapse-default">
+                  <a data-toggle="collapse" href="#collapse-dailies-distinctions" class="link-heading panel-heading-new text-center"> Distinctions
+                  </a>
+                  <div id="collapse-dailies-distinctions" class="panel-collapse collapse in">
+                    <ul id="daily-distinction-list" class="panel-body-new vertical-table open-url" data-url="#shop/exchange/points">
+                      <li class="casino-div">
+                        <img src="../../assets/images/items/5.jpg" class="item-img">
+                        <div class= "casino-item item-count">1/1</div>
                       </li>
                     </ul>
                   </div>
@@ -575,6 +598,24 @@
                       <img src="../../assets/images/items/18.jpg" class="item-img">
                       <div class="item-count">9999</div>
                     </div>
+                  </li>
+                  <li class="daily-quest-panel quest-tall">
+                    <div class="quest-body-tall">
+                      <img src="../../assets/images/quests/2040020000_high.jpg" class="quest-img">
+                      <div class="quest-name">Luminiera (HL)</div>
+                      <div class="quest-count">0/3</div>
+                      <div class="quest-items">
+                        <div class="quest-item open-url">
+                          <img src="../../assets/images/items/18.jpg" class="item-img">
+                          <div class="item-count">9999</div>
+                        </div>
+                        <div class="quest-item open-url">
+                          <img src="../../assets/images/items/18.jpg" class="item-img">
+                          <div class="item-count">9999</div>
+                        </div>
+                      </div>
+                    </div>
+                    
                   </li>
                 </ul>
                 <!--<div> ---------------------------- </div>-->

@@ -127,10 +127,26 @@
       //   }
       // });
 
-    } else if(url.indexOf('#defend_order') !== -1) {
-      if($('.txt-remain-time').length !== 0) {
-        //alert($('.txt-remain-time').text());
-      }
+    } else if(url.indexOf('#coopraid/room/') !== -1) {
+      //$('.txt-room-id')
+      messageDevTools({coopCode:
+          $('.txt-room-id').eq(0).text()
+        });
+      
+      // $('#pop').bind("DOMSubtreeModified",function(){
+      //   messageDevTools({coopCode:
+      //     $('#pop').find('.txt-info-content').eq(0).text() + '(Coop Room)'
+      //   });
+      //    });
+        // messageDevTools({profile: {
+        //   'rank': $prtInfoStatus.find('.txt-rank-value').attr('title'),
+        //   'rankPercent': $prtInfoStatus.find('.prt-rank-gauge-inner').attr('style'),
+        //   'job': $prtInfoStatus.find('.txt-joblv-value').attr('title'),
+        //   'jobPercent': $prtInfoStatus.find('.prt-job-gauge-inner').attr('style'),
+        //   'jobPoints': $prtInfoPossessed.eq(1).find('.prt-jp').text(),
+        //   'renown': $prtMbpPossessed.find('.txt-current-point').eq(0).text(),
+        //   'prestige': $prtMbpPossessed.find('.txt-current-point').eq(1).text()//$(this).text()
+        // }});
     } else if(url.indexOf('#casino') !== -1) {
       var amt = parseInt($('.prt-having-medal').children('.txt-value').first().attr('value'));
       if(!isNaN(amt)) {

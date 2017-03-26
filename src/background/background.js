@@ -12,15 +12,22 @@
     chrome.runtime.openOptionsPage();
   });
 
-        Options.Initialize();
-        Dailies.Initialize();
-        Supplies.Initialize();
-        //Quest.Initialize(); -> in supplies.initialize()
-        //Profile.Initialize(); -> in supplies.initialize()
-        Buffs.Initialize();
-        Casino.Initialize();
-        //Info.Initialize();
-        Time.Initialize();
+  Options.Initialize(function() {
+      Dailies.Initialize(function() {
+        Quest.Initialize(function() {
+        Casino.Initialize(function() {
+        Time.Initialize(function() {
+          Supplies.Initialize();
+          Profile.Initialize(); 
+          Buffs.Initialize();
+          //Info.Initialize();
+          
+          });
+        });
+      });
+    });
+  });
+        
   // window.Message = {
   //   SetDevText: function(id, text) {
   //     messageDevTools({'setText': {
@@ -40,26 +47,35 @@
   var responseList = {};
   //var repeat = "";
   chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
-    if(message.pageLoad) {
-      //chrome.storage.sync.set({'test': true});
-      pageLoaded = true;
-      chrome.tabs.query({active: true, currentWindow: true}, function(tabs){
-        if(tabs.length > 0) {
-          chrome.tabs.sendMessage(tabs[0].id, {pageLoad: tabs[0].url});
-          sendResponse({pageLoad: tabs[0].url});
-          var index = tabs[0].url.indexOf('#quest/supporter/');
-          console.log(index);
-          if(index !== -1) {
-            console.log(tabs[0].url.splice(index));
-            Message.PostAll({'setClick': {
-              'id': '#quest-repeat',
-              'value': tabs[0].url.splice(index)
-            }});
-          }
-        }
-      });
-      return true;
-    }
+    // if(message.pageLoad) {
+    //   //chrome.storage.sync.set({'test': true});
+    //   pageLoaded = true;
+    //   chrome.tabs.query({active: true, currentWindow: true}, function(tabs){
+    //     if(tabs.length > 0) {
+    //       chrome.tabs.sendMessage(tabs[0].id, {pageLoad: tabs[0].url});
+    //       sendResponse({pageLoad: tabs[0].url});
+    //       var index = tabs[0].url.indexOf('#quest/supporter/');
+    //       console.log('wut' + index);
+    //       if(index !== -1) {
+    //         Message.PostAll({'setClick': {
+    //           'id': '#quest-repeat',
+    //           'value': tabs[0].url.splice(index)
+    //         }});
+    //       } else {
+    //         index = tabs[0].url.indexOf('#event/');
+    //         console.log('hey' + index);
+    //         if(index !== -1 && tabs[0].url.indexOf('/supporter/') !== -1)
+    //         {
+    //           Message.PostAll({'setClick': {
+    //           'id': '#quest-repeat',
+    //           'value': tabs[0].url.splice(index)
+    //         }});
+    //         }
+    //       }
+    //     }
+    //   });
+    //   return true;
+    // }
     if(message.setOption) {
       Options.Set(message.setOption.id, message.setOption.value);
     }
@@ -75,7 +91,6 @@
       console.log(message.consoleLog.sender + ': ' + message.consoleLog.message);
     }
     if(message.content) {
-      console.log(msg);
       var msg = message.content;
       if(msg.assault) {
         Time.SetAssaultTime(msg.assault.times);
@@ -93,12 +108,13 @@
         Profile.SetChips(msg.chips.amount);
       }
       if(msg.profile) {
-        console.log(msg.profile);
         Profile.SetHomeProfile(msg.profile.rank, msg.profile.rankPercent, msg.profile.job, msg.profile.jobPercent, msg.profile.jobPoints, msg.profile.renown, msg.profile.prestige);
-        console.log('yo');
       }
       if(msg.event) {
         //Quest.SetEvent(msg.event);
+      }
+      if(msg.coopCode) {
+        Quest.SetCoopCode(msg.coopCode, sender.tab.id);
       }
     }
   });
@@ -129,6 +145,14 @@ chrome.runtime.onConnect.addListener(function (port) {
     }
     if(message.initialize) {
       var response = [];
+      response[0] = {
+        'setTheme': Options.Get('windowTheme', function(id, value) {
+          Message.PostAll({
+            'setTheme': value
+          });
+          Time.UpdateAlertColor();
+        })
+      };
       response = response.concat(Profile.InitializeDev());
       response = response.concat(Time.InitializeDev());
       response = response.concat(Dailies.InitializeDev());
@@ -146,13 +170,20 @@ chrome.runtime.onConnect.addListener(function (port) {
           chrome.tabs.sendMessage(tabs[0].id, {pageLoad: tabs[0].url});
           connections[message.id].postMessage({pageLoad: tabs[0].url});
           var index = tabs[0].url.indexOf('#quest/supporter/');
-          console.log(index);
           if(index !== -1) {
-            console.log(tabs[0].url.slice(index));
             Message.PostAll({'setClick': {
               'id': '#quest-repeat',
               'value': tabs[0].url.slice(index)
             }});
+          }else {
+            index = tabs[0].url.indexOf('#event/');
+            if(index !== -1 && tabs[0].url.indexOf('/supporter/') !== -1)
+            {
+              Message.PostAll({'setClick': {
+              'id': '#quest-repeat',
+              'value': tabs[0].url.slice(index)
+            }});
+            }
           }
         }
       });
@@ -171,9 +202,15 @@ chrome.runtime.onConnect.addListener(function (port) {
       chrome.tabs.reload(message.id);
       return;
     }
+    if(message.devAwake) {
+      Message.Post(message.id, {'setTheme': Options.Get('windowTheme')});
+    }
     if(message.debug) {
-      //Message.Notify('hey', 'its me ur brother', 'apNotifications');
+      Message.Notify('hey', 'its me ur brother', 'apNotifications');
       // Dailies.Reset();
+    }
+    if(message.consoleLog) {
+      //console.log(message.consoleLog);
     }
     if(message.request) {
       //verify current ap/ep
@@ -189,6 +226,9 @@ chrome.runtime.onConnect.addListener(function (port) {
       if(message.request.url.indexOf('/quest/check_quest_start/') !== -1) {
         Quest.CheckDailyRaid(message.request.response, message.request.url);
       }
+      if(message.request.url.indexOf('/quest/content/newindex/') !== -1) {
+        Quest.UpdateInProgress(message.request.response, message.id);
+      }
       //initialize quest -> SELECTING QUEST
       if(message.request.url.indexOf('/quest/quest_data/') !== -1) {
           APBP.InitializeQuest(message.request.response);
@@ -196,7 +236,7 @@ chrome.runtime.onConnect.addListener(function (port) {
       //start quest -> ACTUALLY ENTER THE QUEST
       if(message.request.url.indexOf('/quest/create_quest?') !== -1) {
         Quest.CreateQuest(message.request.response, message.request.payload, message.id);
-          APBP.StartQuest(message.request.response);
+          APBP.StartQuest(message.request.response, message.request.payload);
       }
       if(message.request.url.indexOf('/quest/raid_info?') !== -1) {
         Quest.CheckMulti(message.request.response);
@@ -204,8 +244,13 @@ chrome.runtime.onConnect.addListener(function (port) {
       }
 
       //quest loot
+      // if(message.request.url.indexOf('/result/content/') !== -1) {
+      //   Supplies.GetLoot(message.request.response.option.result_data);
+      //   Profile.CompleteQuest(message.request.response.option.result_data);
+      // }
       if(message.request.url.indexOf('/result/data/') !== -1) {
         Supplies.GetLoot(message.request.response);
+        Profile.CompleteQuest(message.request.response);
       }
       // //initialize raid -> SELECTING RAID
       // if(message.request.url.indexOf('/quest/assist_list') !== -1) {
@@ -220,16 +265,21 @@ chrome.runtime.onConnect.addListener(function (port) {
           APBP.StartRaid(message.request.response, message.request.payload);
           Quest.CreateRaid(message.request.response, message.id);
       }
-      if(message.request.url.indexOf('/check_reward/') !== -1) {
-        Quest.CompleteQuest(message.request.url);
-      }
+      // if(message.request.url.indexOf('/check_reward/') !== -1) {
+      //   Quest.CompleteQuest(message.request.url);
+      // }
       //raid loot
+      // if(message.request.url.indexOf('/resultmulti/content/') !== -1) {
+      //     Supplies.GetLoot(message.request.response.option.result_data);
+      //     Profile.CompleteRaid(message.request.response.option.result_data);       
+      //     Dailies.CompleteCoop(message.request.response.option.result_data);
+      //     Dailies.CompleteRaid(message.request.response.option.result_data);
+      // }
       if(message.request.url.indexOf('/resultmulti/data/') !== -1) {
           Supplies.GetLoot(message.request.response);
           Profile.CompleteRaid(message.request.response);       
           Dailies.CompleteCoop(message.request.response);
           Dailies.CompleteRaid(message.request.response);
-          Quest.CompleteQuest(message.request.url);
       }
       if(message.request.url.indexOf('retire.json') !== -1) {
         Quest.AbandonQuest(message.request.payload);
@@ -250,7 +300,7 @@ chrome.runtime.onConnect.addListener(function (port) {
       } 
       if(message.request.url.indexOf('/gacha/result//legend') !== -1) {
           Dailies.DecDraws(message.request.response);
-          Profile.CrystalDraw(message.request.response);
+          //Profile.CrystalDraw(message.request.response);
       }
       //co-op dailies
       if(message.request.url.indexOf('/coopraid/daily_mission?_=') !== -1) {
@@ -272,6 +322,7 @@ chrome.runtime.onConnect.addListener(function (port) {
       }
       if(message.request.url.indexOf('/twitter/twitter_info/') !== -1) {
           Dailies.CheckTweet(message.request.response);
+          Quest.CopyTweet(message.request.response);
       }
       if(message.request.url.indexOf('/twitter/tweet?_=') !== -1) {
           Dailies.UseTweet(message.request.response);
@@ -302,6 +353,8 @@ chrome.runtime.onConnect.addListener(function (port) {
       //treasure trade purchase
       if(message.request.url.indexOf('/shop_exchange/purchase/') !== -1) {
           Supplies.PurchaseItem(message.request.response);
+          Profile.PurchaseItem(message.request.response);
+          Dailies.PurchaseDistinction(message.request.response);
       }
       if(message.request.url.indexOf('/weapon/list/') !== -1) {
           Profile.SetWeaponNumber(message.request.response);
@@ -328,6 +381,11 @@ chrome.runtime.onConnect.addListener(function (port) {
       //do shop
       if(message.request.url.indexOf('/shop_exchange/article_list/10/1/1/null/null/') !== -1) {
           Profile.SetDefense(message.request.response);
+          //Dailies.CheckDefense(message.request.response, message.request.url);
+      }
+      //prestige
+      if(message.request.url.indexOf('/shop_exchange/article_list/6/1/') !== -1) {
+          Dailies.SetDistinctions(message.request.response);
           //Dailies.CheckDefense(message.request.response, message.request.url);
       }
       if(message.request.url.indexOf('/shop/purchase') !== -1) {
@@ -398,6 +456,12 @@ chrome.runtime.onConnect.addListener(function (port) {
       if(message.request.url.indexOf('/quest/assist_list') !== -1) {
           Quest.CheckJoinedRaids(message.request.response);
       }
+      if(message.request.url.indexOf('/gacha/list?') !== -1) {
+          Dailies.CheckGacha(message.request.response);
+      }
+      if(message.request.url.indexOf('/gacha/legend/campaign') !== -1) {
+          Dailies.RollCampaign(message.request.response, message.request.payload);
+      }
     }
   }
   port.onMessage.addListener(extensionListener);
@@ -453,16 +517,30 @@ chrome.runtime.onConnect.addListener(function (port) {
     },
     Notify: function(title, message, source) {
       if(Options.Get('enableNotifications') && Options.Get(source)) {
-        chrome.notifications.create({
-            type: 'basic',
-            title: title,
-            message: message,
-            iconUrl: 'src/assets/images/icon.png'
-          });
+        var theme = Options.Get('notificationTheme');
+        if(theme === 'Random') {
+          var rand = Math.random() * 3;
+          if(rand < 1) {
+            theme = 'Sheep';
+          } else if(rand < 2) {
+            theme = 'Rooster';
+          } else {
+            theme = 'Monkey';
+          }
+        }
         if(!Options.Get('muteNotifications')) {
-          var sound = new Audio('src/assets/sounds/notification.wav');
+          var sound = new Audio('src/assets/sounds/' + theme + '.wav');
           sound.play();
         }
+        if(Math.random() * 300 < 1) {
+          theme += '2';
+        }
+        chrome.notifications.create({
+          type: 'basic',
+          title: title,
+          message: message,
+          iconUrl: 'src/assets/images/' + theme + '.png'
+        });
       }
     },
     OpenURL: function(url, devID) {

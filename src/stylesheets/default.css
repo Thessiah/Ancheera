@@ -1436,7 +1436,7 @@ img {
   height: auto;
 }
 
-.img-rounded, #contents, .container, #ap-bp-panel > #special, #ap-bp-panel > #special > .item-img, .quest-panel > .quest-img, .daily-quest-panel > .quest-img, .daily-quest-panel > .quest-item > .item-img, .casino-div > .item-img, .supply-item > .item-img, .profile-item > .item-img, #profile #inventory-list > .inventory-category > .inventory-img, #time-buffs #buffs .buff-item > .item-img, .horizontal-text, .vertical-text {
+.img-rounded, #contents, .container, #ap-bp-panel > #special, #ap-bp-panel > #special > .item-img, .quest-panel .quest-img, .daily-quest-panel .quest-img, .daily-quest-panel .item-img, .casino-div > .item-img, .supply-item > .item-img, .profile-item > .item-img, #profile #inventory-list > .inventory-category > .inventory-img, #time-buffs #buffs .buff-item > .item-img, .horizontal-text, .vertical-text {
   border-radius: 6px;
 }
 
@@ -7778,6 +7778,14 @@ button.close {
     display: none !important;
   }
 }
+.progress-bar-custom {
+  background: #d9534f;
+}
+
+#message {
+  white-space: pre;
+}
+
 #contents {
   display: none;
 }
@@ -7817,15 +7825,43 @@ body {
   cursor: default;
 }
 
-#quest-repeat {
-  color: white;
-  margin-top: 6px;
-  padding-left: 6px;
-  width: 56px;
-  height: 50px;
-  margin-bottom: -10px;
-  font-size: 36px;
+#icons {
   display: inline-block;
+}
+
+.icon {
+  color: white;
+  margin-top: 8px;
+  padding-left: 10px;
+  width: 30px;
+  height: 25px;
+  margin-bottom: -10px;
+  font-size: 18px;
+}
+
+.tooltip {
+  position: fixed !important;
+}
+
+.tooltip.in {
+  opacity: 1 !important;
+  filter: alpha(opacity=100) !important;
+}
+
+.tooltip.top .tooltip-arrow {
+  bottom: 0;
+  left: 50%;
+  margin-left: -5px;
+  border-top-color: #2a3439;
+  border-width: 5px 5px 0;
+}
+
+.tooltip-inner {
+  color: #f5f5f5;
+  background: #2a3439;
+  font-size: 16px;
+  white-space: pre;
+  max-width: none;
 }
 
 .open-url {
@@ -7929,10 +7965,11 @@ body {
   display: block;
 }
 #ap-bp-panel > #ap {
-  float: left;
+  display: inline-block;
 }
 #ap-bp-panel > #bp {
-  display: inline-block;
+  float: right;
+  margin-right: 6px;
 }
 #ap-bp-panel > #special {
   background-color: #f5f5f5;
@@ -7964,16 +8001,16 @@ body {
   margin-bottom: 4px;
   vertical-align: top;
   display: inline-block;
-  width: 160px;
+  width: 172px;
   height: 50px;
   background-color: #f5f5f5;
 }
 #ap-bp-panel > .panel > #ap-bar-container, #ap-bp-panel > .sky-panel > #ap-bar-container, #ap-bp-panel > .white-panel > #ap-bar-container, #time-buffs #ap-bp-panel > #time > #ap-bar-container, #time-buffs #ap-bp-panel > #buffs > #ap-bar-container, #ap-bp-panel > .buttonPanel > #ap-bar-container {
   background-color: #e1e1e1;
-  margin: 25px 5px;
+  margin: 25px 11px;
 }
 #ap-bp-panel > .panel > #bp-bar, #ap-bp-panel > .sky-panel > #bp-bar, #ap-bp-panel > .white-panel > #bp-bar, #time-buffs #ap-bp-panel > #time > #bp-bar, #time-buffs #ap-bp-panel > #buffs > #bp-bar, #ap-bp-panel > .buttonPanel > #bp-bar {
-  margin: 20px 15px;
+  margin: 20px 19px;
 }
 #ap-bp-panel > .panel > #bp-bar > #active-circle-icons, #ap-bp-panel > .sky-panel > #bp-bar > #active-circle-icons, #ap-bp-panel > .white-panel > #bp-bar > #active-circle-icons, #time-buffs #ap-bp-panel > #time > #bp-bar > #active-circle-icons, #time-buffs #ap-bp-panel > #buffs > #bp-bar > #active-circle-icons, #ap-bp-panel > .buttonPanel > #bp-bar > #active-circle-icons {
   z-index: 2;
@@ -7982,7 +8019,7 @@ body {
   position: absolute;
 }
 #ap-bp-panel > .panel > .bar, #ap-bp-panel > .sky-panel > .bar, #ap-bp-panel > .white-panel > .bar, #time-buffs #ap-bp-panel > #time > .bar, #time-buffs #ap-bp-panel > #buffs > .bar, #ap-bp-panel > .buttonPanel > .bar {
-  width: 150px;
+  width: 148px;
   position: absolute;
 }
 #ap-bp-panel > .panel > .ap-bp-info, #ap-bp-panel > .sky-panel > .ap-bp-info, #ap-bp-panel > .white-panel > .ap-bp-info, #time-buffs #ap-bp-panel > #time > .ap-bp-info, #time-buffs #ap-bp-panel > #buffs > .ap-bp-info, #ap-bp-panel > .buttonPanel > .ap-bp-info {
@@ -8002,6 +8039,7 @@ body {
 }
 
 .collapse-default {
+  background-color: #f5f5f5;
   margin-top: 0px !important;
   margin-bottom: 10px !important;
 }
@@ -8009,36 +8047,56 @@ body {
 .quest-panel, .daily-quest-panel {
   margin: 2px;
 }
-.quest-panel > .quest-img, .daily-quest-panel > .quest-img {
+.quest-panel .quest-img, .daily-quest-panel .quest-img {
   width: 63px;
   height: 40px;
 }
-.quest-panel > .quest-name, .daily-quest-panel > .quest-name {
+.quest-panel .quest-name, .daily-quest-panel .quest-name {
   display: inline-flex;
   vertical-align: middle;
   width: 250px;
 }
 
-.daily-quest-panel > .quest-name {
-  width: 120px;
+.daily-quest-panel .quest-name {
+  width: 110px;
 }
-.daily-quest-panel > .quest-count {
+.daily-quest-panel .quest-count {
   margin: 3px;
+  margin-right: 8px;
   display: inline-flex;
   vertical-align: middle;
 }
 .daily-quest-panel > .quest-item {
   display: inline-block;
 }
-.daily-quest-panel > .quest-item > .item-img {
+.daily-quest-panel .quest-items {
+  float: right;
+  margin-top: -20px;
+}
+.daily-quest-panel .quest-items > .quest-item {
+  width: 90px;
+}
+.daily-quest-panel .item-img {
   margin: 3px;
   display: inline-block;
   width: 40px;
   height: 40px;
 }
-.daily-quest-panel > .quest-item > .item-count {
+.daily-quest-panel .item-count {
   display: inline-flex;
   vertical-align: middle;
+}
+.daily-quest-panel .quest-body-tall {
+  position: relative;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+}
+
+.quest-tall {
+  height: 80px;
+  width: 310px;
 }
 
 .casino-div {
@@ -8105,6 +8163,11 @@ body {
 .nav-pills > li > a {
   padding: 4px 0px;
   text-align: center;
+  color: #2a3439 !important;
+}
+
+.nav-tabs > li > a {
+  color: #2a3439 !important;
 }
 
 .nav-pills-supply > li:nth-child(2) {
@@ -8114,6 +8177,14 @@ body {
 .nav-pills-supply > li {
   margin-top: 2px !important;
   width: 60px;
+}
+
+.nav-tabs > li.active > a, .nav-tabs > li.active > a:hover {
+  background-color: #f5f5f5 !important;
+}
+
+.nav-tabs > li > a:hover {
+  background-color: #f5f5f5 !important;
 }
 
 .form-group {
@@ -8128,8 +8199,17 @@ body {
   margin-bottom: 10px !important;
 }
 
+.nav-pills > li.active > a {
+  color: #f5f5f5 !important;
+}
+
 .nav-pills > li.active > a, .nav-pills > li.active > a:hover {
   background-color: #9fbede !important;
+}
+
+.nav-pills > li > a:hover {
+  background-color: #9fbede !important;
+  color: #f5f5f5 !important;
 }
 
 .nav-tabs > li > a {

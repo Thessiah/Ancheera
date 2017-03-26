@@ -39,6 +39,12 @@
     '3': 500,
     '4': 500
   }
+  var renownIncreasedMax = {
+    '1': 4000,
+    '2': 1000,
+    '3': 1000,
+    '4': 1000
+  }
 //http://gbf.game.mbga.jp/?opensocial_viewer_id=132334696&token=64a1af77c9143220e437#quest/index/100012/0
   var dailiesData = {
     'renown': {
@@ -63,6 +69,7 @@
   var dailies = {
     'draw-rupie': 101,
     'tweet': true,
+    'freeSingleRoll': true,
     'coop': {
       '0': {
         'raw': '',
@@ -99,9 +106,28 @@
       '30031': 1,
       '30032': 1,
       '30033': 1
-    }
+    },
+    'distinctions': {
+      '20411' : 1,
+      '20421' : 1,
+      '20431' : 1,
+      '20441' : 1,
+      '20451' : 1,
+      '20461' : 1,
+      '20471' : 1,
+      '20481' : 1,
+      '20491' : 1,
+      '20501' : 1,
+      '20511' : 1,
+      '20671' : 1,
+      '20681' : 1,
+      '20691' : 1,
+      '20701' : 1,
+      '20751' : 1,
+      '20761' : 1
+    },
   }
-  
+  var enabledDistinctionList = [];
   // var $dailiesPanel = $('#dailies-panel');
   // var $weekliesPanel = $('#weeklies-panel');
   // var $monthliesPanel = $('#monthlies-panel');
@@ -152,14 +178,65 @@
   //   checkDefenseShop();
   // }
 
+
   window.Dailies = {
-    Initialize: function() {
-      Storage.GetMultiple(['dailies'], function(response) {
-        if(response['dailies'] !== undefined) {
-          dailies = response['dailies'];
-        } else {
-          Storage.Set('dailies', dailies);
-        }
+    Initialize: function(callback) {
+      
+      Options.Get('increasedRenownLimit', function(id, value) {
+        increaseRenown(value);
+        var array = [];
+        Object.keys(dailies.renown).forEach(function(key) {
+            array.push(['renown', key], dailies.renown[key]);
+        });
+        setDailies(array, true);
+      });
+      var hide = Options.Get('freeSingleRoll', function(id, value) {
+        Message.PostAll({'hideObject': {
+          'id': '#dailies-freeSingleRoll-Panel',
+          'value': !value
+        }});
+        setDailies([['freeSingleRoll'], dailies['freeSingleRoll']], true);
+      });
+      Object.keys(dailies.distinctions).forEach(function(key) {
+        Options.Get(key, function(id, value) {
+          id = id[0];
+          var index = enabledDistinctionList.indexOf(id)
+          console.log(id);
+          console.log(enabledDistinctionList);
+          if(value && index === -1) {
+            if(enabledDistinctionList.length === 0) {
+              Message.PostAll({'hideObject': {
+                'id': '#distinction-dailies',
+                'value': false
+              }});
+            }
+            enabledDistinctionList.push(id);
+            Message.PostAll({'setHeight': {
+              'id': '#daily-distinction-list',
+              'value': Math.ceil(enabledDistinctionList.length / 4) * 47
+            }});
+          } else if(!value && index !== -1) {
+            console.log('splicing');
+            enabledDistinctionList.splice(index, 1);
+            if(enabledDistinctionList.length === 0) {
+              Message.PostAll({'hideObject': {
+                'id': '#distinction-dailies',
+                'value': true
+              }});
+            } else {
+              Message.PostAll({'setHeight': {
+                'id': '#daily-distinction-list',
+                'value': Math.ceil(enabledDistinctionList.length / 4) * 47
+              }});
+            }
+          }
+          console.log('count: ' + enabledDistinctionList.length);
+          Message.PostAll({'hideObject': {
+            'id': '#distinctions-body-' + id,
+            'value': !value
+          }});
+          setDailies([['distinctions', id], dailies.distinctions[id]], true);
+        });
       });
       Profile.Get('level', function(value) {
         if(!isHL && value >= 101) {
@@ -169,12 +246,72 @@
             'value': false
           }});
         }
-
+        
+      });
+      Storage.GetMultiple(['dailies'], function(response) {
+        if(response['dailies'] !== undefined) {
+          if(response['dailies']['freeSingleRoll'] === undefined) {
+            for(var key in dailies) {
+              if(response['dailies'][key] == undefined) {
+                response['dailies'][key] = dailies[key];
+              }
+            }
+            dailies = response['dailies'];
+            Storage.Set('dailies', dailies);
+          } else {
+            dailies = response['dailies'];
+          }
+        } else {
+          Storage.Set('dailies', dailies);
+        }
+        if(callback !== undefined) {
+          callback();
+        }
       });
       // Profile.Get('defenseRank', hideDefenseShop);
     },
     InitializeDev: function() {
+      // Object.keys(dailies.renown).forEach(function(key) {
+      //       array.push(['renown', key], dailies.renown[key]);
+      //   });
+      increaseRenown(Options.Get('increasedRenownLimit'));
+      Message.PostAll({'hideObject': {
+        'id': '#dailies-freeSingleRoll-Panel',
+        'value': !Options.Get('freeSingleRoll')
+      }});
+
       var response = [];
+      var checking = false;
+      if(enabledDistinctionList.length == 0) {
+        checking = true;
+      }
+      Object.keys(dailies.distinctions).forEach(function(key) {
+        var enabled = Options.Get(key);
+        if(checking && enabled) {
+          enabledDistinctionList.push(key);
+        }
+        response.push({'addDistinction': {
+          'id': key,
+          'amount': dailies.distinctions[key],
+          'max': '1',
+          'isEnabled': enabled
+        }});
+      });
+      response.push({'setHeight': {
+        'id': '#daily-distinction-list',
+        'value': Math.ceil(enabledDistinctionList.length / 4) * 47
+      }});
+      if(enabledDistinctionList.length === 0 || !isHL) {
+        response.push({'hideObject': {
+          'id': '#distinction-dailies',
+          'value': true
+        }});
+      } else {
+        response.push({'hideObject': {
+          'id': '#distinction-dailies',
+          'value': false
+        }});
+      }
       Object.keys(dailies).forEach(function(key) {
         response.push(checkCollapse([key]));
       });
@@ -183,15 +320,19 @@
         'id': '#weekly-prestige',
         'value': !isHL
       }});
+
       return response;
     },
     Reset: function() {
-      var array = [['draw-rupie'], 101, ['tweet'], true];
+      var array = [['draw-rupie'], 101, ['tweet'], true, ['freeSingleRoll'], true];
       Object.keys(dailies.coop).forEach(function(key) {
         array.push(['coop', key, 'raw'], '');
         array.push(['coop', key, 'quest'], '???');
         array.push(['coop', key, 'max'], '');
         array.push(['coop', key, 'progress'], '');
+      });
+      Object.keys(dailies.distinctions).forEach(function(key) {
+        array.push(['distinctions', key], 1);
       });
       setDailies(array);
       Casino.Reset();
@@ -203,7 +344,7 @@
       for(var i = 0; i < weeklyNames.length; i++) {
         name = weeklyNames[i];
         Object.keys(dailies[name]).forEach(function(key) {
-          array.push([name, key], dailiesData[name][key]);
+          array.push([name, key], 0);
         });
       }
       setDailies(array);
@@ -302,10 +443,12 @@
       setDailies(array);
     },
     CheckTweet: function(json) {
-      if(json.twitter.campaign_info.is_avail_twitter === true) {
-        setDailies([['tweet'], true]);
-      } else {
-        setDailies([['tweet'], false]);
+      if(json.twitter.campaign_info.is_avail_twitter !== undefined) {
+        if(json.twitter.campaign_info.is_avail_twitter === true) {
+          setDailies([['tweet'], true]);
+        } else {
+          setDailies([['tweet'], false]);
+        }
       }
     },
     UseTweet: function(json) {
@@ -333,6 +476,66 @@
         setDailies([['moons', key], amounts[key]]);
       });
     },
+    CheckGacha: function(json) {
+      var canRoll = false;
+      if(json.enable_term_free_legend !== undefined && json.enable_term_free_legend !== false) {
+        canRoll = true;
+      }
+      setDailies([['freeSingleRoll'], canRoll]);
+    },
+    RollCampaign: function(json, header) {
+        setDailies([['freeSingleRoll'], false]);
+    },
+    PurchaseDistinction: function(json) {
+      var id = json.article.item_ids[0];
+      if(dailies.distinctions[id] !== undefined) {
+        setDailies([['distinctions', id], 0]);
+      }
+    },
+    SetDistinctions: function(json) {
+      var keys = Object.keys(json.list);
+      var ids = {};
+      var first = -1;
+      var last = -1;
+      var found = false;
+      for(var i = 0; i < keys.length; i++) {
+        //if start hasn't been determined
+        var id = json.list[keys[i]].item_ids[0];
+        if(dailies.distinctions[id] !== undefined) {
+          ids[id] = true;
+          found = true;
+          if(first === -1) {
+            first = parseInt(id);
+          } else {
+            last = parseInt(id);
+          }
+        } else {
+          if(i === 0) {
+            first = 20411;
+          } else if(i === keys.length - 1) {
+            last = 20761;
+          }
+        }
+      }
+      if(found) {
+        var distinctions = Object.keys(dailies.distinctions);
+        // var start = 0;
+        // if(!pre) {
+        //   start = distinctions.indexOf(ids[0]);
+        // }
+        // var end = distinctions.length;
+        var array = [];
+        for(var i = 0; i < distinctions.length; i++) {
+          var id = distinctions[i];
+          if(parseInt(id) >= first && parseInt(id) <= last) {
+            if(ids[id] === undefined) {
+              array.push(['distinctions', id], 0);
+            }
+          }
+        }
+        setDailies(array);
+      }
+    }
     // PurchaseDefense: function(json) {
     //   // var id = json.article.item_ids[0];
     //   // if(id === '30031' || id === '30032' || id === '30033') {
@@ -366,7 +569,7 @@
     //   });
     // },
   }
-  var setDailies = function(array) {//category, value) {
+  var setDailies = function(array, override) {//category, value) {
     var category;
     var value;
     var updated = false;
@@ -384,6 +587,9 @@
         curr[cat] = value;
         Message.PostAll(getJquery(category));
         Message.PostAll(checkCollapse(category));
+      } else if(override) {
+        Message.PostAll(getJquery(category));
+        Message.PostAll(checkCollapse(category));
       }
     }
     if(updated) {
@@ -393,9 +599,11 @@
 
   var checkCollapse = function(category) {
     var collapse = true;
-    if(category[0] === 'draw-rupie' || category[0] === 'tweet') {
+    if(category[0] === 'draw-rupie' || category[0] === 'tweet' || category[0] === 'freeSingleRoll') {
       category[0] = 'misc';
       if(dailies['draw-rupie'] !==  0 || dailies['tweet']) {
+        collapse = false;
+      } else if(Options.Get('freeSingleRoll') && dailies['freeSingleRoll']) {
         collapse = false;
       }
     } else if(category[0] === 'coop') {
@@ -412,9 +620,8 @@
       var cat = category[0];
       var array = Object.keys(dailies[cat]);
       for(var i = 0; i < array.length; i++) {
-        if(!(array[i] === '4' && !isHL)) {
+        if(!(array[i] === '4' && !isHL) && array[i] !== '5' && array[i] !== '6') {
           if(dailies[cat][array[i]] !== dailiesData[cat][array[i]]) {
-            //console.log()
             collapse = false;
             break;
           }
@@ -426,6 +633,16 @@
       var array = Object.keys(dailies[cat]);
       for(var i = 0; i < array.length; i++) {
         if(dailies[cat][array[i]] === dailiesData[cat][array[i]]) {
+          collapse = false;
+          break;
+        }
+      }
+    } else if(category[0] === 'distinctions') {
+      var cat = category[0];
+      var array = Object.keys(dailies[cat]);
+      for(var i = 0; i < array.length; i++) {
+        if(dailies[cat][array[i]] === 1 && Options.Get(array[i])) {
+          console.log('failing collapse on: ' + dailies[cat][array[i]] + ' ' + Options.Get(array[i]));
           collapse = false;
           break;
         }
@@ -445,7 +662,9 @@
       str += 'Rupie draws: ';
     } else if(category[0] === 'tweet') {
       str += 'Tweet refill: ';
-    } else if(category[0] === 'coop') {
+    } else if(category[0] === 'freeSingleRoll') {
+      str += 'Free Single Roll: ';
+    }else if(category[0] === 'coop') {
       if(category[2] === 'raw' || category[2] === 'max') {
         return undefined;
       }
@@ -468,8 +687,11 @@
         str += '/' + dailiesData[category[0]][category[1]];
       } else if(category[0] === 'coop' && value !== '' && category[2] === 'progress') {
         str += '/' + dailies[category[0]][category[1]]['max'];
+      } else if(category[0] === 'distinctions') {
+        str += '/1'
       }
     }
+    //console.log('setting text: ' + id + ' ' + str);
     return {'setText': {
       'id': id,
       'value': str
@@ -503,5 +725,17 @@
         newDescription = description;
       }
       return newDescription;
+  }
+
+  var increaseRenown = function(isIncreased) {
+    for(var key in renownMax) {
+      if(renownMax.hasOwnProperty(key)) {
+        if(isIncreased) {
+          dailiesData.renown[key] = renownIncreasedMax[key];
+        } else {
+          dailiesData.renown[key] = renownMax[key];
+        }
+      }
+    }
   }
 })();

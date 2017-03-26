@@ -3,7 +3,7 @@
 
   "name": "AnCheera",
   "description": "The GBF Companion Extension that's absolutely bananas.",
-  "version": "0.9.3.0",
+  "version": "1.0.0.0",
 
   "icons": { "16": "src/assets/images/icon16.png",
             "48": "src/assets/images/icon48.png",
@@ -45,13 +45,13 @@
   }],
 
   "permissions": [
-    "storage",
-    "cookies",
     "http://gbf.game.mbga.jp/*",
+    "http://game.granbluefantasy.jp/*",
+    "storage",
     "notifications",
     "tabs",
-    "activeTab",
-    "https://ajax.googleapis.com/"
+    "clipboardWrite",
+    "activeTab"
   ],
 
   "devtools_page": "src/pages/devtools/devtools.html"

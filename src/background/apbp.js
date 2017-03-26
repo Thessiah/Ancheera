@@ -77,11 +77,28 @@
       decAP = json.action_point;
     },
 
-    StartQuest: function(json) {
+    StartQuest: function(json, payload) {
+      var id = payload.quest_id;
+      if(id == 715571 || id == 715561 || id == 715551) {
+        decAP = 50;
+      } else if(id == 715541) {
+        decAP = 30;
+      } else if(id == 715531) {
+        decAP = 25;
+      } else if(id == 715521) {
+        decAP = 15;
+      } else if(id == 715511) {
+        decAP = 10;
+      }
       if(json.result !== undefined && json.result === 'ok') {
         spendAP(decAP);
         decAP = 0;
       }
+      //715561 = dragon
+      //715551
+      //715541
+      //715531
+      //715571 = snowman 50ap
     },
 
     InitializeRaid: function(json) {

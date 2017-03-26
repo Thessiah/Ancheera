@@ -47,12 +47,15 @@
     }
   }
   window.Casino = {
-    Initialize: function() {
+    Initialize: function(callback) {
       Storage.Get(['casino'], function(response) {
         if(response['casino'] !== undefined) {
           casino = response['casino'];
         } else {
           Storage.Set('casino', casino);
+        }
+        if(callback !== undefined) {
+          callback();
         }
       });
 

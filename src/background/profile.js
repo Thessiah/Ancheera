@@ -33,7 +33,15 @@
   var nextCost = 0;
   var nextUpgrade = null;
   window.Profile = {
-    Initialize: function() {
+    Initialize: function(callback) {
+      for(var i = 0; i < restoreIDs.length; i++) {
+        Supplies.Get(restoreIDs[i], 'recovery', function(id, amt) {
+          Message.PostAll({setText : {
+            'id': '#profile-' + id,
+            'value': amt
+          }});
+        });
+      }
       Storage.Get(['profile'], function(response) {
         if(response['profile'] !== undefined) {
           profile = response['profile'];
@@ -45,15 +53,11 @@
             responseList[key][i](profile[key]);
           }
         });
+        if(callback !== undefined) {
+          callback();
+        }
       });
-      for(var i = 0; i < restoreIDs.length; i++) {
-        Supplies.Get(restoreIDs[i], 'recovery', function(id, amt) {
-          Message.PostAll({setText : {
-            'id': '#profile-' + id,
-            'value': amt
-          }});
-        });
-      }
+
     },
     InitializeDev: function() {
       var response = [];
@@ -86,7 +90,7 @@
         tuples = raidTuples;
       }
       tuples['lupi'] = profile['lupi'] + json.rewards.lupi.sum;
-      if(profile['level'] !== json.values.pc.param.new.level) {
+      if(json.values.pc_levelup.is_levelup) {
         var remain = 0;
         for(var i = 1; i <= json.values.pc.param.new.level; i++) {
           if(json.values.pc.param.next_exp_list['' + i] !== undefined) {
@@ -94,6 +98,7 @@
           }
         }
         tuples['levelNextExp'] =  remain - json.values.pc.param.new.exp;
+        APBP.SetMax();
       } else {
         tuples['levelNextExp'] = json.values.pc.param.remain_next_exp - (json.values.get_exp.exp + json.values.get_exp.exp_bonus);
       }
@@ -263,13 +268,17 @@
     SetHomeProfile: function(rank, rankPercent, job, jobPercent, jobPoints, renown, prestige) {
       var tuples = {};
 
-      tuples['level'] = parseInt(rank);
-      tuples['levelPercent'] =  rankPercent.substring(rankPercent.indexOf(': ') + 2, rankPercent.indexOf(';'));
+      tuples['level'] = rank;
+      if(rankPercent !== undefined) {
+        tuples['levelPercent'] =  rankPercent.substring(rankPercent.indexOf(': ') + 2, rankPercent.indexOf(';'));
+      }
       tuples['job'] = parseInt(job);
-      if(profile['job'] === 20) {
-        tuples['zenithPercent'] = jobPercent.substring(jobPercent.indexOf(': ') + 2, jobPercent.indexOf(';'));
-      } else {
-        tuples['jobPercent'] = jobPercent.substring(jobPercent.indexOf(': ') + 2, jobPercent.indexOf(';'));
+      if(jobPercent !== undefined) {
+        if(profile['job'] === 20) {
+          tuples['zenithPercent'] = jobPercent.substring(jobPercent.indexOf(': ') + 2, jobPercent.indexOf(';'));
+        } else {
+          tuples['jobPercent'] = jobPercent.substring(jobPercent.indexOf(': ') + 2, jobPercent.indexOf(';'));
+        }
       }
 
       tuples['jobPoints'] = parseInt(jobPoints);
@@ -384,7 +393,18 @@
       if(nextUpgrade !== undefined) {
         setProfile({[nextUpgrade.category]: profile[nextUpgrade.category] -nextUpgrade.amount});
       }
-    }
+    },
+    PurchaseItem: function(json) {
+      var dir = json.article.article1;
+      if(dir.master !== undefined) {
+        var amt = parseInt(dir.has_number) - parseInt(json.article.article1_number) * json.purchase_number;
+        if(dir.master.id === '92001') {
+          setProfile({'renown': amt});
+        } else if(dir.master.id === '92002') {
+          setProfile({'prestige': amt});
+        }
+      }
+    },
   }
   getCategory = function(item_kind) {
     if(item_kind === '1') {

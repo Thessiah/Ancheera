@@ -15,6 +15,42 @@
   var responseList = {
   }
 
+  var tooltips = {
+    'treasure': {
+      '2': 'Satin Feather\n 1: Scattered Cargo',
+      '3': 'Zephyr Feather\n 1: Scattered Cargo',
+      '4': 'Fine Sand Bottle\n 6: Lucky Charm Hunt',
+      '5': 'Untamed Flame\n 6: Lucky Charm Hunt\n 8: Special Op\'s Request',
+      '6': 'Fresh Water Jug\n 9: Threat to Fisheries',
+      '7': 'Soothing Splash\n 9: Threat to Fisheries',
+      '8': 'Rough Stone\n 13/39/52: Fruit of Lumacie',
+      '9': 'Coarse Alluvium\n 13/39/52: Whiff of Danger',
+      '14': 'Flying Sprout\n1: Scattered Cargo',
+      '16': 'Glowing Coral\n 9: Threat to Fisheries',
+      '17': 'Swirling Amber\n 13/39/52: Whiff of Danger',
+      '22': 'Falcon Feather\n 17: I Challenge You\n 20: What\'s in the Box',
+      '23': 'Spring Water Jug\n 17: I Challenge You\n 20: What\'s in the Box',
+      '24': 'Vermillion Stone\n 17: I Challenge You\n 20: What\'s in the Box\n (2x)18: Strength and Chilvary',
+      '27': 'Slimy Shroom\n 22: For Whom the Bell Tolls',
+      '28': 'Hollow Soul\n 22: For Whom the Bell Tolls\n (2x)22: Playing Cat & Mouse',
+      '29': 'Lacrimosa\n 22: For Whom the Bell Tolls',
+      '33': 'Wheat Stalk\n 25: Golonzo\'s Battle of Old',
+      '34': 'Iron Cluster\n 25: Golonzo\'s Battle of Old',
+      '38': 'Indigo Fruit\n 30/44/65: The Dungeon Diet',
+      '39': 'Foreboding Clover\n 30/44/65: The Dungeon Diet',
+      '40': 'Blood Amber\n 30/44/65: The Dungeon Diet',
+      '52': 'Sand Brick\n 70-4\n 33: No Need for Change\n (2x)34: Antiquarian Troubles',
+      '54': 'Antique Cloth\n 36-3 \n70-4\n33: No need for Charge\n (2x)34: Antiquarian Troubles',
+      '69': 'Prosperity Flame\n (5x)56/58/72: Baker and the Merrymaker\n 56/58/72: A Certain Soldier\'s Pride\n 61: A Mechanical Beast',
+      '70': 'Explosive Material\n (5x)56/58/72: Baker and the Merrymaker\n 56/58/72: A Certain Soldier\'s Pride\n 61: A Mechanical Beast',
+      '71': 'Steel Liquid\n(5x)56/58/72: Baker and the Merrymaker\n 56/58/72: A Certain Soldier\'s Pride',
+      '91': 'Affinity Seed\n 68: Peddler in a Pinch\n 68: Tycoon Trouble',
+      '99': 'Frozen Foliole\n 74-2',
+      '101': 'Bastion Block?\n 80-4 \n 81-1\n 81-4\n 82-4',
+      '102': 'Raw Gemstone?\n 84-4'
+    }
+  }
+
   var updatedSupplies = [];
   var sortedSupplies = [];
   var filter = 'all';
@@ -50,7 +86,7 @@
   // });
 
   window.Supplies = {
-    Initialize: function() {
+    Initialize: function(callback) {
       var categories = ['supplyrecovery', 'supplypowerUp', 'supplytreasure', 'supplyraid', 'supplymaterial', 'supplyevent', 'supplycoop', 'supplymisc', 'supplydraw'];
       Storage.GetMultiple(categories, function(response) {
         var category;
@@ -65,8 +101,9 @@
             }
           }
         }
-        Quest.Initialize();
-        Profile.Initialize(); 
+        if(callback !== undefined) {
+          callback();
+        }
       });
     },
     InitializeDev: function() {
@@ -81,7 +118,8 @@
               'category': category,
               'number': item.count,
               'name': item.name,
-              'sequence': item.sequence
+              'sequence': item.sequence,
+              'tooltip': tooltips[category] ? tooltips[category][id] : undefined
             }});
           });
         }
@@ -149,15 +187,13 @@
         var updated = false;
         var id;
         for(var i = 0; i < json.items.length; i++) {
-          if(json.items[i].number !== "0") {
-            id = json.items[i].item_id;
-            if(supplies.powerUp[id] !== undefined) {
-              if(updateSupply(id, 'powerUp', json.items[i].number)){
-                updated = true;
-              }
-            } else {
-              updated = newSupply(id, 'powerUp', json.items[i].number, json.items[i].name, '' + (100000 + parseInt(id)));
+          id = json.items[i].item_id;
+          if(supplies.powerUp[id] !== undefined) {
+            if(updateSupply(id, 'powerUp', json.items[i].number)){
+              updated = true;
             }
+          } else {
+            updated = newSupply(id, 'powerUp', json.items[i].number, json.items[i].name, '' + (100000 + parseInt(id)));
           }
         }
         if(updated) {
@@ -215,7 +251,6 @@
         var updated = false;
         var id;
         for(var i = 0; i < json.length; i++) {
-          if(json[i].number !== "0") {
             id = json[i].item_id;
             if(supplies.draw[id] !== undefined) {
               if(updateSupply(id, 'draw', json[i].number)){
@@ -224,7 +259,6 @@
             } else {
               updated = newSupply(id, 'draw', json[i].number, json[i].name, '' + (200000 + parseInt(id)));
             }
-          }
         }
         if(updated) {
           saveSupply('draw');
@@ -508,7 +542,9 @@
   }
 
   var incrementSupply = function(id, category, number) {
-    return updateSupply(id, category, supplies[category][id].count + parseInt(number));
+    if(supplies[category][id] !== undefined) {
+      return updateSupply(id, category, supplies[category][id].count + parseInt(number));
+    }
   }
 
   var newSupply = function(id, category, number, name, sequence) {
@@ -524,73 +560,20 @@
     if(number > 9999) {
       number = 9999;
     }
+    
     Message.PostAll({addItem: {
       'id': id,
       'category': category,
       'number': number,
       'name': name,
-      'sequence': sequence
+      'sequence': sequence,
+      'tooltip': tooltips[category] ? tooltips[category][id] : undefined
     }});
     if(responseList[category] !== undefined && responseList[category][id] !== undefined) {
       for(var i = 0; i < responseList[category][id].length; i++) {
         responseList[category][id][i](id, number);
       }
     }
-    //supplies.all[id] = category;
-    // var newItem = $supplyItem.clone();
-    // newItem.attr('id', 'supply-' + sequence + '-' + id);
-    // if(category === 'recovery' || category === 'draw' || category === 'powerUp') {
-    //   newItem.data('category', 'misc');
-    // } else {
-    //   newItem.data('category', category);
-    // }
-    // if((filter !== 'all' && filter !== category) || name.toLowerCase().indexOf(search) === -1) {
-    //   newItem.hide();
-    // }
-    // newItem.data('name', name.toLowerCase());
-    // var imgURL;
-    // if(category === 'recovery') {
-    //   imgURL = 'http://gbf.game-a.mbga.jp/assets_en/img/sp/assets/item/normal/s/';
-    // } else if(category === 'powerUp') {
-    //   imgURL = 'http://gbf.game-a.mbga.jp/assets_en/img/sp/assets/item/evolution/s/';
-    // } else if(category === 'draw') {
-    //   imgURL = 'http://gbf.game-a.mbga.jp/assets_en/img/sp/assets/item/ticket/';
-    // } else {
-    //   imgURL = 'http://gbf.game-a.mbga.jp/assets_en/img/sp/assets/item/article/s/';
-    // }
-    // imgURL += id + '.jpg';
-    // newItem.children('.item-img').first().attr('src', imgURL);
-    // newItem.children('.item-count').first().text(number);
-    // //if(sortedSupplies.length > 0) {
-    //   var low = 0
-    //   var high = sortedSupplies.length;
-    //   while (low < high) {
-    //     var mid = low + high >>> 1;
-    //     if (sortedSupplies[mid].sequence < parseInt(sequence)) {
-    //       low = mid + 1;
-    //     } else {
-    //       high = mid;
-    //     }
-    //   }
-    //   //Message.ConsoleLog('supplies.js', 'low: ' + low + ' low value: ' + sortedSupplies[low]);
-    //   if(low < sortedSupplies.length) {
-    //     $supplyList.children('#supply-' + sortedSupplies[low].sequence + '-' + sortedSupplies[low].id).before(newItem);
-    //     sortedSupplies.splice(low, 0, {
-    //       'sequence': parseInt(sequence),
-    //       'id': parseInt(id)
-    //     });
-    //   } else {
-    //     $supplyList.append(newItem);
-    //     sortedSupplies.push({
-    //       'sequence': parseInt(sequence),
-    //       'id': parseInt(id)
-    //     });
-    //   }
-    //   if(responseList[category] !== undefined && responseList[category][id] !== undefined) {
-    //     for(var i = 0; i < responseList[category][id].length; i++) {
-    //       responseList[category][id][i](id, parseInt(number));
-    //     }
-    //   }
     return true;
   }
 

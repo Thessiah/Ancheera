@@ -17,6 +17,11 @@
   
   var timeZone;
 
+  var anchiraSun = '#f8e5be';
+  var anchiraAlert = '#ffd4e3';
+  var nightSun = '#705d7f';
+  var nightAlert = '#749d91';
+
   var time = {
     'daily': 0,
     'weekly': 0,
@@ -72,7 +77,7 @@
   }
 
   window.Time = {
-    Initialize: function() {
+    Initialize: function(callback) {
       date = new Date();
 
       date.setMinutes(date.getMinutes() + date.getTimezoneOffset() + 540);
@@ -138,6 +143,9 @@
         }
         newDate();
         startClock();
+        if(callback !== undefined) {
+          callback();
+        }
       });
     },
     InitializeDev: function() {
@@ -214,6 +222,11 @@
         str = "PARSETIME ERROR";
       }
       return str;
+    },
+    UpdateAlertColor() {
+      Object.keys(isTimes).forEach(function(key) {
+        Message.PostAll(getJquery(key));
+      });
     }
   }
 
@@ -601,15 +614,22 @@
         }
       };
     } else if(isTimes[category] !== undefined) {
+      var alert = anchiraAlert;
+      var sun = anchiraSun;
+      var theme = Options.Get('windowTheme');
+      if(theme === 'Tiamat Night') {
+        alert = nightAlert;
+        sun = nightSun;
+      }
       if(isTimes[category] === true) {
         return {setColor: {
           'id': '#time-' + category,
-          'value': '#ffd4e3'
+          'value': alert //alert
         }};
       } else if(isTimes[category] === false) {
         return {setColor: {
           'id': '#time-' + category,
-          'value': '#f8e5be'
+          'value': sun //sun
         }};
       }
     }
