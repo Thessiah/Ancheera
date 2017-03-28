@@ -24,6 +24,7 @@
     }
     filterSupplies($(this).data('category'));
     $currCategory = $(this).parent('li');
+    resetDropdowns();
   });
 
   var $raidsPanel = $('#raids-panel');
@@ -49,6 +50,12 @@
   var $buffsPanel = $('#quest-buffs-panel');
   var $questBuff = $('#quest-buff').clone();
   $('#quest-buff').remove();
+
+  var $weaponPlanner = $('#weapon-planner');
+  var $weaponType = $('#weapon-type');
+  var $weaponElement = $('#weapon-element');
+  var $weaponStart = $('#weapon-start');
+  var $weaponEnd = $('#weapon-end');
   
 
   $searchSupplies.on('input paste', function(){
@@ -58,6 +65,7 @@
       filter = 'all';
     }
     searchSupplies($(this).val());
+    resetDropdowns();
   });
 
 
@@ -87,6 +95,47 @@
     }
     toggleTimes();
   });
+
+  // $('#weapon-planner-dropdown').find('a').each(function() {
+  //   $(this).click(function() {
+  //   });
+  // });
+
+  var dropdownHash = {
+    'revenant': [
+      {
+        'name': 'type',
+        'texts': ['Spear', 'Bow', 'Axe']
+      },
+    ]
+  }
+
+  $('#weapon-dropdowns').find('.dropup').each(function() {
+    var btn = $(this).find('.dropdown-text').first();
+    $(this).find('a').each(function() {
+      var $this = $(this);
+      $this.click(function() {
+        btn.text($this.text());
+      });
+    });
+  });
+
+  $('#weapon-planner-dropdown').find('a').each(function() {
+  });
+
+  var resetDropdowns = function() {
+    $weaponPlanner.find('.dropdown-text').text('Planner');
+    $weaponType.find('.dropdown-text').text('Type');
+    $weaponElement.find('.dropdown-text').text('Element');
+    $weaponStart.find('.dropdown-text').text('Current');
+    $weaponEnd.find('.dropdown-text').text('Target');
+    $weaponType.hide();
+    $weaponElement.hide();
+    $weaponStart.hide();
+    $weaponEnd.hide();
+  }
+
+  resetDropdowns();
 
   var messages = [
     'Click every panel!',
@@ -577,6 +626,8 @@
     sheetURL += '.css';
     document.getElementById('pagestyle').setAttribute('href', sheetURL);
   }
+
+  
   window.Message = {
     Post: function(message) {
       message.id = chrome.devtools.inspectedWindow.tabId;
