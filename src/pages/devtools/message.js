@@ -79,7 +79,7 @@
 
   $('#time-zone').click(function() {
     isJST = !isJST;
-    Message.Post({'debug': true});
+    //Message.Post({'debug': true});
     if(isJST) {
       $(this).text('JST');
     } else {
@@ -408,12 +408,12 @@
     newItem.children('.item-img').first().attr('src', imgURL);
     newItem.children('.item-count').first().text(number);
     newItem.children('.item-count').first().attr('id', 'supply-' + sequence + '-' + id + '-count');
-    //var tooltipText = category + '-' + id + ':' + name;
-    if(tooltip !== undefined) {
-      tooltipText = tooltip;
-    } else {
-      tooltipText = name;
-    }
+    var tooltipText = category + '-' + id + ':' + name;
+    // if(tooltip !== undefined) {
+    //   tooltipText = tooltip;
+    // } else {
+    //   tooltipText = name;
+    // }
     newItem.prop('title', tooltipText);
     newItem.tooltip();
         //alert(3);

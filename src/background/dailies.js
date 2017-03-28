@@ -70,6 +70,8 @@
     'draw-rupie': 101,
     'tweet': true,
     'freeSingleRoll': true,
+    'freeTenRoll': true,
+    'primarchs': 2,
     'coop': {
       '0': {
         'raw': '',
@@ -249,8 +251,9 @@
         
       });
       Storage.GetMultiple(['dailies'], function(response) {
+        
         if(response['dailies'] !== undefined) {
-          if(response['dailies']['freeSingleRoll'] === undefined) {
+          if(response['dailies']['primarchs'] === undefined) {
             for(var key in dailies) {
               if(response['dailies'][key] == undefined) {
                 response['dailies'][key] = dailies[key];
@@ -324,7 +327,7 @@
       return response;
     },
     Reset: function() {
-      var array = [['draw-rupie'], 101, ['tweet'], true, ['freeSingleRoll'], true];
+      var array = [['draw-rupie'], 101, ['tweet'], true, ['freeSingleRoll'], true, ['freeTenRoll'], true, ['primarchs'], 2];
       Object.keys(dailies.coop).forEach(function(key) {
         array.push(['coop', key, 'raw'], '');
         array.push(['coop', key, 'quest'], '???');
@@ -599,9 +602,9 @@
 
   var checkCollapse = function(category) {
     var collapse = true;
-    if(category[0] === 'draw-rupie' || category[0] === 'tweet' || category[0] === 'freeSingleRoll') {
+    if(category[0] === 'draw-rupie' || category[0] === 'tweet' || category[0] === 'freeSingleRoll' || category[0] === 'primarchs') {
       category[0] = 'misc';
-      if(dailies['draw-rupie'] !==  0 || dailies['tweet']) {
+      if(dailies['draw-rupie'] !==  0 || dailies['tweet'] || dailies['primarchs'] !== 0) {
         collapse = false;
       } else if(Options.Get('freeSingleRoll') && dailies['freeSingleRoll']) {
         collapse = false;

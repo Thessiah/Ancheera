@@ -272,6 +272,18 @@
 
     'Lvl 100 Huanglong': 'Lv100 黄龍',
     'Lvl 100 Qilin': 'Lv100 黒麒麟',
+    
+    'Lvl 100 Xeno Ifrit': 'Lv100 ゼノ・イフリート',
+    'Lvl 100 Xeno Vohu Manah': 'Lv100 ゼノ・ウォフマナフ',
+    'Lvl 100 Xeno Cocytus': 'Lv100 ゼノ・',
+    'Lvl 100 Xeno Sagittarius': 'Lv100 ゼノ・',
+    'Lvl 100 Xeno Diablo': 'Lv100 ゼノ・',
+    'Lvl 100 Xeno Corow': 'Lv100 ゼノ・',
+
+    'Lvl 100 Raphael': 'Lv100 ラファエル',
+    'Lvl 100 Gabriel': 'Lv100 ガブリエル',
+    'Lvl 100 Uriel': 'Lv100 ウリエル',
+    'Lvl 100 Michael': 'Lv100 ミカエル'
   }
 
   var sortByElement = function(a, b) {

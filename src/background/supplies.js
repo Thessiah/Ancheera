@@ -14,42 +14,353 @@
   }
   var responseList = {
   }
+  var planners = {
+    revenant: {},
+    class: {}
+  }
 
   var tooltips = {
-    'treasure': {
-      '2': 'Satin Feather\n 1: Scattered Cargo',
-      '3': 'Zephyr Feather\n 1: Scattered Cargo',
-      '4': 'Fine Sand Bottle\n 6: Lucky Charm Hunt',
-      '5': 'Untamed Flame\n 6: Lucky Charm Hunt\n 8: Special Op\'s Request',
-      '6': 'Fresh Water Jug\n 9: Threat to Fisheries',
-      '7': 'Soothing Splash\n 9: Threat to Fisheries',
-      '8': 'Rough Stone\n 13/39/52: Fruit of Lumacie',
-      '9': 'Coarse Alluvium\n 13/39/52: Whiff of Danger',
-      '14': 'Flying Sprout\n1: Scattered Cargo',
-      '16': 'Glowing Coral\n 9: Threat to Fisheries',
-      '17': 'Swirling Amber\n 13/39/52: Whiff of Danger',
-      '22': 'Falcon Feather\n 17: I Challenge You\n 20: What\'s in the Box',
-      '23': 'Spring Water Jug\n 17: I Challenge You\n 20: What\'s in the Box',
-      '24': 'Vermillion Stone\n 17: I Challenge You\n 20: What\'s in the Box\n (2x)18: Strength and Chilvary',
-      '27': 'Slimy Shroom\n 22: For Whom the Bell Tolls',
-      '28': 'Hollow Soul\n 22: For Whom the Bell Tolls\n (2x)22: Playing Cat & Mouse',
-      '29': 'Lacrimosa\n 22: For Whom the Bell Tolls',
-      '33': 'Wheat Stalk\n 25: Golonzo\'s Battle of Old',
-      '34': 'Iron Cluster\n 25: Golonzo\'s Battle of Old',
-      '38': 'Indigo Fruit\n 30/44/65: The Dungeon Diet',
-      '39': 'Foreboding Clover\n 30/44/65: The Dungeon Diet',
-      '40': 'Blood Amber\n 30/44/65: The Dungeon Diet',
-      '52': 'Sand Brick\n 70-4\n 33: No Need for Change\n (2x)34: Antiquarian Troubles',
-      '54': 'Antique Cloth\n 36-3 \n70-4\n33: No need for Charge\n (2x)34: Antiquarian Troubles',
-      '69': 'Prosperity Flame\n (5x)56/58/72: Baker and the Merrymaker\n 56/58/72: A Certain Soldier\'s Pride\n 61: A Mechanical Beast',
-      '70': 'Explosive Material\n (5x)56/58/72: Baker and the Merrymaker\n 56/58/72: A Certain Soldier\'s Pride\n 61: A Mechanical Beast',
-      '71': 'Steel Liquid\n(5x)56/58/72: Baker and the Merrymaker\n 56/58/72: A Certain Soldier\'s Pride',
-      '91': 'Affinity Seed\n 68: Peddler in a Pinch\n 68: Tycoon Trouble',
-      '99': 'Frozen Foliole\n 74-2',
-      '101': 'Bastion Block?\n 80-4 \n 81-1\n 81-4\n 82-4',
-      '102': 'Raw Gemstone?\n 84-4'
+      'Satin Feather': ['1: Scattered Cargo'],
+      'Zephyr Feather': ['1: Scattered Cargo'],
+      'Fine Sand Bottle': ['6: Lucky Charm Hunt'],
+      'Untamed Flame': ['8-2', '6: Lucky Charm Hunt', '8: Special Op\'s Request'],
+      'Fresh Water Jug': ['9: Threat to Fisheries'],
+      'Soothing Splash': ['9: Threat to Fisheries'],
+      'Rough Stone': ['15/53-3', '13/39/52: Whiff of Danger', '13/39/52: Fruit of Lumacie'],
+      'Coarse Alluvium': ['15/53-3', '13/39/52: Whiff of Danger'],
+      'Flying Sprout': ['1: Scattered Cargo'],
+      'Glowing Coral': ['9: Threat to Fisheries'],
+      'Swirling Amber': ['13/39/52: Whiff of Danger'],
+      'Falcon Feather': ['17: I Challenge You', '20: What\'s in the Box'],
+      'Spring Water Jug': ['17: I Challenge You', '20: What\'s in the Box'],
+      'Vermillion Stone': ['17: I Challenge You', '20: What\'s in the Box', '(2x)18: Strength and Chilvary'],
+      'Slimy Shroom': ['22: For Whom the Bell Tolls'],
+      'Hollow Soul': ['22: For Whom the Bell Tolls', '(2x)22: Playing Cat & Mouse'],
+      'Lacrimosa': ['22: For Whom the Bell Tolls'],
+      'Wheat Stalk': ['25: Golonzo\'s Battle of Old'],
+      'Iron Cluster': ['25: Golonzo\'s Battle of Old'],
+      'Indigo Fruit': ['32-4', '30/44/65: The Dungeon Diet'],
+      'Foreboding Clover': ['32-4', '30/44/65: The Dungeon Diet'],
+      'Blood Amber': ['32-4', '30/44/65: The Dungeon Diet'],
+      'Sand Brick': ['70-4', '33: No Need for Change', '(2x)34: Antiquarian Troubles'],
+      'Antique Cloth': ['70-4', '33: No need for Charge', '(2x)34: Antiquarian Troubles'],
+      'Prosperity Flame': ['(5x)56/58/72: Baker and the Merrymaker', '56/58/72: A Certain Soldier\'s Pride', '61: A Mechanical Beast'],
+      'Explosive Material': ['(5x)56/58/72: Baker and the Merrymaker', '56/58/72: A Certain Soldier\'s Pride', '61: A Mechanical Beast'],
+      'Steel Liquid': ['(5x)56/58/72: Baker and the Merrymaker', '56/58/72: A Certain Soldier\'s Pride'],
+      'Affinity Seed': ['68: Peddler in a Pinch', '68: Tycoon Trouble'],
+      'Frozen Foliole': ['74-2'],
+      'Bastion Block': ['80-4', '81-1', '81-4', '82-4'],
+      'Raw Gemstone': ['84-4']
+  }
+
+  var createPlannerCrystal = function(count) {
+    return {
+      'type': 'crystal',
+      'count': count
     }
   }
+
+  var createPlannerElement = function(materialType, materialTier, count) {
+    return {
+      'type': 'element',
+      'materialType': materialType,
+      'materialTier': materialTier,
+      'count': count
+    }
+  }
+
+  var createPlannerClass = function(materialType, count) {
+    return {
+      'type': 'class',
+      'materialType': materialType,
+      'count': count
+    }
+  }
+
+  var createPlannerSupply = function(category, id, count) {
+    return {
+      'type': 'supply',
+      'category': category,
+      'id': id,
+      'count': count
+    }
+  }
+
+  var createSupplyInfo = function(category, id) {
+    return{
+      'category': category,
+      'id': id
+    }
+  }
+
+  var planners = {
+    'revenant': [
+      {
+        'name': 'Awakening',
+        'items': [
+          createPlannerSupply('material', '1052', 50),
+          createPlannerSupply('material', '1351', 50),
+          createPlannerSupply('material', '1353', 50),
+          createPlannerSupply('material', '2001', 50),
+          createPlannerSupply('material', '1052', 50),
+          createPlannerCrystal(100)
+        ]
+      },
+      {
+        'name': 'Element Change',
+        'items': [
+          createPlannerElement('orb', '0', 250),
+          createPlannerElement('tome', '2', 250),
+          createPlannerSupply('material', '1202', 250),
+        ]
+      },
+      {
+        'name': 'First Upgrade',
+        'items': [
+          createPlannerSupply('treasure', '2', 300),
+          createPlannerSupply('treasure', '5', 100),
+          createPlannerSupply('treasure', '8', 100),
+          createPlannerElement('orb', '0', 100),
+          createPlannerElement('tome', '0', 100),
+          createPlannerElement('tome', '1', 150),
+          createPlannerElement('tome', '2', 100),
+          createPlannerSupply('material', '2002', 10),
+          createPlannerSupply('material', '1', 3),
+          createPlannerCrystal(100)
+        ]
+      },
+      {
+        'name': 'Second Upgrade',
+        'items': [
+          createPlannerSupply('treasure', '6', 100),
+          createPlannerSupply('treasure', '24', 100),
+          createPlannerSupply('treasure', '28', 100),
+          createPlannerElement('orb', '0', 150),
+          createPlannerElement('tome', '0', 150),
+          createPlannerElement('tome', '2', 150),
+          createPlannerElement('scale', '0', 30),
+          createPlannerElement('magna', '3', 3),
+          createPlannerSupply('material', '1204', 50),
+          createPlannerSupply('material', '1', 5),
+          createPlannerCrystal(200)
+        ]
+      },
+      {
+        'name': 'Third Upgrade',
+        'items': [
+          createPlannerSupply('treasure', '3', 300),
+          createPlannerSupply('treasure', '22', 100),
+          createPlannerSupply('treasure', '39', 80),
+          createPlannerElement('orb', '0', 200),
+          createPlannerElement('orb', '1', 100),
+          createPlannerElement('tome', '2', 200),
+          createPlannerElement('magna', '0', 100),
+          createPlannerSupply('material', '2002', 10),
+          createPlannerSupply('material', '1', 7),
+          createPlannerCrystal(300)
+        ]
+      },
+      {
+        'name': 'Fourth Upgrade',
+        'items': [
+          createPlannerSupply('treasure', '17', 100),
+          createPlannerSupply('treasure', '29', 100),
+          createPlannerSupply('treasure', '40', 80),
+          createPlannerElement('orb', '0', 250),
+          createPlannerElement('tome', '2', 250),
+          createPlannerElement('scale', '0', 50),
+          createPlannerElement('magna', '3', 3),
+          createPlannerSupply('material', '1204', 150),
+          createPlannerSupply('material', '1', 10),
+          createPlannerCrystal(400)
+        ]
+      },
+      {
+        'name': 'Fifth Upgrade',
+        'items': [
+          createPlannerSupply('raid', '32', 20),
+          createPlannerSupply('raid', '47', 20),
+          createPlannerSupply('raid', '48', 20),
+          createPlannerSupply('raid', '49', 20),
+          createPlannerSupply('raid', '50', 20),
+          createPlannerSupply('raid', '51', 20),
+          createPlannerSupply('treasure', '54', 100),
+          createPlannerElement('magna', '2', 60),
+          createPlannerSupply('material', '2002', 10),
+          createPlannerSupply('material', '1', 15),
+          createPlannerCrystal(500)
+        ]
+      },
+      {
+        'name': 'Sixth Upgrade',
+        'items': [
+          createPlannerSupply('raid', '41', 3),
+          createPlannerSupply('raid', '42', 3),
+          createPlannerSupply('raid', '43', 3),
+          createPlannerSupply('raid', '44', 3),
+          createPlannerSupply('raid', '45', 3),
+          createPlannerSupply('raid', '46', 3),
+          createPlannerSupply('material', '1204', 250),
+          createPlannerSupply('material', '1', 30),
+          createPlannerSupply('powerUp', '200004', 1),
+          createPlannerCrystal(500)
+        ]
+      },
+    ],
+    'class': [
+      {
+        'name': 'Forge',
+        'items': [
+          createPlannerClass('primal'),
+          createPlannerClass('coop1', 15),
+          createPlannerClass('coop2', 15),
+          createPlannerClass('creed', 10),
+          createPlannerClass('tome', 70),
+          createPlannerSupply('treasure', '54', 40),
+          createPlannerSupply('material', '1201', 200),
+          createPlannerSupply('material', '1', 5)
+        ]
+      },
+      {
+        'name': 'Rebuild',
+        'items': [
+          createPlannerClass('distinction', 10),
+          createPlannerClass('stone', 256),
+          createPlannerClass('quartz', 50),
+          createPlannerClass('creed', 25),
+          createPlannerSupply('material', '2001', 30),
+          createPlannerSupply('material', '1201', 120),
+          createPlannerSupply('material', '1', 5),
+          createPlannerSupply('powerUp', '20003', 2),
+          createPlannerElement('quartz', '0', 50),
+        ]
+      },
+      {
+        'name': 'Element Change',
+        'items': [
+          createPlannerClass('distinction', 30),
+          createPlannerClass('stone', 512),
+          createPlannerClass('grimoire1', 15),
+          createPlannerClass('grimoire2', 15),
+          createPlannerElement('magna', '4', 30),
+          createPlannerElement('primal', '2', 200),
+          createPlannerSupply('raid', '107', 3),
+          createPlannerSupply('material', '1', 15),
+        ]
+      }
+    ]
+  }
+
+  var elements = {
+    'orb': {
+      '0': {
+        'fire': createSupplyInfo('material', '1011'),
+        'water': createSupplyInfo('material', '1021'),
+        'earth': createSupplyInfo('material', '1031'),
+        'wind': createSupplyInfo('material', '1041'),
+        'light': createSupplyInfo('material', '1051'),
+        'dark' : createSupplyInfo('material', '1061')
+      },
+      '1': {
+        'fire': createSupplyInfo('material', '1012'),
+        'water': createSupplyInfo('material', '1022'),
+        'earth': createSupplyInfo('material', '1032'),
+        'wind': createSupplyInfo('material', '1042'),
+        'light': createSupplyInfo('material', '1052'),
+        'dark' : createSupplyInfo('material', '1062')
+      }
+    },
+    'tome': {
+      '0': {
+        'fire': createSupplyInfo('material', '1311'),
+        'water': createSupplyInfo('material', '1321'),
+        'earth': createSupplyInfo('material', '1331'),
+        'wind': createSupplyInfo('material', '1341'),
+        'light': createSupplyInfo('material', '1351'),
+        'dark' : createSupplyInfo('material', '1361')
+      },
+      '1': {
+        'fire': createSupplyInfo('material', '1312'),
+        'water': createSupplyInfo('material', '1322'),
+        'earth': createSupplyInfo('material', '1332'),
+        'wind': createSupplyInfo('material', '1342'),
+        'light': createSupplyInfo('material', '1352'),
+        'dark' : createSupplyInfo('material', '1362')
+      },
+      '2': {
+        'fire': createSupplyInfo('material', '1313'),
+        'water': createSupplyInfo('material', '1323'),
+        'earth': createSupplyInfo('material', '1333'),
+        'wind': createSupplyInfo('material', '1343'),
+        'light': createSupplyInfo('material', '1353'),
+        'dark' : createSupplyInfo('material', '1363')
+      }
+    },
+    'scale': {
+      '0': {
+        'fire': createSupplyInfo('material', '1111'),
+        'water': createSupplyInfo('material', '1121'),
+        'earth': createSupplyInfo('material', '1131'),
+        'wind': createSupplyInfo('material', '1141'),
+        'light': createSupplyInfo('material', '1151'),
+        'dark' : createSupplyInfo('material', '1161')
+      }
+    },
+    'magna': {
+      '0': {
+        'fire': createSupplyInfo('raid', '11'),
+        'water': createSupplyInfo('raid', '12'),
+        'earth': createSupplyInfo('raid', '13'),
+        'wind': createSupplyInfo('raid', '10'),
+        'light': createSupplyInfo('raid', '25'),
+        'dark' : createSupplyInfo('raid', '30')
+      },
+      '1': {
+        'fire': createSupplyInfo('raid', '19'),
+        'water': createSupplyInfo('raid', '20'),
+        'earth': createSupplyInfo('raid', '21'),
+        'wind': createSupplyInfo('raid', '18'),
+        'light': createSupplyInfo('raid', '26'),
+        'dark' : createSupplyInfo('raid', '31')
+      },
+      '2': {
+        'fire': createSupplyInfo('raid', '47'),
+        'water': createSupplyInfo('raid', '48'),
+        'earth': createSupplyInfo('raid', '49'),
+        'wind': createSupplyInfo('raid', '32'),
+        'light': createSupplyInfo('raid', '50'),
+        'dark' : createSupplyInfo('raid', '51')
+      },
+      '3': {
+        'fire': createSupplyInfo('raid', '41'),
+        'water': createSupplyInfo('raid', '42'),
+        'earth': createSupplyInfo('raid', '43'),
+        'wind': createSupplyInfo('raid', '44'),
+        'light': createSupplyInfo('raid', '45'),
+        'dark' : createSupplyInfo('raid', '46')
+      },
+      '4': {
+        'fire': createSupplyInfo('raid', '101'),
+        'water': createSupplyInfo('raid', '102'),
+        'earth': createSupplyInfo('raid', '103'),
+        'wind': createSupplyInfo('raid', '104'),
+        'light': createSupplyInfo('raid', '105'),
+        'dark' : createSupplyInfo('raid', '106')
+      }
+    },
+    'quartz': {
+      '0': {
+        'fire': createSupplyInfo('material', '5011'),
+        'water': createSupplyInfo('material', '5021'),
+        'earth': createSupplyInfo('material', '5031'),
+        'wind': createSupplyInfo('material', '5041'),
+        'light': createSupplyInfo('material', '5051'),
+        'dark' : createSupplyInfo('material', '5061')
+      }
+    }
+  }
+
+
 
   var updatedSupplies = [];
   var sortedSupplies = [];
@@ -119,7 +430,7 @@
               'number': item.count,
               'name': item.name,
               'sequence': item.sequence,
-              'tooltip': tooltips[category] ? tooltips[category][id] : undefined
+              'tooltip': createTooltip(item.name)
             }});
           });
         }
@@ -504,6 +815,10 @@
     Storage.Set('supply' + category, {'supplies': supplies[category]});
   }
 
+  var savePlanner = function(type) {
+    Storage.Set('planner' + type, {'planner': planner[type]});
+  }
+
   var saveUpdateSupply = function(id, category, number) {
     if(updateSupply(id, category, number)) {
       saveSupply(category);
@@ -567,7 +882,7 @@
       'number': number,
       'name': name,
       'sequence': sequence,
-      'tooltip': tooltips[category] ? tooltips[category][id] : undefined
+      'tooltip': createTooltip(name)
     }});
     if(responseList[category] !== undefined && responseList[category][id] !== undefined) {
       for(var i = 0; i < responseList[category][id].length; i++) {
@@ -597,5 +912,26 @@
     //     $(this).hide();
     //   }
     // });
+  }
+
+  var createTooltip = function(name) {
+    var tooltip = name;
+    if(tooltips[name]) {
+      for(var i = 0; i < tooltips[name].length; i++) {
+        tooltip += '\n' + tooltips[name][i];
+      }
+    }
+    return tooltip;
+  }
+
+  var setPlanner = function(category, type, element, start, end) {
+    if(start !== -1) {
+      for(var i = start; i < end; i++) {
+
+      }
+    } else {
+      planners[category] = {};
+    }
+    savePlanner(category);
   }
 })();

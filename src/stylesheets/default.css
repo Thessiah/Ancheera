@@ -7786,10 +7786,6 @@ button.close {
   white-space: pre;
 }
 
-#contents {
-  display: none;
-}
-
 #wait {
   display: flex;
   align-items: center;
