@@ -5,6 +5,14 @@
     <link id="pagestyle" href="../../stylesheets/default.css" rel="stylesheet">
   </head>
   <body>
+    <div id="garbage">
+      <div id="garbage1" class="garbage">
+        <img src="../../assets/images/garbage/garbage1.png" class="garbage-img">
+      </div>
+      <div id="garbage2" class="garbage">
+        <img src="../../assets/images/garbage/garbage2.png" class="garbage-img">
+      </div>
+    </div>
     <div id="wait">
       <div class="sky-panel">
         <div class="line">
@@ -20,8 +28,7 @@
         </div>
       </div>
     </div>
-    <div id="contents">
-      
+    <div id="contents">    
       <div id="ap-bp-panel">
         <div id="icons">
         <div id="quest-repeat" class=" icon open-url" data-url="">
@@ -198,10 +205,6 @@
                 <div class="inventory-category open-url" data-url= "#enhancement/summon/base">
                   <img src="../../assets/images/icons/summon.png" class="inventory-img">
                   <div id="profile-summon" class="inventory-count">???</div>
-                </div>
-                <div class="inventory-category open-url" data-url= "#enhancement/npc/base">
-                  <img src="../../assets/images/icons/character.png" class="inventory-img">
-                  <div id="profile-characterNumber" class="inventory-count">???</div>
                 </div>
               </div>
             </div>
@@ -400,6 +403,9 @@
                       </li>
                       <li id="dailies-freeSingleRoll-Panel" class="misc-div open-url" data-url="#gacha">
                         <div id="dailies-freeSingleRoll">tweet avaialable</div>
+                      </li>
+                      <li id="dailies-primarchs-Panel" class="misc-div open-url" data-url="#quest/extra">
+                        <div id="dailies-primarchs">Primarchs: 2</div>
                       </li>
                     </ul>
                   </div>
@@ -646,77 +652,84 @@
                   <img src="../../assets/images/items/1.jpg" class="item-img">
                   <div class="item-count">9999</div>
                 </li>
+                <!--<li class="weapon-item">
+                  <img src="../../assets/images/items/1.jpg" class="item-img">
+                  <div class="item-count">
+                    <div class="item-curr">9999</div>
+                    <div class="item-max">9999</div>
+                  </div>
+                </li>-->
               </ul>
             </div>
             <div id="weapon-dropdowns">
-              <div class="dropup">
+              <!--<div class="dropup">
                 <button id="weapon-planner" class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
-                  <span class="dropdown-text">Planner</span><span class="caret"></span>
+                  <span class="dropdown-text" data-default="Planner">Planner</span><span class="caret"></span>
                 </button>
                 <ul id="weapon-planner-dropdown"class="dropdown-menu">
                   <li><a id="revenant">Revenant</a></li>
                   <li><a id="class">Class Champion</a></li>
                   <li><a id="seraph">Seraph</a></li>
                 </ul>
-              </div>
+              </div>-->
               <div class="dropup">
                 <button id="weapon-type" class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
-                  <span class="dropdown-text">Type</span><span class="caret"></span>
+                  <span class="dropdown-text" data-default="Type">Type</span><span class="caret"></span>
                 </button>
                 <ul id="weapon-type-dropdown" class="dropdown-menu">
-                  <li><a >Spear</a></li>
-                  <li><a >Bow</a></li>
-                  <li><a >Axe</a></li>
-                  <li><a >Blade</a></li>
-                  <li><a >Staff</a></li>
-                  <li><a >Fist</a></li>
-                  <li><a >Sword</a></li>
-                  <li><a >Katana</a></li>
-                  <li><a >Harp</a></li>
-                  <li><a >Gun</a></li>
+                  <li><a data-weapon="type">Spear</a></li>
+                  <li><a data-weapon="type">Bow</a></li>
+                  <li><a data-weapon="type">Axe</a></li>
+                  <li><a data-weapon="type">Blade</a></li>
+                  <li><a data-weapon="type">Staff</a></li>
+                  <li><a data-weapon="type">Fist</a></li>
+                  <li><a data-weapon="type">Sword</a></li>
+                  <li><a data-weapon="type">Katana</a></li>
+                  <li><a data-weapon="type">Harp</a></li>
+                  <li><a data-weapon="type">Gun</a></li>
                 </ul>
               </div>
               <div class="dropup">
                 <button id="weapon-element" class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
-                  <span class="dropdown-text">Element</span><span class="caret"></span>
+                  <span class="dropdown-text" data-default="Element">Element</span><span class="caret"></span>
                 </button>
                 <ul id="weapon-element-dropdown" class="dropdown-menu">
-                  <li><a >Fire</a></li>
-                  <li><a >Water</a></li>
-                  <li><a >Earth</a></li>
-                  <li><a >Wind</a></li>
-                  <li><a >Light</a></li>
-                  <li><a >Dark</a></li>
+                  <li><a data-weapon="element">Fire</a></li>
+                  <li><a data-weapon="element">Water</a></li>
+                  <li><a data-weapon="element">Earth</a></li>
+                  <li><a data-weapon="element">Wind</a></li>
+                  <li><a data-weapon="element">Light</a></li>
+                  <li><a data-weapon="element">Dark</a></li>
                 </ul>
               </div>
               <div class="dropup">
                 <button id="weapon-start" class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
-                  <span class="dropdown-text">Current</span><span class="caret"></span>
+                  <span class="dropdown-text" data-default="Current">Current</span><span class="caret"></span>
                 </button>
                 <ul id="weapon-start-dropdown" class="dropdown-menu">
-                  <li><a >Awakening</a></li>
-                  <li><a >Element Change</a></li>
-                  <li><a >First Upgrade</a></li>
-                  <li><a >Second Upgrade</a></li>
-                  <li><a >Third Upgrade</a></li>
-                  <li><a >Fourth Upgrade</a></li>
-                  <li><a >Fifth Upgrade</a></li>
-                  <li><a >Sixth Upgrade</a></li>
+                  <li><a data-weapon="start">Awakening</a></li>
+                  <li><a data-weapon="start">Element Change</a></li>
+                  <li><a data-weapon="start">First Upgrade</a></li>
+                  <li><a data-weapon="start">Second Upgrade</a></li>
+                  <li><a data-weapon="start">Third Upgrade</a></li>
+                  <li><a data-weapon="start">Fourth Upgrade</a></li>
+                  <li><a data-weapon="start">Fifth Upgrade</a></li>
+                  <li><a data-weapon="start">Sixth Upgrade</a></li>
                 </ul>
               </div>
               <div class="dropup">
                 <button id="weapon-end" class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
-                  <span class="dropdown-text">Target</span><span class="caret"></span>
+                  <span class="dropdown-text" data-default="Target">Target</span><span class="caret"></span>
                 </button>
                 <ul id="weapon-end-dropdown" class="dropdown-menu">
-                  <li><a >Awakening</a></li>
-                  <li><a >Element Change</a></li>
-                  <li><a >First Upgrade</a></li>
-                  <li><a >Second Upgrade</a></li>
-                  <li><a >Third Upgrade</a></li>
-                  <li><a >Fourth Upgrade</a></li>
-                  <li><a >Fifth Upgrade</a></li>
-                  <li><a >Sixth Upgrade</a></li>
+                  <li><a data-weapon="end">Awakening</a></li>
+                  <li><a data-weapon="end">Element Change</a></li>
+                  <li><a data-weapon="end">First Upgrade</a></li>
+                  <li><a data-weapon="end">Second Upgrade</a></li>
+                  <li><a data-weapon="end">Third Upgrade</a></li>
+                  <li><a data-weapon="end">Fourth Upgrade</a></li>
+                  <li><a data-weapon="end">Fifth Upgrade</a></li>
+                  <li><a data-weapon="end">Sixth Upgrade</a></li>
                 </ul>
               </div>
             </div>

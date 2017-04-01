@@ -33,7 +33,7 @@
       'Swirling Amber': ['13/39/52: Whiff of Danger'],
       'Falcon Feather': ['17: I Challenge You', '20: What\'s in the Box'],
       'Spring Water Jug': ['17: I Challenge You', '20: What\'s in the Box'],
-      'Vermillion Stone': ['17: I Challenge You', '20: What\'s in the Box', '(2x)18: Strength and Chilvary'],
+      'Vermilion Stone': ['17: I Challenge You', '20: What\'s in the Box', '(2x)18: Strength and Chilvary'],
       'Slimy Shroom': ['22: For Whom the Bell Tolls'],
       'Hollow Soul': ['22: For Whom the Bell Tolls', '(2x)22: Playing Cat & Mouse'],
       'Lacrimosa': ['22: For Whom the Bell Tolls'],

@@ -1,0 +1,24 @@
+@import "../../lib/bootstrap-sass-3.3.7/assets/stylesheets/bootstrap";
+
+#contents {
+  display: none;
+}
+
+#wait {
+  display: none;
+}
+
+#garbage1 {
+  display: none;
+}
+
+.garbage-img {
+  @extend .img-rounded;
+  position: absolute;
+  width: 400px;
+  bottom: 3px;
+  top: 3px;
+  left: 3px;
+  right: 3px;
+}
+

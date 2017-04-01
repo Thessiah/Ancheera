@@ -130,6 +130,29 @@
     },
   }
   var enabledDistinctionList = [];
+
+  var primarchHash = {
+    //michael
+    '500871': true,
+    '500881': true,
+    '500891': true,
+    '500901': true,
+    //gabriel
+    '500951': true,
+    '500961': true,
+    '500971': true,
+    '500981': true,
+    //uriel
+    '500911': true,
+    '500921': true,
+    '500931': true,
+    '500941': true,
+    //raphael
+    '500991': true,
+    '501001': true,
+    '501011': true,
+    '501021': true
+  }
   // var $dailiesPanel = $('#dailies-panel');
   // var $weekliesPanel = $('#weeklies-panel');
   // var $monthliesPanel = $('#monthlies-panel');
@@ -538,6 +561,15 @@
         }
         setDailies(array);
       }
+    },
+    SetPrimarchs: function(json) {
+      var primarchJson = json.option.quest.extra_normal_quest.quest_list.host_group['3000'];
+      setDailies([['primarchs'], primarchJson.group_limited_count]);
+    },
+    DecPrimarchs: function(payload) {
+      if(primarchHash['' + payload.quest_id]) {
+        setDailies([['primarchs'], dailies['primarchs'] - 1]);
+      }
     }
     // PurchaseDefense: function(json) {
     //   // var id = json.article.item_ids[0];
@@ -667,7 +699,9 @@
       str += 'Tweet refill: ';
     } else if(category[0] === 'freeSingleRoll') {
       str += 'Free Single Roll: ';
-    }else if(category[0] === 'coop') {
+    } else if(category[0] === 'primarchs') {
+      str += 'Primarchs: ';
+    } else if(category[0] === 'coop') {
       if(category[2] === 'raw' || category[2] === 'max') {
         return undefined;
       }

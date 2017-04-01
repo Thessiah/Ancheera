@@ -20,8 +20,12 @@
         status = json.status;
       } else if(json.mydata !== undefined) {
         status = json.mydata.status;
-      } else if(json.option.mydata_assets.mydata !== undefined) {
-        status = json.option.mydata_assets.mydata.status;
+      } else if(json.option !== undefined) {
+        if(json.option.mydata_assets !== undefined && json.option.mydata_assets.mydata !== undefined) {
+          status = json.option.mydata_assets.mydata.status;
+        } else if(json.option.user_status !== undefined) {
+          status = json.option.user_status;
+        }
       }
       if(status !== undefined) {
         setAP(status.ap, status.max_ap);

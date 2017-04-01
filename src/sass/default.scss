@@ -20,12 +20,16 @@ $base-font-weight: 400;
   white-space: pre;
 }
 
+.garbage {
+  display: none;
+}
+
 #contents {
-  //display: none;
+  display: none;
 }
 #wait {
   display: flex;
-    align-items: center;
+  align-items: center;
   justify-content: center;
   text-align: center;
   margin-top: 200px;
@@ -545,6 +549,30 @@ body {
   }
 }
 
+.weapon-item {
+  @extend .img-rounded;
+  margin: 2px;
+  width: 86px;
+  background-color: red;
+  >.item-img {
+    @extend .img-rounded;
+    margin: 2px;
+    width: 42px;
+    height: 40px;
+  }
+  >.item-count {
+    float: right;
+    margin-right: 4px;
+    >.item-max {
+      text-align: center;
+      margin-top: -5px;
+    }
+    >.item-curr {
+      text-align: center;
+    }
+  }
+}
+
 
 
 .link-heading {
@@ -583,7 +611,7 @@ body {
     >.inventory-category {
       margin-right: -8px;
       //border-style: solid;
-      width: 64px;
+      width: 92px;
       display: inline-block;
       >.inventory-img {
         @extend .img-rounded;

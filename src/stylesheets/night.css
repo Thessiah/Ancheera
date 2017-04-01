@@ -1436,7 +1436,7 @@ img {
   height: auto;
 }
 
-.img-rounded, #contents, .container, #ap-bp-panel > #special, #ap-bp-panel > #special > .item-img, .quest-panel .quest-img, .daily-quest-panel .quest-img, .daily-quest-panel .item-img, .casino-div > .item-img, .supply-item > .item-img, .profile-item > .item-img, #profile #inventory-list > .inventory-category > .inventory-img, #time-buffs #buffs .buff-item > .item-img, .horizontal-text, .vertical-text {
+.img-rounded, #contents, .container, #ap-bp-panel > #special, #ap-bp-panel > #special > .item-img, .quest-panel .quest-img, .daily-quest-panel .quest-img, .daily-quest-panel .item-img, .casino-div > .item-img, .supply-item > .item-img, .profile-item > .item-img, .weapon-item, .weapon-item > .item-img, #profile #inventory-list > .inventory-category > .inventory-img, #time-buffs #buffs .buff-item > .item-img, .horizontal-text, .vertical-text {
   border-radius: 6px;
 }
 
@@ -7786,6 +7786,14 @@ button.close {
   white-space: pre;
 }
 
+.garbage {
+  display: none;
+}
+
+#contents {
+  display: none;
+}
+
 #wait {
   display: flex;
   align-items: center;
@@ -8228,6 +8236,28 @@ body {
   text-align: center;
 }
 
+.weapon-item {
+  margin: 2px;
+  width: 86px;
+  background-color: red;
+}
+.weapon-item > .item-img {
+  margin: 2px;
+  width: 42px;
+  height: 40px;
+}
+.weapon-item > .item-count {
+  float: right;
+  margin-right: 4px;
+}
+.weapon-item > .item-count > .item-max {
+  text-align: center;
+  margin-top: -5px;
+}
+.weapon-item > .item-count > .item-curr {
+  text-align: center;
+}
+
 .link-heading {
   display: block;
   text-decoration: none !important;
@@ -8258,7 +8288,7 @@ body {
 }
 #profile #inventory-list > .inventory-category {
   margin-right: -8px;
-  width: 64px;
+  width: 92px;
   display: inline-block;
 }
 #profile #inventory-list > .inventory-category > .inventory-img {

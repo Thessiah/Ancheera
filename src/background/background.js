@@ -2,15 +2,41 @@
   var currTabID = -1;
   var currURL = '';
   var pageLoaded = true;
-  var hi = null;
 
-  if(chrome.app.getDetails().version === '0.9.0') {
-    chrome.storage.sync.clear();
+  var CURRENT_VERSION = '1.0.1';
+  var BASE_VERSION = '1.0.1';
+  var patchNotes = {
+    '1.0.1': {
+      'index': 0,
+      'notes': ['Supply name + location tooltips added',
+                '^(thanks lolPseudoSmart for the locations)',
+                'Primarch misc daily added',
+                'Primarch + xeno jp names added',
+                'Vira and Narumaya themes added']
+    }
   }
+  var patchNoteList = [
+    '1.0.1'
+  ]
+  var currentVersion = undefined;
 
   chrome.browserAction.onClicked.addListener(function() {
     chrome.runtime.openOptionsPage();
   });
+
+  Storage.GetMultiple(['version'], function(response) {
+    currentVersion = response['version'];
+  });
+
+  var generateNote = function(id) {
+    if(patchNotes[id]) {
+      var note = 'Version ' +id + ':\n';
+      for(var i = 0; i < patchNotes[id].notes.length; i++) {
+        note += patchNotes[id].notes[i] + '\n';
+      }
+      return note;
+    }
+  }
 
   Options.Initialize(function() {
       Dailies.Initialize(function() {
@@ -203,6 +229,21 @@ chrome.runtime.onConnect.addListener(function (port) {
       return;
     }
     if(message.devAwake) {
+      if(currentVersion !== CURRENT_VERSION) {
+        var note = "";
+        if(patchNotes[currentVersion] === undefined) {
+          currentVersion = BASE_VERSION;
+          note += generateNote(currentVersion);
+        }
+        var index = patchNotes[currentVersion].index + 1;
+        for(var i = index; i < patchNoteList.length; i++) {
+          currentVersion = patchNoteList[i];
+          note += generateNote(currentVersion);
+        }
+        Message.Post(message.id, {'setMessage': note})
+        currentVersion = CURRENT_VERSION;
+        Storage.Set('version', CURRENT_VERSION);
+      }
       Message.Post(message.id, {'setTheme': Options.Get('windowTheme')});
     }
     if(message.debug) {
@@ -214,7 +255,11 @@ chrome.runtime.onConnect.addListener(function (port) {
     }
     if(message.request) {
       //verify current ap/ep
-      if(message.request.url.indexOf('/user/status?') !== -1 || message.request.url.indexOf('/user/data_assets?') !== -1 || message.request.url.indexOf('/user/content/index?') !== -1) {
+      if(message.request.url.indexOf('/user/status?') !== -1 || 
+         message.request.url.indexOf('/user/data_assets?') !== -1 || 
+         message.request.url.indexOf('/user/content/index?') !== -1 ||
+         message.request.url.indexOf('/quest/content/') !== -1 ||
+         message.request.url.indexOf('/coopraid/content/') !== -1) {
           APBP.VerifyAPBP(message.request.response);
           Profile.SetLupiCrystal(message.request.response);
       }
@@ -237,6 +282,7 @@ chrome.runtime.onConnect.addListener(function (port) {
       if(message.request.url.indexOf('/quest/create_quest?') !== -1) {
         Quest.CreateQuest(message.request.response, message.request.payload, message.id);
           APBP.StartQuest(message.request.response, message.request.payload);
+          Dailies.DecPrimarchs(message.request.payload);
       }
       if(message.request.url.indexOf('/quest/raid_info?') !== -1) {
         Quest.CheckMulti(message.request.response);
@@ -461,6 +507,9 @@ chrome.runtime.onConnect.addListener(function (port) {
       }
       if(message.request.url.indexOf('/gacha/legend/campaign') !== -1) {
           Dailies.RollCampaign(message.request.response, message.request.payload);
+      }
+      if(message.request.url.indexOf('/quest/content/newextra') !== -1) {
+          Dailies.SetPrimarchs(message.request.response);
       }
     }
   }

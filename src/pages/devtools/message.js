@@ -9,6 +9,7 @@
   var search = '';
   var sortedSupplies = [];
   var imageURL = "../../assets/images/";
+  var themeName = '';
 
   var $supplyList = $('#supply-list');
   var $supplyItem = $supplyList.find('.supply-item').first().clone();
@@ -105,23 +106,56 @@
     'revenant': [
       {
         'name': 'type',
-        'texts': ['Spear', 'Bow', 'Axe']
+        'texts': ['Spear', 'Bow', 'Axe', 'Blade', 'Staff', 'Fist', 'Sword', 'Katana', 'Harp', 'Gun']
       },
-    ]
+      {
+        'name': 'element',
+        'texts': ['Fire', 'Water', 'Earth', 'Wind', 'Light', 'Dark']
+      },
+      {
+        'name': 'start',
+        'texts': ['Awakening', 'Element Change', 'First Upgrade', 'Second Upgrade', 'Third Upgrade', 'Fourth Upgrade', 'Fifth Upgrade', 'Sixth Upgrade']
+      },
+      {
+        'name': 'end',
+        'texts': ['Awakening', 'Element Change', 'First Upgrade', 'Second Upgrade', 'Third Upgrade', 'Fourth Upgrade', 'Fifth Upgrade', 'Sixth Upgrade']
+      }
+    ],
+    'class': [
+      {
+        'name': 'type',
+        'texts': []
+      },
+      {
+        'name': 'element',
+        'texts': ['Fire', 'Water', 'Earth', 'Wind', 'Light', 'Dark']
+      },
+      {
+        'name': 'start',
+        'texts': ['Forge', 'Rebuild', 'Element Change']
+      },
+      {
+        'name': 'end',
+        'texts': ['Forge', 'Rebuild', 'Element Change']
+      }
+    ],
+    'seraph': [
+      {
+        'name': 'element',
+        'texts': ['Fire', 'Water', 'Earth', 'Wind']
+      },
+      {
+        'name': 'start',
+        'texts': ['Forge', 'Rebuild', 'Element Change']
+      },
+      {
+        'name': 'end',
+        'texts': ['Forge', 'Rebuild', 'Element Change']
+      }
+    ],
   }
-
-  $('#weapon-dropdowns').find('.dropup').each(function() {
-    var btn = $(this).find('.dropdown-text').first();
-    $(this).find('a').each(function() {
-      var $this = $(this);
-      $this.click(function() {
-        btn.text($this.text());
-      });
-    });
-  });
-
-  $('#weapon-planner-dropdown').find('a').each(function() {
-  });
+  var weaponBuild = {};
+  var weaponType= '';
 
   var resetDropdowns = function() {
     $weaponPlanner.find('.dropdown-text').text('Planner');
@@ -134,6 +168,46 @@
     $weaponStart.hide();
     $weaponEnd.hide();
   }
+  $('#weapon-planner-dropdown').find('a').each(function() {
+    var $this = $(this);
+    $this.click(function() {
+      resetDropdowns();
+      weaponType = $this.attr('id');
+      weaponBuild = {};
+      for(var i = 0; i < dropdownHash[weaponType].length; i++) {
+        var stage = dropdownHash[weaponType][i];
+        weaponBuild[stage.name] = null;
+        $('#weapon-' + stage.name).show();
+        $('#weapon-' + stage.name + '-dropdown').find('a').each(function(index) {
+          if(index < stage.texts.length) {
+            $(this).show();
+            $(this).text(stage.texts[index]);
+          } else {
+            $(this).hide();
+          }
+        });
+       }      
+    });
+  });
+  $('#weapon-dropdowns').find('.dropup').each(function() {
+    var btn = $(this).find('.dropdown-text').first();
+    $(this).find('a').each(function() {
+      var $this = $(this);
+      $this.click(function() {
+        btn.text($this.text());
+        if(weaponType && weaponBuild[$this.data('weapon')] !== undefined) {
+          weaponBuild[$this.data('weapon')] = $this.text();
+          Object.keys(weaponBuild).forEach(function(key) {
+            if(weaponBuild[key] === null) {
+              return;
+            }
+          });
+          hideAllSupplies();
+          //all options selected; publish weapon event with params
+        }
+      });
+    });
+  });
 
   resetDropdowns();
 
@@ -164,7 +238,12 @@
   ];
 
   var message = messages[Math.floor(Math.random() * messages.length)];
-  $('#message').text(message);
+  var $message = $('#message');
+
+  var setMessage = function(msg) {
+    $message.text(msg);
+  }
+  setMessage(message);
   
   var backgroundPageConnection = chrome.runtime.connect({
     name: "panel"
@@ -231,13 +310,16 @@
           } else if(msg.setClick) {
             setClick(msg.setClick.id, msg.setClick.value);
           } else if(msg.setTheme) {
-            Message.Post({'consoleLog': msg.setTheme});
             setTheme(msg.setTheme);
+          } else if(msg.setMessage) {
+            setMessage(msg.setMessage);
           }
         }
       }
       $('#wait').hide();
-      $('#contents').show();
+      if(theme !== 'Vira' && theme !== 'Narumaya') {
+        $('#contents').show();
+      }
     }
     if(message.setText) {
       setText(message.setText.id, message.setText.value);
@@ -303,6 +385,9 @@
     }
     if(message.setTheme) {
       setTheme(message.setTheme);
+    }
+    if(message.setMessage) {
+      setMessage(message.setMessage);
     }
   });
   
@@ -457,12 +542,12 @@
     newItem.children('.item-img').first().attr('src', imgURL);
     newItem.children('.item-count').first().text(number);
     newItem.children('.item-count').first().attr('id', 'supply-' + sequence + '-' + id + '-count');
-    var tooltipText = category + '-' + id + ':' + name;
-    // if(tooltip !== undefined) {
-    //   tooltipText = tooltip;
-    // } else {
-    //   tooltipText = name;
-    // }
+    //var tooltipText = category + '-' + id + ':' + name;
+    if(tooltip !== undefined) {
+      tooltipText = tooltip;
+    } else {
+      tooltipText = name;
+    }
     newItem.prop('title', tooltipText);
     newItem.tooltip();
         //alert(3);
@@ -593,6 +678,11 @@
       }
     });
   }
+  var hideAllSupplies = function() {
+    $supplyList.children().each(function(index) {
+      $(this).hide();
+    });
+  }
   var toggleTimes = function() {
     Object.keys(times).forEach(function(key) {
       if(isJST) {
@@ -615,6 +705,12 @@
       $('.active-circle-img').attr('src', '../../assets/images/night_full.png');
       $('.inactive-circle-img').attr('src', '../../assets/images/night_empty.png');
     }
+    else if(theme === 'Vira') {
+      sheetURL += 'garbage1';
+    }
+    else if(theme === 'Narumaya') {
+      sheetURL += 'garbage2';
+    } 
     else {
       sheetURL += 'default';
       if($bars.hasClass('progress-bar-custom')) {
@@ -625,6 +721,7 @@
     }
     sheetURL += '.css';
     document.getElementById('pagestyle').setAttribute('href', sheetURL);
+    themeName = theme;
   }
 
   
