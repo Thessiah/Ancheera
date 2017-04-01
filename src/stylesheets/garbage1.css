@@ -7342,6 +7342,10 @@ button.close {
   display: none;
 }
 
+#garbage2 {
+  display: none;
+}
+
 .garbage-img {
   position: absolute;
   width: 400px;

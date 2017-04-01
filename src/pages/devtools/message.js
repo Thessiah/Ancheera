@@ -303,7 +303,7 @@
             beforeObject(msg.beforeObject.id, msg.beforeObject.target);
           } else if(msg.addQuestCharacter) {
             addQuestCharacter(msg.addQuestCharacter.index);
-          } else if(msg.addQuestEnemy) {
+          } else if(msg.addQuestEneetmy) {
             addQuestEnemy(msg.addQuestEnemy.index);
           } else if(msg.setOpacity) {
             setOpacity(msg.setOpacity.id, msg.setOpacity.value);
@@ -317,7 +317,7 @@
         }
       }
       $('#wait').hide();
-      if(theme !== 'Vira' && theme !== 'Narumaya') {
+      if(themeName !== 'Vira' && themeName !== 'Narumaya') {
         $('#contents').show();
       }
     }
@@ -718,6 +718,20 @@
       }
       $('.active-circle-img').attr('src', '../../assets/images/circle_full.png');
       $('.inactive-circle-img').attr('src', '../../assets/images/circle_empty.png');
+    }
+    if(theme === 'Vira' || theme === 'Narumaya') {
+      $('#contents').hide();
+      $('#wait').hide();
+      $('#garbage').show();
+    } else {
+      $('#garbage').hide();
+      if(initialized) {
+        $('#contents').show();
+        $('#wait').hide();
+      } else {
+        $('#contents').hide();
+        $('#wait').show();
+      }
     }
     sheetURL += '.css';
     document.getElementById('pagestyle').setAttribute('href', sheetURL);

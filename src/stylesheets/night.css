@@ -7794,7 +7794,7 @@ button.close {
   display: none;
 }
 
-#wait {
+#wait-body {
   display: flex;
   align-items: center;
   justify-content: center;

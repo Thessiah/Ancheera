@@ -8,11 +8,11 @@
   var patchNotes = {
     '1.0.1': {
       'index': 0,
-      'notes': ['Supply name + location tooltips added',
-                '^(thanks lolPseudoSmart for the locations)',
-                'Primarch misc daily added',
-                'Primarch + xeno jp names added',
-                'Vira and Narumaya themes added']
+      'notes': ['-Vira and Narumaya themes added',
+                '-Supply name + location tooltips added',
+                '(thanks lolPseudoSmart for supply locations)',
+                '-Primarch misc daily added',
+                '-Primarch raid + xeno jp names added']
     }
   }
   var patchNoteList = [
@@ -172,12 +172,7 @@ chrome.runtime.onConnect.addListener(function (port) {
     if(message.initialize) {
       var response = [];
       response[0] = {
-        'setTheme': Options.Get('windowTheme', function(id, value) {
-          Message.PostAll({
-            'setTheme': value
-          });
-          Time.UpdateAlertColor();
-        })
+        'setTheme': Options.Get('windowTheme')
       };
       response = response.concat(Profile.InitializeDev());
       response = response.concat(Time.InitializeDev());
@@ -244,7 +239,12 @@ chrome.runtime.onConnect.addListener(function (port) {
         currentVersion = CURRENT_VERSION;
         Storage.Set('version', CURRENT_VERSION);
       }
-      Message.Post(message.id, {'setTheme': Options.Get('windowTheme')});
+      Message.Post(message.id, {'setTheme': Options.Get('windowTheme', function(id, value) {
+          Message.PostAll({
+            'setTheme': value
+          });
+          Time.UpdateAlertColor();
+        })});
     }
     if(message.debug) {
       Message.Notify('hey', 'its me ur brother', 'apNotifications');
@@ -576,6 +576,9 @@ chrome.runtime.onConnect.addListener(function (port) {
           } else {
             theme = 'Monkey';
           }
+        }
+        if(new Date().getMonth() === 3 && new Date().getDate() === 1) {
+          theme = 'Garbage';
         }
         if(!Options.Get('muteNotifications')) {
           var sound = new Audio('src/assets/sounds/' + theme + '.wav');

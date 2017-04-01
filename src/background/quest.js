@@ -275,10 +275,10 @@
     
     'Lvl 100 Xeno Ifrit': 'Lv100 ゼノ・イフリート',
     'Lvl 100 Xeno Vohu Manah': 'Lv100 ゼノ・ウォフマナフ',
-    'Lvl 100 Xeno Cocytus': 'Lv100 ゼノ・',
-    'Lvl 100 Xeno Sagittarius': 'Lv100 ゼノ・',
-    'Lvl 100 Xeno Diablo': 'Lv100 ゼノ・',
-    'Lvl 100 Xeno Corow': 'Lv100 ゼノ・',
+    'Lvl 100 Xeno Cocytus': 'Lv100 ゼノ・コキュートス',
+    'Lvl 100 Xeno Sagittarius': 'Lv100 ゼノ・サジタリウス',
+    'Lvl 100 Xeno Diablo': 'Lv100 ゼノ・ディアボロス',
+    'Lvl 100 Xeno Corow': 'Lv100 ゼノ・コロゥ',
 
     'Lvl 100 Raphael': 'Lv100 ラファエル',
     'Lvl 100 Gabriel': 'Lv100 ガブリエル',
