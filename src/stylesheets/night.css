@@ -4638,7 +4638,7 @@ tbody.collapse.in {
   }
 }
 
-.tab-content > .tab-pane, .tab-content > .scroll-pane, .tab-content > .scroll-pane-2, .tab-content > .tab-tab-pane {
+.tab-content > .tab-pane, .tab-content > .scroll-pane, .tab-content > .scroll-pane-2, .tab-content > .tab-tab-pane, .tab-content > .supplies-tab-pane {
   display: none;
 }
 .tab-content > .active {
@@ -7790,10 +7790,6 @@ button.close {
   display: none;
 }
 
-#contents {
-  display: none;
-}
-
 #wait-body {
   display: flex;
   align-items: center;
@@ -8570,5 +8566,33 @@ body {
 }
 
 .dropdown-toggle {
-  width: 200px !important;
+  width: 120px !important;
+}
+
+.dropdown {
+  display: inline-block;
+}
+
+.dropdown-menu {
+  min-width: 120px !important;
+}
+
+.dropdown-row-bottom {
+  margin-left: 124px;
+  margin-top: 5px;
+}
+
+.dropdown-last {
+  margin-left: 1px;
+}
+
+#planner-panel {
+  height: 400px;
+  width: 400px;
+}
+
+.supplies-tab-pane {
+  position: absolute;
+  overflow-y: auto;
+  overflow-x: hidden;
 }

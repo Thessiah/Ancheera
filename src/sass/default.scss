@@ -25,7 +25,7 @@ $base-font-weight: 400;
 }
 
 #contents {
-  display: none;
+  //display: none;
 }
 #wait-body {
   display: flex;
@@ -988,5 +988,30 @@ body {
 }
 
 .dropdown-toggle {
-    width: 200px !important;
+    width: 120px !important;
+}
+.dropdown {
+  display: inline-block;
+}
+.dropdown-menu {
+  min-width: 120px !important;
+}
+.dropdown-row-bottom {
+  margin-left: 124px;
+  margin-top: 5px;
+}
+.dropdown-last {
+  margin-left: 1px;
+}
+#planner-panel {
+  height: 400px;
+  width: 400px;
+}
+
+
+.supplies-tab-pane {
+  @extend .tab-pane;
+  position: absolute;
+  overflow-y: auto;
+  overflow-x: hidden;
 }

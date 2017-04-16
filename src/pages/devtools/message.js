@@ -114,11 +114,11 @@
       },
       {
         'name': 'start',
-        'texts': ['Awakening', 'Element Change', 'First Upgrade', 'Second Upgrade', 'Third Upgrade', 'Fourth Upgrade', 'Fifth Upgrade', 'Sixth Upgrade']
+        'texts': ['Awakening', 'Element', 'Upgrade 1', 'Upgrade 2', 'Upgrade 3', 'Upgrade 4', 'Upgrade 5', 'Upgrade 6']
       },
       {
         'name': 'end',
-        'texts': ['Awakening', 'Element Change', 'First Upgrade', 'Second Upgrade', 'Third Upgrade', 'Fourth Upgrade', 'Fifth Upgrade', 'Sixth Upgrade']
+        'texts': ['Awakening', 'Element', 'Upgrade 1', 'Upgrade 2', 'Upgrade 3', 'Upgrade 4', 'Upgrade 5', 'Upgrade 6']
       }
     ],
     'class': [
@@ -132,25 +132,25 @@
       },
       {
         'name': 'start',
-        'texts': ['Forge', 'Rebuild', 'Element Change']
+        'texts': ['Forge', 'Rebuild', 'Element']
       },
       {
         'name': 'end',
-        'texts': ['Forge', 'Rebuild', 'Element Change']
+        'texts': ['Forge', 'Rebuild', 'Element']
       }
     ],
     'seraph': [
       {
-        'name': 'element',
+        'name': 'type',
         'texts': ['Fire', 'Water', 'Earth', 'Wind']
       },
       {
         'name': 'start',
-        'texts': ['Forge', 'Rebuild', 'Element Change']
+        'texts': ['Forge', 'Rebuild', 'Element']
       },
       {
         'name': 'end',
-        'texts': ['Forge', 'Rebuild', 'Element Change']
+        'texts': ['Forge', 'Rebuild', 'Element']
       }
     ],
   }
@@ -189,7 +189,7 @@
        }      
     });
   });
-  $('#weapon-dropdowns').find('.dropup').each(function() {
+  $('#weapon-dropdowns').find('.dropdown').each(function() {
     var btn = $(this).find('.dropdown-text').first();
     $(this).find('a').each(function() {
       var $this = $(this);
@@ -197,12 +197,18 @@
         btn.text($this.text());
         if(weaponType && weaponBuild[$this.data('weapon')] !== undefined) {
           weaponBuild[$this.data('weapon')] = $this.text();
-          Object.keys(weaponBuild).forEach(function(key) {
-            if(weaponBuild[key] === null) {
+          var keys = Object.keys(weaponBuild)
+          for(var i = 0; i < keys.length; i++) {
+            if(weaponBuild[keys[i]] === null) {
               return;
             }
-          });
-          hideAllSupplies();
+          }
+          //hideAllSupplies();
+          console.log(weaponBuild);
+          Message.Post({weaponBuild: {
+            'type': weaponType,
+            'build': weaponBuild
+          }});
           //all options selected; publish weapon event with params
         }
       });

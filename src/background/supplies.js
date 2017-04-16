@@ -94,7 +94,7 @@
   }
 
   var planners = {
-    'revenant': [
+    'Revenant': [
       {
         'name': 'Awakening',
         'items': [
@@ -107,7 +107,7 @@
         ]
       },
       {
-        'name': 'Element Change',
+        'name': 'Element',
         'items': [
           createPlannerElement('orb', '0', 250),
           createPlannerElement('tome', '2', 250),
@@ -115,7 +115,7 @@
         ]
       },
       {
-        'name': 'First Upgrade',
+        'name': 'Upgrade 1',
         'items': [
           createPlannerSupply('treasure', '2', 300),
           createPlannerSupply('treasure', '5', 100),
@@ -130,7 +130,7 @@
         ]
       },
       {
-        'name': 'Second Upgrade',
+        'name': 'Upgrade 2',
         'items': [
           createPlannerSupply('treasure', '6', 100),
           createPlannerSupply('treasure', '24', 100),
@@ -146,7 +146,7 @@
         ]
       },
       {
-        'name': 'Third Upgrade',
+        'name': 'Upgrade 3',
         'items': [
           createPlannerSupply('treasure', '3', 300),
           createPlannerSupply('treasure', '22', 100),
@@ -161,7 +161,7 @@
         ]
       },
       {
-        'name': 'Fourth Upgrade',
+        'name': 'Upgrade 4',
         'items': [
           createPlannerSupply('treasure', '17', 100),
           createPlannerSupply('treasure', '29', 100),
@@ -176,7 +176,7 @@
         ]
       },
       {
-        'name': 'Fifth Upgrade',
+        'name': 'Upgrade 5',
         'items': [
           createPlannerSupply('raid', '32', 20),
           createPlannerSupply('raid', '47', 20),
@@ -192,7 +192,7 @@
         ]
       },
       {
-        'name': 'Sixth Upgrade',
+        'name': 'Upgrade 6',
         'items': [
           createPlannerSupply('raid', '41', 3),
           createPlannerSupply('raid', '42', 3),
@@ -207,7 +207,7 @@
         ]
       },
     ],
-    'class': [
+    'Class': [
       {
         'name': 'Forge',
         'items': [
@@ -236,7 +236,7 @@
         ]
       },
       {
-        'name': 'Element Change',
+        'name': 'Element',
         'items': [
           createPlannerClass('distinction', 30),
           createPlannerClass('stone', 512),
