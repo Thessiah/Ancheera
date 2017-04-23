@@ -207,7 +207,7 @@ body {
   overflow-y: hidden;
   overflow-x: hidden;
 
-  >.tab-tab-pane {
+  .tab-tab-pane {
     top: 75px;
     bottom: 0px;
     right: 0px;
@@ -1004,8 +1004,19 @@ body {
   margin-left: 1px;
 }
 #planner-panel {
-  height: 400px;
+  height: 100%;
   width: 400px;
+}
+#supplies-panel {
+  height: 100%;
+}
+
+#supplies-all {
+  margin-left: 6px;
+  // margin-left: -8px;
+  // margin-right: -4px;
+  // margin-top: 20px;
+  // height: 100%;
 }
 
 
