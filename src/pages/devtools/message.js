@@ -555,12 +555,13 @@
     newItem.children('.item-img').first().attr('src', imgURL);
     newItem.children('.item-count').first().text(number);
     newItem.children('.item-count').first().attr('id', 'supply-' + sequence + '-' + id + '-count');
-    //var tooltipText = category + '-' + id + ':' + name;
+    var tooltipText;
     if(tooltip !== undefined) {
       tooltipText = tooltip;
     } else {
       tooltipText = name;
     }
+    tooltipText = category + '-' + id + ':' + sequence + '-' + name;
     newItem.prop('title', tooltipText);
     newItem.tooltip();
         //alert(3);

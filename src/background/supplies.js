@@ -255,109 +255,123 @@
   var elements = {
     'orb': {
       '0': {
-        'fire': createSupplyInfo('material', '1011'),
-        'water': createSupplyInfo('material', '1021'),
-        'earth': createSupplyInfo('material', '1031'),
-        'wind': createSupplyInfo('material', '1041'),
-        'light': createSupplyInfo('material', '1051'),
-        'dark' : createSupplyInfo('material', '1061')
+        'Fire': createSupplyInfo('material', '1011'),
+        'Water': createSupplyInfo('material', '1021'),
+        'Earth': createSupplyInfo('material', '1031'),
+        'Wind': createSupplyInfo('material', '1041'),
+        'Light': createSupplyInfo('material', '1051'),
+        'Dark' : createSupplyInfo('material', '1061')
       },
       '1': {
-        'fire': createSupplyInfo('material', '1012'),
-        'water': createSupplyInfo('material', '1022'),
-        'earth': createSupplyInfo('material', '1032'),
-        'wind': createSupplyInfo('material', '1042'),
-        'light': createSupplyInfo('material', '1052'),
-        'dark' : createSupplyInfo('material', '1062')
+        'Fire': createSupplyInfo('material', '1012'),
+        'Water': createSupplyInfo('material', '1022'),
+        'Earth': createSupplyInfo('material', '1032'),
+        'Wind': createSupplyInfo('material', '1042'),
+        'Light': createSupplyInfo('material', '1052'),
+        'Dark' : createSupplyInfo('material', '1062')
       }
     },
     'tome': {
       '0': {
-        'fire': createSupplyInfo('material', '1311'),
-        'water': createSupplyInfo('material', '1321'),
-        'earth': createSupplyInfo('material', '1331'),
-        'wind': createSupplyInfo('material', '1341'),
-        'light': createSupplyInfo('material', '1351'),
-        'dark' : createSupplyInfo('material', '1361')
+        'Fire': createSupplyInfo('material', '1311'),
+        'Water': createSupplyInfo('material', '1321'),
+        'Earth': createSupplyInfo('material', '1331'),
+        'Wind': createSupplyInfo('material', '1341'),
+        'Light': createSupplyInfo('material', '1351'),
+        'Dark' : createSupplyInfo('material', '1361')
       },
       '1': {
-        'fire': createSupplyInfo('material', '1312'),
-        'water': createSupplyInfo('material', '1322'),
-        'earth': createSupplyInfo('material', '1332'),
-        'wind': createSupplyInfo('material', '1342'),
-        'light': createSupplyInfo('material', '1352'),
-        'dark' : createSupplyInfo('material', '1362')
+        'Fire': createSupplyInfo('material', '1312'),
+        'Water': createSupplyInfo('material', '1322'),
+        'Earth': createSupplyInfo('material', '1332'),
+        'Wind': createSupplyInfo('material', '1342'),
+        'Light': createSupplyInfo('material', '1352'),
+        'Dark' : createSupplyInfo('material', '1362')
       },
       '2': {
-        'fire': createSupplyInfo('material', '1313'),
-        'water': createSupplyInfo('material', '1323'),
-        'earth': createSupplyInfo('material', '1333'),
-        'wind': createSupplyInfo('material', '1343'),
-        'light': createSupplyInfo('material', '1353'),
-        'dark' : createSupplyInfo('material', '1363')
+        'Fire': createSupplyInfo('material', '1313'),
+        'Water': createSupplyInfo('material', '1323'),
+        'Earth': createSupplyInfo('material', '1333'),
+        'Wind': createSupplyInfo('material', '1343'),
+        'Light': createSupplyInfo('material', '1353'),
+        'Dark' : createSupplyInfo('material', '1363')
       }
     },
     'scale': {
       '0': {
-        'fire': createSupplyInfo('material', '1111'),
-        'water': createSupplyInfo('material', '1121'),
-        'earth': createSupplyInfo('material', '1131'),
-        'wind': createSupplyInfo('material', '1141'),
-        'light': createSupplyInfo('material', '1151'),
-        'dark' : createSupplyInfo('material', '1161')
+        'Fire': createSupplyInfo('material', '1111'),
+        'Water': createSupplyInfo('material', '1121'),
+        'Earth': createSupplyInfo('material', '1131'),
+        'Wind': createSupplyInfo('material', '1141'),
+        'Light': createSupplyInfo('material', '1151'),
+        'Dark' : createSupplyInfo('material', '1161')
       }
     },
     'magna': {
       '0': {
-        'fire': createSupplyInfo('raid', '11'),
-        'water': createSupplyInfo('raid', '12'),
-        'earth': createSupplyInfo('raid', '13'),
-        'wind': createSupplyInfo('raid', '10'),
-        'light': createSupplyInfo('raid', '25'),
-        'dark' : createSupplyInfo('raid', '30')
+        'Fire': createSupplyInfo('raid', '11'),
+        'Water': createSupplyInfo('raid', '12'),
+        'Earth': createSupplyInfo('raid', '13'),
+        'Wind': createSupplyInfo('raid', '10'),
+        'Light': createSupplyInfo('raid', '25'),
+        'Dark' : createSupplyInfo('raid', '30')
       },
       '1': {
-        'fire': createSupplyInfo('raid', '19'),
-        'water': createSupplyInfo('raid', '20'),
-        'earth': createSupplyInfo('raid', '21'),
-        'wind': createSupplyInfo('raid', '18'),
-        'light': createSupplyInfo('raid', '26'),
-        'dark' : createSupplyInfo('raid', '31')
+        'Fire': createSupplyInfo('raid', '19'),
+        'Water': createSupplyInfo('raid', '20'),
+        'Earth': createSupplyInfo('raid', '21'),
+        'Wind': createSupplyInfo('raid', '18'),
+        'Light': createSupplyInfo('raid', '26'),
+        'Dark' : createSupplyInfo('raid', '31')
       },
       '2': {
-        'fire': createSupplyInfo('raid', '47'),
-        'water': createSupplyInfo('raid', '48'),
-        'earth': createSupplyInfo('raid', '49'),
-        'wind': createSupplyInfo('raid', '32'),
-        'light': createSupplyInfo('raid', '50'),
-        'dark' : createSupplyInfo('raid', '51')
+        'Fire': createSupplyInfo('raid', '47'),
+        'Water': createSupplyInfo('raid', '48'),
+        'Earth': createSupplyInfo('raid', '49'),
+        'Wind': createSupplyInfo('raid', '32'),
+        'Light': createSupplyInfo('raid', '50'),
+        'Dark' : createSupplyInfo('raid', '51')
       },
       '3': {
-        'fire': createSupplyInfo('raid', '41'),
-        'water': createSupplyInfo('raid', '42'),
-        'earth': createSupplyInfo('raid', '43'),
-        'wind': createSupplyInfo('raid', '44'),
-        'light': createSupplyInfo('raid', '45'),
-        'dark' : createSupplyInfo('raid', '46')
+        'Fire': createSupplyInfo('raid', '41'),
+        'Water': createSupplyInfo('raid', '42'),
+        'Earth': createSupplyInfo('raid', '43'),
+        'Wind': createSupplyInfo('raid', '44'),
+        'Light': createSupplyInfo('raid', '45'),
+        'Dark' : createSupplyInfo('raid', '46')
       },
       '4': {
-        'fire': createSupplyInfo('raid', '101'),
-        'water': createSupplyInfo('raid', '102'),
-        'earth': createSupplyInfo('raid', '103'),
-        'wind': createSupplyInfo('raid', '104'),
-        'light': createSupplyInfo('raid', '105'),
-        'dark' : createSupplyInfo('raid', '106')
+        'Fire': createSupplyInfo('raid', '101'),
+        'Water': createSupplyInfo('raid', '102'),
+        'Earth': createSupplyInfo('raid', '103'),
+        'Wind': createSupplyInfo('raid', '104'),
+        'Light': createSupplyInfo('raid', '105'),
+        'Dark' : createSupplyInfo('raid', '106')
       }
     },
     'quartz': {
       '0': {
-        'fire': createSupplyInfo('material', '5011'),
-        'water': createSupplyInfo('material', '5021'),
-        'earth': createSupplyInfo('material', '5031'),
-        'wind': createSupplyInfo('material', '5041'),
-        'light': createSupplyInfo('material', '5051'),
-        'dark' : createSupplyInfo('material', '5061')
+        'Fire': createSupplyInfo('material', '5011'),
+        'Water': createSupplyInfo('material', '5021'),
+        'Earth': createSupplyInfo('material', '5031'),
+        'Wind': createSupplyInfo('material', '5041'),
+        'Light': createSupplyInfo('material', '5051'),
+        'Dark' : createSupplyInfo('material', '5061')
       }
+    }
+  }
+
+  var createWeaponSupplyInfo = function(name, sequence) {
+    return {
+      'name': name,
+      'sequence': sequence
+    }
+  }
+
+  var weaponSupplyInfo = {
+    'treasure': {
+      '2': createWeaponSupplyInfo('Satin Feather', 110),
+      '3': createWeaponSupplyInfo('Zephyr Feather', 120),
     }
   }
 
@@ -811,8 +825,8 @@
               category = 'currency';
             }
             else if(category === 'element') {
-              id = elements[item.materialType][item.materialTier].id;
-              category = elements[item.materialType][item.materialTier].category;
+              id = elements[item.materialType][item.materialTier][weaponBuild.build.element].id;
+              category = elements[item.materialType][item.materialTier][weaponBuild.build.element].category;
             } else if(category === 'class') {
 
             } else {
@@ -838,6 +852,9 @@
                 current = Supplies.Get(id, category, function(id, amt) {
                 });
                 var itemDatum = supplies[category][id];
+                if(itemDatum == undefined) {
+                  debugger;
+                }
                 tooltip = createTooltip(itemDatum.name);
                 sequence = itemDatum.sequence;
               }
@@ -850,19 +867,29 @@
                 'sequence': sequence
               });
             }
-            response.sort(function(a, b) {
-              if(a.category === b.category) {
-                return a.sequence - b.sequence;
-              } else {
-                var categoryHash = {
-                  'recovery': 0,
-                  'powerUp': 1,
-                  
-                }
-              }
-            });
           }
         }
+        response.sort(function(a, b) {
+          if(a.category === b.category) {
+            return a.sequence - b.sequence;
+          } else {
+            var categoryHash = {
+              recovery: 0,
+              powerUp: 1,
+              treasure: 2,
+              raid: 3,
+              material: 4,
+              event: 5,
+              coop: 6,
+              misc: 7,
+              draw: 8,
+              other: 9,
+              currency: 10
+            }
+            return categoryHash[a.category] - categoryHash[b.category];
+          }
+        });
+        console.log(response);
       }
     }
   }
