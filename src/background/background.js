@@ -250,6 +250,9 @@ chrome.runtime.onConnect.addListener(function (port) {
       Message.Notify('hey', 'its me ur brother', 'apNotifications');
       // Dailies.Reset();
     }
+    if(message.weaponBuild) {
+      Supplies.BuildWeapon(message.weaponBuild);
+    }
     if(message.consoleLog) {
       //console.log(message.consoleLog);
     }

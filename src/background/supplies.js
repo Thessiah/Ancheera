@@ -53,9 +53,10 @@
       'Raw Gemstone': ['84-4']
   }
 
-  var createPlannerCrystal = function(count) {
+  var createPlannerCurrency = function(category, count) {
     return {
-      'type': 'crystal',
+      'type': 'currency',
+      'category': category,
       'count': count
     }
   }
@@ -103,7 +104,7 @@
           createPlannerSupply('material', '1353', 50),
           createPlannerSupply('material', '2001', 50),
           createPlannerSupply('material', '1052', 50),
-          createPlannerCrystal(100)
+          createPlannerCurrency('crystal', 100)
         ]
       },
       {
@@ -126,7 +127,7 @@
           createPlannerElement('tome', '2', 100),
           createPlannerSupply('material', '2002', 10),
           createPlannerSupply('material', '1', 3),
-          createPlannerCrystal(100)
+          createPlannerCurrency('crystal', 100)
         ]
       },
       {
@@ -142,7 +143,7 @@
           createPlannerElement('magna', '3', 3),
           createPlannerSupply('material', '1204', 50),
           createPlannerSupply('material', '1', 5),
-          createPlannerCrystal(200)
+          createPlannerCurrency('crystal', 200)
         ]
       },
       {
@@ -157,7 +158,7 @@
           createPlannerElement('magna', '0', 100),
           createPlannerSupply('material', '2002', 10),
           createPlannerSupply('material', '1', 7),
-          createPlannerCrystal(300)
+          createPlannerCurrency('crystal', 300)
         ]
       },
       {
@@ -172,7 +173,7 @@
           createPlannerElement('magna', '3', 3),
           createPlannerSupply('material', '1204', 150),
           createPlannerSupply('material', '1', 10),
-          createPlannerCrystal(400)
+          createPlannerCurrency('crystal', 400)
         ]
       },
       {
@@ -188,7 +189,7 @@
           createPlannerElement('magna', '2', 60),
           createPlannerSupply('material', '2002', 10),
           createPlannerSupply('material', '1', 15),
-          createPlannerCrystal(500)
+          createPlannerCurrency('crystal', 500)
         ]
       },
       {
@@ -203,7 +204,7 @@
           createPlannerSupply('material', '1204', 250),
           createPlannerSupply('material', '1', 30),
           createPlannerSupply('powerUp', '200004', 1),
-          createPlannerCrystal(500)
+          createPlannerCurrency('crystal', 500)
         ]
       },
     ],
@@ -793,7 +794,77 @@
       for(var i = 0; i < updated.length; i++) {
         saveSupply(updated[i]);
       }
-    } 
+    },
+
+    BuildWeapon: function(weaponBuild) {
+      if(weaponBuild.build.start <= weaponBuild.build.end) {
+        var response = [];
+        var itemHash = {};
+        for(var i = weaponBuild.build.start; i <= weaponBuild.build.end; i++) {
+          var items = planners[weaponBuild.type][i].items;
+          for(var j = 0; j < items.length; j++) {
+            var item = items[j];
+            var category = item.type;
+            var id;
+            if(category === 'currency') {
+              id = item.category;
+              category = 'currency';
+            }
+            else if(category === 'element') {
+              id = elements[item.materialType][item.materialTier].id;
+              category = elements[item.materialType][item.materialTier].category;
+            } else if(category === 'class') {
+
+            } else {
+              id = item.id;
+              category = item.category;
+            }
+            var hash = category + '-' + id;
+            if(itemHash[hash] !== undefined) {
+              response[itemHash[hash]].total += item.count;
+            } else {
+              itemHash[hash] = response.length;
+              var current = 0;
+              var tooltip = '';
+              var sequence = 0;
+              if(category === 'currency') {
+                current = Profile.Get(id, function(value) {
+                });
+                if(id === 'crystal') {
+                  tooltip = 'Crystals';
+                  sequence = 0;
+                }
+              } else {
+                current = Supplies.Get(id, category, function(id, amt) {
+                });
+                var itemDatum = supplies[category][id];
+                tooltip = createTooltip(itemDatum.name);
+                sequence = itemDatum.sequence;
+              }
+              response.push({
+                'id': id,
+                'category': category,
+                'current': current,
+                'total': item.count,
+                'tooltip': tooltip,
+                'sequence': sequence
+              });
+            }
+            response.sort(function(a, b) {
+              if(a.category === b.category) {
+                return a.sequence - b.sequence;
+              } else {
+                var categoryHash = {
+                  'recovery': 0,
+                  'powerUp': 1,
+                  
+                }
+              }
+            });
+          }
+        }
+      }
+    }
   }
 
   var getCategory = function(id, item_kind) {

@@ -103,7 +103,7 @@
   // });
 
   var dropdownHash = {
-    'revenant': [
+    'Revenant': [
       {
         'name': 'type',
         'texts': ['Spear', 'Bow', 'Axe', 'Blade', 'Staff', 'Fist', 'Sword', 'Katana', 'Harp', 'Gun']
@@ -121,7 +121,7 @@
         'texts': ['Awakening', 'Element', 'Upgrade 1', 'Upgrade 2', 'Upgrade 3', 'Upgrade 4', 'Upgrade 5', 'Upgrade 6']
       }
     ],
-    'class': [
+    'Class': [
       {
         'name': 'type',
         'texts': []
@@ -139,7 +139,7 @@
         'texts': ['Forge', 'Rebuild', 'Element']
       }
     ],
-    'seraph': [
+    'Seraph': [
       {
         'name': 'type',
         'texts': ['Fire', 'Water', 'Earth', 'Wind']
@@ -172,7 +172,7 @@
     var $this = $(this);
     $this.click(function() {
       resetDropdowns();
-      weaponType = $this.attr('id');
+      weaponType = $this.text();
       weaponBuild = {};
       for(var i = 0; i < dropdownHash[weaponType].length; i++) {
         var stage = dropdownHash[weaponType][i];
@@ -191,12 +191,16 @@
   });
   $('#weapon-dropdowns').find('.dropdown').each(function() {
     var btn = $(this).find('.dropdown-text').first();
-    $(this).find('a').each(function() {
+    $(this).find('a').each(function(index) {
       var $this = $(this);
       $this.click(function() {
         btn.text($this.text());
         if(weaponType && weaponBuild[$this.data('weapon')] !== undefined) {
-          weaponBuild[$this.data('weapon')] = $this.text();
+          if($this.data('weapon') === 'start' || $this.data('weapon') === 'end') {
+            weaponBuild[$this.data('weapon')] = index;
+          } else {
+            weaponBuild[$this.data('weapon')] = $this.text();
+          }
           var keys = Object.keys(weaponBuild)
           for(var i = 0; i < keys.length; i++) {
             if(weaponBuild[keys[i]] === null) {
@@ -204,7 +208,10 @@
             }
           }
           //hideAllSupplies();
-          console.log(weaponBuild);
+          console.log({weaponBuild: {
+            'type': weaponType,
+            'build': weaponBuild
+          }});
           Message.Post({weaponBuild: {
             'type': weaponType,
             'build': weaponBuild
