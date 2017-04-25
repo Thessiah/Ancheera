@@ -592,6 +592,72 @@
       });
     }
   }
+  var $plannerItem;
+  var $plannerIncompleteList;
+  var $plannerCompleteList;
+  var incompletePlanners = [];
+  var completePlanners = [];
+  var generatePlanner = function(planner) {
+    var incompleteCount = 0;
+    var completeCount = 0;
+    for(var i = 0; i < planner.length; i++) {
+      var item = planner[i];
+      if(item.current < item.total) {
+        if(incompletePlanners.length === incompleteCount) {
+          addPlannerItem($plannerIncompleteList, incompletePlanners, item.id, item.category, item.current, item.total, item.sequence, item.tooltip);
+        } else {
+          updatePlannerItem($plannerIncompleteList, incompletePlanners, incompleteCount, item.id, item.category, item.current, item.total, item.sequence, item.tooltip);
+        }
+        incompleteCount++;
+      } else {
+        if(completePlanners.length === completeCount) {
+          addPlannerItem($plannerCompleteList, completePlanners, item.id, item.category, item.current, item.total, item.sequence, item.tooltip);
+        } else {
+          updatePlannerItem($plannerCompleteList, completePlanners, completeCount, item.id, item.category, item.current, item.total, item.sequence, item.tooltip);
+        }
+        completeCount++;
+      }
+    }
+    for(var i = incompleteCount; i < incompletePlanners.length; i++) {
+      incompletePlanners[i].hide();
+    }
+    for(var i = completeCount; i < completePlanners.length; i++) {
+      completePlanners[i].hide();
+    }
+  }
+  var addPlannerItem = function($list, plannersList, id, category, current, total, sequence, tooltip) {
+    var newItem = $plannerItem.clone();
+    newItem.attr('id', 'planner-' + sequence + '-' + id);
+    if(category === 'recovery' || category === 'draw' || category === 'powerUp') {
+      newItem.data('category', 'misc');
+    } else {
+      newItem.data('category', category);
+    }
+    var imgURL;
+    if(category === 'recovery') {
+      imgURL = 'http://gbf.game-a.mbga.jp/assets_en/img/sp/assets/item/normal/s/';
+    } else if(category === 'powerUp') {
+      imgURL = 'http://gbf.game-a.mbga.jp/assets_en/img/sp/assets/item/evolution/s/';
+    } else if(category === 'draw') {
+      imgURL = 'http://gbf.game-a.mbga.jp/assets_en/img/sp/assets/item/ticket/';
+    } else {
+      imgURL = 'http://gbf.game-a.mbga.jp/assets_en/img/sp/assets/item/article/s/';
+    }
+    imgURL += id + '.jpg';
+    newItem.children('.item-img').first().attr('src', imgURL);
+    newItem.children('.item-current').first().text(current);
+    newItem.children('.item-current').first().attr('id', 'planner-' + sequence + '-' + id + '-current');
+    newItem.children('.item-total').first().text(total);
+    newItem.children('.item-total').first().attr('id', 'planner-' + sequence + '-' + id + '-total');
+    newItem.prop('title', tooltip);
+    newItem.tooltip();
+    $list.append(newItem);
+    plannersList.push(newItem);
+  }
+  var updatePlannerItem = function($list, plannersList, index, id, category, current, total, sequence, tooltip) {
+    var $item = plannersList[index];
+    $item.show();
+  }
   var addQuest = function(id, imgUrl, name, amount, max, animeIDs, animeAmounts) {
     var newRaid;
     if(animeIDs !== null && animeIDs.length > 1) {
