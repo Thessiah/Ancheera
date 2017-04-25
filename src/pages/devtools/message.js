@@ -657,6 +657,30 @@
   var updatePlannerItem = function($list, plannersList, index, id, category, current, total, sequence, tooltip) {
     var $item = plannersList[index];
     $item.show();
+    $item.attr('id', 'planner-' + sequence + '-' + id);
+    if(category === 'recovery' || category === 'draw' || category === 'powerUp') {
+      $item.data('category', 'misc');
+    } else {
+      $item.data('category', category);
+    }
+    var imgURL;
+    if(category === 'recovery') {
+      imgURL = 'http://gbf.game-a.mbga.jp/assets_en/img/sp/assets/item/normal/s/';
+    } else if(category === 'powerUp') {
+      imgURL = 'http://gbf.game-a.mbga.jp/assets_en/img/sp/assets/item/evolution/s/';
+    } else if(category === 'draw') {
+      imgURL = 'http://gbf.game-a.mbga.jp/assets_en/img/sp/assets/item/ticket/';
+    } else {
+      imgURL = 'http://gbf.game-a.mbga.jp/assets_en/img/sp/assets/item/article/s/';
+    }
+    imgURL += id + '.jpg';
+    $item.children('.item-img').first().attr('src', imgURL);
+    $item.children('.item-current').first().text(current);
+    $item.children('.item-current').first().attr('id', 'planner-' + sequence + '-' + id + '-current');
+    $item.children('.item-total').first().text(total);
+    $item.children('.item-total').first().attr('id', 'planner-' + sequence + '-' + id + '-total');
+    $item.prop('title', tooltip);
+    $item.tooltip();
   }
   var addQuest = function(id, imgUrl, name, amount, max, animeIDs, animeAmounts) {
     var newRaid;
