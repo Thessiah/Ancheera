@@ -251,10 +251,10 @@ chrome.runtime.onConnect.addListener(function (port) {
       // Dailies.Reset();
     }
     if(message.weaponBuild) {
-      Supplies.BuildWeapon(message.weaponBuild);
+      Supplies.BuildWeapon(message.id, message.weaponBuild);
     }
     if(message.consoleLog) {
-      //console.log(message.consoleLog);
+      console.log(message.consoleLog);
     }
     if(message.request) {
       //verify current ap/ep

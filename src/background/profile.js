@@ -452,6 +452,13 @@
         profile[category] = value;
         updated = true;
         Message.PostAll(getJquery(category));
+        if(category === 'crystal') {
+          Message.PostAll({'setPlannerItemAmount': {
+            'id': category,
+            'sequence': 0,
+            'current': value
+          }});
+        }
         if(responseList[category] !== undefined) {
           for(var i = 0; i < responseList[category].length; i++) {
             responseList[category][i](value);

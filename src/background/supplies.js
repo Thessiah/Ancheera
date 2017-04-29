@@ -452,7 +452,7 @@
       }
     },
 
-    BuildWeapon: function(weaponBuild) {
+    BuildWeapon: function(devID, weaponBuild) {
       if(weaponBuild.build.start <= weaponBuild.build.end) {
         var response = [];
         var itemHash = {};
@@ -484,15 +484,13 @@
               var tooltip = '';
               var sequence = 0;
               if(category === 'currency') {
-                current = Profile.Get(id, function(value) {
-                });
+                current = Profile.Get(id);
                 if(id === 'crystal') {
                   tooltip = 'Crystals';
                   sequence = 0;
                 }
               } else {
-                current = Supplies.Get(id, category, function(id, amt) {
-                });
+                current = Supplies.Get(id, category);
                 var itemDatum = weaponSupplyInfo[category][id];
                 if(itemDatum === undefined) {
                   debugger;
@@ -532,7 +530,7 @@
           }
         });
         console.log(response);
-        return response;
+        Message.Post(devID, {'generatePlanner': response});
       }
     }
   }
@@ -586,6 +584,11 @@
         'id': '#supply-' + supply.sequence + '-' + id + '-count',
         'value': intNum
       }});
+      Message.PostAll({'setPlannerItemAmount': {
+        'id': id,
+        'sequence': supply.sequence,
+        'current': number
+      }});
       //$supplyList.children('#supply-' + supply.sequence + '-' + id).children('.item-count').first().text(intNum);
       // for(var i = 0; i < supply.responseList.length; i++) {
       //   supply.responseList[i](id, intNum);
@@ -616,21 +619,27 @@
     if(category !== 'recovery' && category !== 'powerUp' && category !== 'draw') {
       supplies.treasureHash[id] = category;
     }
+    var intNum = number;
     if(number > 9999) {
-      number = 9999;
+      intNum = 9999;
     }
     
     Message.PostAll({addItem: {
       'id': id,
       'category': category,
-      'number': number,
+      'number': intNum,
       'name': name,
       'sequence': sequence,
       'tooltip': createTooltip(name)
     }});
+    Message.PostAll({'setPlannerItemAmount': {
+      'id': id,
+      'sequence': sequence,
+      'current': number
+    }});
     if(responseList[category] !== undefined && responseList[category][id] !== undefined) {
       for(var i = 0; i < responseList[category][id].length; i++) {
-        responseList[category][id][i](id, number);
+        responseList[category][id][i](id, intNum);
       }
     }
     return true;

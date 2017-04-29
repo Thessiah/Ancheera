@@ -209,7 +209,7 @@ body {
 
   .tab-tab-pane {
     top: 75px;
-    bottom: 0px;
+    bottom: 50px;
     right: 0px;
     left: 0px;
   }
@@ -551,9 +551,10 @@ body {
 
 .weapon-item {
   @extend .img-rounded;
-  margin: 2px;
+  margin-left: 2px;
+  margin-right: 2px;
   width: 86px;
-  background-color: red;
+  //background-color: red;
   >.item-img {
     @extend .img-rounded;
     margin: 2px;
@@ -563,14 +564,17 @@ body {
   >.item-count {
     float: right;
     margin-right: 4px;
-    >.item-max {
+    >.item-total {
       text-align: center;
       margin-top: -5px;
     }
-    >.item-curr {
+    >.item-current {
       text-align: center;
     }
   }
+}
+#weapon-item-incomplete {
+  margin-bottom: 10px !important;
 }
 
 

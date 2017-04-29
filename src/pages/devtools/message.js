@@ -326,6 +326,10 @@
             setTheme(msg.setTheme);
           } else if(msg.setMessage) {
             setMessage(msg.setMessage);
+          } else if(msg.generatePlanner) {
+            generatePlanner(msg.generatePlanner);
+          } else if(msg.setPlannerItemAmount) {
+            setPlannerItemAmount(msg.setPlannerItemAmount.id, msg.setPlannerItemAmount.sequence, msg.setPlannerItemAmount.current)
           }
         }
       }
@@ -401,6 +405,12 @@
     }
     if(message.setMessage) {
       setMessage(message.setMessage);
+    }
+    if(message.generatePlanner) {
+      generatePlanner(message.generatePlanner);
+    }
+    if(message.setPlannerItemAmount) {
+      setPlannerItemAmount(message.setPlannerItemAmount.id, message.setPlannerItemAmount.sequence, message.setPlannerItemAmount.current);
     }
   });
   
@@ -561,7 +571,7 @@
     } else {
       tooltipText = name;
     }
-    tooltipText = category + '-' + id + ':' + sequence + '-' + name;
+    //ßtooltipText = category + '-' + id + ':' + sequence + '-' + name;
     newItem.prop('title', tooltipText);
     newItem.tooltip();
         //alert(3);
@@ -592,77 +602,90 @@
       });
     }
   }
-  var $plannerItem;
-  var $plannerIncompleteList;
-  var $plannerCompleteList;
-  var incompletePlanners = [];
-  var completePlanners = [];
+
+  var $plannerItem = $('.weapon-item').first().clone();
+  $('.weapon-item').remove();
+  var $plannerIncompleteList = $('#weapon-item-incomplete');
+  var $plannerCompleteList = $('#weapon-item-complete');
+  var incompleteActiveCount = 0;
+  var completeActiveCount = 0;
+
   var generatePlanner = function(planner) {
     var incompleteCount = 0;
     var completeCount = 0;
+    var $incompleteItems = $plannerIncompleteList.children('.weapon-item');
+    var $completeItems = $plannerCompleteList.children('.weapon-item');
     for(var i = 0; i < planner.length; i++) {
       var item = planner[i];
+      var $list;
+      var $items;
+      var count;
+      // if(item.current < item.total) {
+      //   if(incompleteList.length === incompleteCount) {
+      //     addPlannerItem($plannerIncompleteList, incompleteList, item.id, item.category, item.current, item.total, item.sequence, item.tooltip);
+      //   } else {
+      //     updatePlannerItem($plannerIncompleteList, incompleteListincompleteCount], item.id, item.category, item.current, item.total, item.sequence, item.tooltip);
+      //   }
+      //   incompleteCount++;
+      // } else {
+      //   if(completePlannersHash.length === completeCount) {
+      //     addPlannerItem($plannerCompleteList, completeList, item.id, item.category, item.current, item.total, item.sequence, item.tooltip);
+      //   } else {
+      //     updatePlannerItem($plannerCompleteList, completeList[completeCount], item.id, item.category, item.current, item.total, item.sequence, item.tooltip);
+      //   }
+      //   completeCount++;
+      // }
       if(item.current < item.total) {
-        if(incompletePlanners.length === incompleteCount) {
-          addPlannerItem($plannerIncompleteList, incompletePlanners, item.id, item.category, item.current, item.total, item.sequence, item.tooltip);
-        } else {
-          updatePlannerItem($plannerIncompleteList, incompletePlanners, incompleteCount, item.id, item.category, item.current, item.total, item.sequence, item.tooltip);
-        }
-        incompleteCount++;
+        $list = $plannerIncompleteList;
+        $items = $incompleteItems;
+        count = incompleteCount;
+        incompleteCount++
       } else {
-        if(completePlanners.length === completeCount) {
-          addPlannerItem($plannerCompleteList, completePlanners, item.id, item.category, item.current, item.total, item.sequence, item.tooltip);
-        } else {
-          updatePlannerItem($plannerCompleteList, completePlanners, completeCount, item.id, item.category, item.current, item.total, item.sequence, item.tooltip);
-        }
+        $list = $plannerCompleteList;
+        $items = $completeItems;
+        count = completeCount;
         completeCount++;
       }
+      if(count >= $items.length) {
+        addPlannerItem($list, item.id, item.category, item.current, item.total, item.sequence, item.tooltip);
+      } else {
+        updatePlannerItem($($items.get(count)), item.id, item.category, item.current, item.total, item.sequence, item.tooltip);
+      }
     }
-    for(var i = incompleteCount; i < incompletePlanners.length; i++) {
-      incompletePlanners[i].hide();
-    }
-    for(var i = completeCount; i < completePlanners.length; i++) {
-      completePlanners[i].hide();
-    }
+    $($incompleteItems.get().reverse()).each(function(i) {
+      if($incompleteItems.length - 1 - i >= incompleteCount) {
+        $(this).hide();
+      } else {
+        return false;
+      }
+    })
+    $($completeItems.get().reverse()).each(function(i) {
+      if($completeItems.length - 1 - i >= completeCount) {
+        $(this).hide();
+      } else {
+        return false;
+      }
+    })
+    // for(var i = completePlannersList.length - 1; i >= completeCount; i--) {
+    //   var key = completePlannersList[i];
+    //   key.hide();
+    //   completePlannersList.pop();
+    // }
   }
-  var addPlannerItem = function($list, plannersList, id, category, current, total, sequence, tooltip) {
+  var addPlannerItem = function($list, id, category, current, total, sequence, tooltip) {
     var newItem = $plannerItem.clone();
-    newItem.attr('id', 'planner-' + sequence + '-' + id);
-    if(category === 'recovery' || category === 'draw' || category === 'powerUp') {
-      newItem.data('category', 'misc');
-    } else {
-      newItem.data('category', category);
-    }
-    var imgURL;
-    if(category === 'recovery') {
-      imgURL = 'http://gbf.game-a.mbga.jp/assets_en/img/sp/assets/item/normal/s/';
-    } else if(category === 'powerUp') {
-      imgURL = 'http://gbf.game-a.mbga.jp/assets_en/img/sp/assets/item/evolution/s/';
-    } else if(category === 'draw') {
-      imgURL = 'http://gbf.game-a.mbga.jp/assets_en/img/sp/assets/item/ticket/';
-    } else {
-      imgURL = 'http://gbf.game-a.mbga.jp/assets_en/img/sp/assets/item/article/s/';
-    }
-    imgURL += id + '.jpg';
-    newItem.children('.item-img').first().attr('src', imgURL);
-    newItem.children('.item-current').first().text(current);
-    newItem.children('.item-current').first().attr('id', 'planner-' + sequence + '-' + id + '-current');
-    newItem.children('.item-total').first().text(total);
-    newItem.children('.item-total').first().attr('id', 'planner-' + sequence + '-' + id + '-total');
-    newItem.prop('title', tooltip);
-    newItem.tooltip();
+    setPlannerItem(newItem, id, category, current, total, sequence, tooltip);
     $list.append(newItem);
-    plannersList.push(newItem);
   }
-  var updatePlannerItem = function($list, plannersList, index, id, category, current, total, sequence, tooltip) {
-    var $item = plannersList[index];
+  var updatePlannerItem = function($item, id, category, current, total, sequence, tooltip) {
     $item.show();
+    setPlannerItem($item, id, category, current, total, sequence, tooltip);
+  }
+
+  var setPlannerItem = function($item, id, category, current, total, sequence, tooltip) {
     $item.attr('id', 'planner-' + sequence + '-' + id);
-    if(category === 'recovery' || category === 'draw' || category === 'powerUp') {
-      $item.data('category', 'misc');
-    } else {
-      $item.data('category', category);
-    }
+    $item.data('sequence', sequence);
+    $item.data('category', category);
     var imgURL;
     if(category === 'recovery') {
       imgURL = 'http://gbf.game-a.mbga.jp/assets_en/img/sp/assets/item/normal/s/';
@@ -674,13 +697,75 @@
       imgURL = 'http://gbf.game-a.mbga.jp/assets_en/img/sp/assets/item/article/s/';
     }
     imgURL += id + '.jpg';
+    if(category === 'currency') {
+      if(id === 'crystal') {
+        imgURL = '../../assets/images/icons/crystal.png'
+      }
+    }
     $item.children('.item-img').first().attr('src', imgURL);
-    $item.children('.item-current').first().text(current);
-    $item.children('.item-current').first().attr('id', 'planner-' + sequence + '-' + id + '-current');
-    $item.children('.item-total').first().text(total);
-    $item.children('.item-total').first().attr('id', 'planner-' + sequence + '-' + id + '-total');
-    $item.prop('title', tooltip);
-    $item.tooltip();
+    var $current = $item.find('.item-current').first();
+    var $total = $item.find('.item-total').first();
+    $current.text(truncateNumber(current));
+    $current.data('value', current);
+    $current.attr('id', 'planner-' + sequence + '-' + id + '-current');
+    $total.text(total);
+    $total.data('value', total);
+    $total.attr('id', 'planner-' + sequence + '-' + id + '-total');
+    $item.tooltip('hide')
+          .attr('data-original-title', tooltip)
+          .tooltip('fixTitle')
+  }
+
+  var setPlannerItemAmount = function(id, sequence, current) {
+    var $item = $('#planner-' + sequence + '-' + id);
+    if($item.length > 0) {
+      var $current = $item.find('#planner-' + sequence + '-' + id + '-current');
+      $current.text(truncateNumber(current));
+      $current.data('value', current);
+      var incomplete = ($plannerIncompleteList.children('#planner-' + sequence + '-' + id).length > 0); 
+      var total = parseInt($item.find('#planner-' + sequence + '-' + id + '-total').data('value'));
+      if(!incomplete && current < total) {
+        $plannerIncompleteList.append($item);
+        $plannerIncompleteList.children('.weapon-item').sort(sortPlanner).appendTo($plannerIncompleteList)
+      } else if(incomplete && current >= total) {
+        $plannerCompleteList.append($item);
+        $plannerCompleteList.children('.weapon-item').sort(sortPlanner).appendTo($plannerCompleteList);
+      }
+      // } else {
+      //   return;
+      // }
+      //$list.sort(sortPlanner);
+    }
+  }
+  var truncateNumber = function(value) {
+    if(value >= 1000000) {
+      return Math.round(value / 100000) + 'M';
+    } else if(value >= 10000) {
+      return Math.round(value / 1000) + 'k';
+    }
+    return value;
+  }
+  var sortPlanner = function(a, b) {
+    var $a = $(a);
+    var $b = $(b);
+    if($a.data('category') === $b.data('category')) {
+      return parseInt($a.data('sequence')) - parseInt($b.data('sequence'));
+    } else {
+      var categoryHash = {
+        treasure: 0,
+        raid: 1,
+        material: 2,
+        event: 3,
+        coop: 4,
+        misc: 5,
+        recovery: 6,
+        powerUp: 7,
+        draw: 8,
+        other: 9,
+        currency: 10
+      }
+      return categoryHash[$a.data('category')] - categoryHash[$b.data('category')];
+    }
   }
   var addQuest = function(id, imgUrl, name, amount, max, animeIDs, animeAmounts) {
     var newRaid;
