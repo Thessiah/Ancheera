@@ -25,7 +25,6 @@
     }
     filterSupplies($(this).data('category'));
     $currCategory = $(this).parent('li');
-    resetDropdowns();
   });
 
   var $raidsPanel = $('#raids-panel');
@@ -52,11 +51,11 @@
   var $questBuff = $('#quest-buff').clone();
   $('#quest-buff').remove();
 
-  var $weaponPlanner = $('#weapon-planner');
-  var $weaponType = $('#weapon-type');
-  var $weaponElement = $('#weapon-element');
-  var $weaponStart = $('#weapon-start');
-  var $weaponEnd = $('#weapon-end');
+  var $weaponPlanner = $('#weapon-planner-container');
+  var $weaponType = $('#weapon-type-container');
+  var $weaponElement = $('#weapon-element-container');
+  var $weaponStart = $('#weapon-start-container');
+  var $weaponEnd = $('#weapon-end-container');
   
 
   $searchSupplies.on('input paste', function(){
@@ -103,57 +102,36 @@
   // });
 
   var dropdownHash = {
-    'Revenant': [
-      {
-        'name': 'type',
-        'texts': ['Spear', 'Bow', 'Axe', 'Blade', 'Staff', 'Fist', 'Sword', 'Katana', 'Harp', 'Gun']
-      },
-      {
-        'name': 'element',
-        'texts': ['Fire', 'Water', 'Earth', 'Wind', 'Light', 'Dark']
-      },
-      {
-        'name': 'start',
-        'texts': ['Awakening', 'Element', 'Upgrade 1', 'Upgrade 2', 'Upgrade 3', 'Upgrade 4', 'Upgrade 5', 'Upgrade 6']
-      },
-      {
-        'name': 'end',
-        'texts': ['Awakening', 'Element', 'Upgrade 1', 'Upgrade 2', 'Upgrade 3', 'Upgrade 4', 'Upgrade 5', 'Upgrade 6']
-      }
-    ],
-    'Class': [
-      {
-        'name': 'type',
-        'texts': []
-      },
-      {
-        'name': 'element',
-        'texts': ['Fire', 'Water', 'Earth', 'Wind', 'Light', 'Dark']
-      },
-      {
-        'name': 'start',
-        'texts': ['Forge', 'Rebuild', 'Element']
-      },
-      {
-        'name': 'end',
-        'texts': ['Forge', 'Rebuild', 'Element']
-      }
-    ],
-    'Seraph': [
-      {
-        'name': 'type',
-        'texts': ['Fire', 'Water', 'Earth', 'Wind']
-      },
-      {
-        'name': 'start',
-        'texts': ['Forge', 'Rebuild', 'Element']
-      },
-      {
-        'name': 'end',
-        'texts': ['Forge', 'Rebuild', 'Element']
-      }
-    ],
+    'Revenant': {
+      'element' : ['Fire', 'Water', 'Earth', 'Wind', 'Light', 'Dark'],
+      'start' : ['Awakening', 'Element', 'Upgrade 1', 'Upgrade 2', 'Upgrade 3', 'Upgrade 4', 'Upgrade 5', 'Upgrade 6'],
+      'end' : ['Awakening', 'Element', 'Upgrade 1', 'Upgrade 2', 'Upgrade 3', 'Upgrade 4', 'Upgrade 5', 'Upgrade 6']
+    },
+    'Class': {
+      'type': ['Avenger', 'Skofnung', 'Nirvana', 'Keraunos', 'Oliver', 'Hellion', 'Ipetam', 'Rosenbogen', 'Langeleik', 'Romulus', 'Faust', 'Murakumo', 'Muramasa', 'Ascalon', 'Nebuchad', 'Kapilavastu' ,'Misericorde'],
+      'element' : ['Fire', 'Water', 'Earth', 'Wind', 'Light', 'Dark'],
+      'start' : ['Redeem', 'Forge', 'Rebuild', 'Element'],
+      'end' : ['Redeem', 'Forge', 'Rebuild', 'Element']
+    },
+    'Seraph': {
+      'element' : ['Fire', 'Water', 'Earth', 'Wind'],
+      'start' : ['Forge', 'Uncap 1', 'Uncap 2', 'Uncap 3', 'SSR Upgrade'],
+      'end' : ['Forge', 'Uncap 1', 'Uncap 2', 'Uncap 3', 'SSR Upgrade']
+    },
+    'Bahamut': {
+      'type': ['Sabre', 'Dagger', 'Spear', 'Axe', 'Staff', 'Gun', 'Melee', 'Bow', 'Harp', 'Katana'],
+      'start': ['Core', 'Nova', 'Coda'],
+      'end': ['Core', 'Nova', 'Coda']
+    }
   }
+  var dropdownLocater = {
+    'planner': $weaponPlanner,
+    'type': $weaponType,
+    'element': $weaponElement,
+    'start': $weaponStart,
+    'end': $weaponEnd
+  }
+  
   var weaponBuild = {};
   var weaponType= '';
 
@@ -168,27 +146,35 @@
     $weaponStart.hide();
     $weaponEnd.hide();
   }
+  var initializeDropdowns = function(type) {
+    Object.keys(dropdownHash[type]).forEach(function(key) {
+      var values = dropdownHash[type][key];
+      $('#weapon-' + key + '-container').show();
+      $('#weapon-' + key + '-dropdown').find('a').each(function(index) {
+        if(index < values.length) {
+          $(this).show();
+          $(this).text(values[index]);
+        } else {
+          $(this).hide();
+        }
+      });
+    }); 
+  }
   $('#weapon-planner-dropdown').find('a').each(function() {
     var $this = $(this);
     $this.click(function() {
-      resetDropdowns();
-      weaponType = $this.text();
-      weaponBuild = {};
-      for(var i = 0; i < dropdownHash[weaponType].length; i++) {
-        var stage = dropdownHash[weaponType][i];
-        weaponBuild[stage.name] = null;
-        $('#weapon-' + stage.name).show();
-        $('#weapon-' + stage.name + '-dropdown').find('a').each(function(index) {
-          if(index < stage.texts.length) {
-            $(this).show();
-            $(this).text(stage.texts[index]);
-          } else {
-            $(this).hide();
-          }
+        resetDropdowns();
+        clearPlanner();
+        weaponBuild = {};
+        weaponType = $this.text();
+        initializeDropdowns(weaponType);
+        Object.keys(dropdownHash[weaponType]).forEach(function(key) {
+          weaponBuild[key] = null;
         });
-       }      
+        Message.Post({'getPlanner': $this.text()});
     });
   });
+
   $('#weapon-dropdowns').find('.dropdown').each(function() {
     var btn = $(this).find('.dropdown-text').first();
     $(this).find('a').each(function(index) {
@@ -330,6 +316,8 @@
             generatePlanner(msg.generatePlanner);
           } else if(msg.setPlannerItemAmount) {
             setPlannerItemAmount(msg.setPlannerItemAmount.id, msg.setPlannerItemAmount.sequence, msg.setPlannerItemAmount.current)
+          } else if(msg.setPlannerDropdowns) {
+            setPlannerDropdowns(msg.setPlannerDropdowns.type, msg.setPlannerDropdowns.build);
           }
         }
       }
@@ -411,6 +399,9 @@
     }
     if(message.setPlannerItemAmount) {
       setPlannerItemAmount(message.setPlannerItemAmount.id, message.setPlannerItemAmount.sequence, message.setPlannerItemAmount.current);
+    }
+    if(message.setPlannerDropdowns) {
+      setPlannerDropdowns(message.setPlannerDropdowns.type, message.setPlannerDropdowns.build);
     }
   });
   
@@ -571,7 +562,7 @@
     } else {
       tooltipText = name;
     }
-    //ßtooltipText = category + '-' + id + ':' + sequence + '-' + name;
+    tooltipText = category + '-' + id + ':' + sequence + '-' + name;
     newItem.prop('title', tooltipText);
     newItem.tooltip();
         //alert(3);
@@ -615,6 +606,10 @@
     var completeCount = 0;
     var $incompleteItems = $plannerIncompleteList.children('.weapon-item');
     var $completeItems = $plannerCompleteList.children('.weapon-item');
+    if(planner.length === 0) {
+      clearPlanner();
+      return;
+    }
     for(var i = 0; i < planner.length; i++) {
       var item = planner[i];
       var $list;
@@ -736,6 +731,24 @@
       // }
       //$list.sort(sortPlanner);
     }
+  }
+  var setPlannerDropdowns = function(type, build) {
+    dropdownLocater['planner'].find('.dropdown-text').text(type);
+    initializeDropdowns(type);
+    weaponType = type;
+    weaponBuild = build;
+    Object.keys(build).forEach(function(key) {
+      dropdownLocater[key].show();
+      if(key === 'start' || key === 'end') {
+        dropdownLocater[key].find('.dropdown-text').text(dropdownHash[type][key][build[key]]);
+      } else {
+        dropdownLocater[key].find('.dropdown-text').text(build[key]);
+      }
+    });
+  }
+  var clearPlanner = function() {
+    $plannerIncompleteList.children('.weapon-item').hide();
+    $plannerCompleteList.children('.weapon-item').hide();
   }
   var truncateNumber = function(value) {
     if(value >= 1000000) {

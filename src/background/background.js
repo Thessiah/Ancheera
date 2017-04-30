@@ -3,7 +3,7 @@
   var currURL = '';
   var pageLoaded = true;
 
-  var CURRENT_VERSION = '1.0.1';
+  var CURRENT_VERSION = '1.1.0';
   var BASE_VERSION = '1.0.1';
   var patchNotes = {
     '1.0.1': {
@@ -13,10 +13,17 @@
                 '(thanks lolPseudoSmart for supply locations)',
                 '-Primarch misc daily added',
                 '-Primarch raid + xeno jp names added']
+    },
+    '1.1.0': {
+      'index': 1,
+      'notes': ['-Weapon Series planner added',
+                'Try it out in the supply tab!',
+                '-Vira and Narumaya themes removed']
     }
   }
   var patchNoteList = [
-    '1.0.1'
+    '1.0.1',
+    '1.1.0'
   ]
   var currentVersion = undefined;
 
@@ -218,6 +225,9 @@ chrome.runtime.onConnect.addListener(function (port) {
       //   }
       // });
       return;
+    }
+    if(message.getPlanner) {
+      Supplies.GetPlanner(message.id, message.getPlanner);
     }
     if(message.refresh) {
       chrome.tabs.reload(message.id);

@@ -662,7 +662,7 @@
               </div>
               <div id="planner-panel" class="supplies-tab-pane">
                 <div id="weapon-dropdowns">
-                  <div class="dropdown">
+                  <div id="weapon-planner-container" class="dropdown">
                     <button id="weapon-planner" class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
                       <span class="dropdown-text" data-default="Planner">Planner</span><span class="caret"></span>
                     </button>
@@ -670,26 +670,34 @@
                       <li><a id="revenant">Revenant</a></li>
                       <li><a id="class">Class</a></li>
                       <li><a id="seraph">Seraph</a></li>
+                      <li><a id="seraph">Bahamut</a></li>
                     </ul>
                   </div>
-                  <div class="dropdown">
+                  <div id="weapon-type-container" class="dropdown">
                     <button id="weapon-type" class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
                       <span class="dropdown-text" data-default="Type">Type</span><span class="caret"></span>
                     </button>
                     <ul id="weapon-type-dropdown" class="dropdown-menu">
-                      <li><a data-weapon="type">Spear</a></li>
-                      <li><a data-weapon="type">Bow</a></li>
-                      <li><a data-weapon="type">Axe</a></li>
-                      <li><a data-weapon="type">Blade</a></li>
-                      <li><a data-weapon="type">Staff</a></li>
-                      <li><a data-weapon="type">Fist</a></li>
-                      <li><a data-weapon="type">Sword</a></li>
-                      <li><a data-weapon="type">Katana</a></li>
-                      <li><a data-weapon="type">Harp</a></li>
-                      <li><a data-weapon="type">Gun</a></li>
+                      <li><a data-weapon="type">1</a></li>
+                      <li><a data-weapon="type">2</a></li>
+                      <li><a data-weapon="type">3</a></li>
+                      <li><a data-weapon="type">4</a></li>
+                      <li><a data-weapon="type">5</a></li>
+                      <li><a data-weapon="type">6</a></li>
+                      <li><a data-weapon="type">7</a></li>
+                      <li><a data-weapon="type">8</a></li>
+                      <li><a data-weapon="type">9</a></li>
+                      <li><a data-weapon="type">10</a></li>
+                      <li><a data-weapon="type">11</a></li>
+                      <li><a data-weapon="type">12</a></li>
+                      <li><a data-weapon="type">13</a></li>
+                      <li><a data-weapon="type">14</a></li>
+                      <li><a data-weapon="type">15</a></li>
+                      <li><a data-weapon="type">16</a></li>
+                      <li><a data-weapon="type">17</a></li>
                     </ul>
                   </div>
-                  <div class="dropdown">
+                  <div id="weapon-element-container" class="dropdown">
                     <button id="weapon-element" class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
                       <span class="dropdown-text" data-default="Element">Element</span><span class="caret"></span>
                     </button>
@@ -703,7 +711,7 @@
                     </ul>
                   </div>
                   <div class= "dropdown-row-bottom">
-                    <div class="dropdown">
+                    <div id="weapon-start-container" class="dropdown">
                       <button id="weapon-start" class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
                         <span class="dropdown-text" data-default="Current">Current</span><span class="caret"></span>
                       </button>
@@ -716,9 +724,12 @@
                         <li><a data-weapon="start">Fourth Upgrade</a></li>
                         <li><a data-weapon="start">Fifth Upgrade</a></li>
                         <li><a data-weapon="start">Sixth Upgrade</a></li>
+                        <li><a data-weapon="start">Silver Relic</a></li>
+                        <li><a data-weapon="start">Silver 4*</a></li>
+                        <li><a data-weapon="start">Gold Relic</a></li>
                       </ul>
                     </div>
-                    <div class="dropdown dropdown-last">
+                    <div id="weapon-end-container" class="dropdown dropdown-last">
                       <button id="weapon-end" class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
                         <span class="dropdown-text" data-default="Target">Target</span><span class="caret"></span>
                       </button>
@@ -731,6 +742,9 @@
                         <li><a data-weapon="end">Fourth Upgrade</a></li>
                         <li><a data-weapon="end">Fifth Upgrade</a></li>
                         <li><a data-weapon="end">Sixth Upgrade</a></li>
+                        <li><a data-weapon="end">Silver Relic</a></li>
+                        <li><a data-weapon="end">Silver 4*</a></li>
+                        <li><a data-weapon="end">Gold Relic</a></li>
                       </ul>
                     </div>
                   </div>

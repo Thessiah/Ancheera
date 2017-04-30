@@ -231,7 +231,7 @@
       setBP(currBP - amt, maxBP);
     }
     if(currBP < maxBP) {
-      bpTime.minute += amt * 20 % 60;
+      bpTime.minute += amt * 10 % 60;
       if(bpTime.minute >= 60) {
         bpTime.minute -= 60;
         bpTime.hour++;
@@ -244,7 +244,7 @@
         }
         bpTime.second = 59;
       }
-      bpTime.hour += Math.floor(amt * 20 / 60); 
+      bpTime.hour += Math.floor(amt * 10 / 60); 
       setBPTime();
       if(!bpTimer) {
         resetBPTimer();
@@ -257,12 +257,12 @@
     if(currBP >= maxBP) {
       stopBPTimer();
     } else {
-      bpTime.minute -= amt * 20 % 60;
+      bpTime.minute -= amt * 10 % 60;
       if(bpTime.minute < 0) {
         bpTime.minute += 60;
         bpTime.hour--;
       }
-      bpTime.hour -= Math.floor(amt * 20 / 60); 
+      bpTime.hour -= Math.floor(amt * 10 / 60); 
       setBPTime();
     }
   }
@@ -411,7 +411,7 @@
           }
           bpTime.minute = 59;
         }
-        if((bpTime.minute === 19 || bpTime.minute === 39 || bpTime.minute === 59) && !(bpTime.hour === Math.floor((maxBP * 20 - 1) / 60) && bpTime.minute === (maxBP * 20 - 1) % 60)) {
+        if((bpTime.minute === 19 || bpTime.minute === 39 || bpTime.minute === 59) && !(bpTime.hour === Math.floor((maxBP * 10 - 1) / 60) && bpTime.minute === (maxBP * 10 - 1) % 60)) {
           setBP(currBP + 1, maxBP);
         }
         bpTime.second = 59;

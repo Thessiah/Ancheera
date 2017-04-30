@@ -15,8 +15,7 @@
   var responseList = {
   }
   var planners = {
-    revenant: {},
-    class: {}
+    current: null,
   }
 
   var updatedSupplies = [];
@@ -73,6 +72,11 @@
           callback();
         }
       });
+      Storage.GetMultiple(['planners'], function(response) {
+        if(response['planners'] !== undefined) {
+          planners = response['planners'].planners
+        }
+      });
     },
     InitializeDev: function() {
       var response = [];
@@ -92,6 +96,11 @@
           });
         }
       });
+      var type = planners.current;
+      if(type && planners[type]) {
+        response.push({'setPlannerDropdowns': {type: type, build: planners[type]}});
+        response.push({'generatePlanner': buildWeapon(type, planners[type])})
+      }
       return response;
     },
     Get: function(id, category, response) {
@@ -453,84 +462,16 @@
     },
 
     BuildWeapon: function(devID, weaponBuild) {
-      if(weaponBuild.build.start <= weaponBuild.build.end) {
-        var response = [];
-        var itemHash = {};
-        for(var i = weaponBuild.build.start; i <= weaponBuild.build.end; i++) {
-          var items = planners[weaponBuild.type][i].items;
-          for(var j = 0; j < items.length; j++) {
-            var item = items[j];
-            var category = item.type;
-            var id;
-            if(category === 'currency') {
-              id = item.category;
-              category = 'currency';
-            }
-            else if(category === 'element') {
-              id = elements[item.materialType][item.materialTier][weaponBuild.build.element].id;
-              category = elements[item.materialType][item.materialTier][weaponBuild.build.element].category;
-            } else if(category === 'class') {
+      planners[weaponBuild.type] = weaponBuild.build;
+      planners.current = weaponBuild.type;
+      savePlanner();
+      Message.Post(devID, {'generatePlanner': buildWeapon(weaponBuild.type, weaponBuild.build)});
+    },
 
-            } else {
-              id = item.id;
-              category = item.category;
-            }
-            var hash = category + '-' + id;
-            if(itemHash[hash] !== undefined) {
-              response[itemHash[hash]].total += item.count;
-            } else {
-              itemHash[hash] = response.length;
-              var current = 0;
-              var tooltip = '';
-              var sequence = 0;
-              if(category === 'currency') {
-                current = Profile.Get(id);
-                if(id === 'crystal') {
-                  tooltip = 'Crystals';
-                  sequence = 0;
-                }
-              } else {
-                current = Supplies.Get(id, category);
-                var itemDatum = weaponSupplyInfo[category][id];
-                if(itemDatum === undefined) {
-                  debugger;
-                }
-                tooltip = createTooltip(itemDatum.name);
-                sequence = itemDatum.sequence;
-              }
-              response.push({
-                'id': id,
-                'category': category,
-                'current': current,
-                'total': item.count,
-                'tooltip': tooltip,
-                'sequence': sequence
-              });
-            }
-          }
-        }
-        response.sort(function(a, b) {
-          if(a.category === b.category) {
-            return a.sequence - b.sequence;
-          } else {
-            var categoryHash = {
-              treasure: 0,
-              raid: 1,
-              material: 2,
-              event: 3,
-              coop: 4,
-              misc: 5,
-              recovery: 6,
-              powerUp: 7,
-              draw: 8,
-              other: 9,
-              currency: 10
-            }
-            return categoryHash[a.category] - categoryHash[b.category];
-          }
-        });
-        console.log(response);
-        Message.Post(devID, {'generatePlanner': response});
+    GetPlanner: function(devID, type) {
+      if(type && planners[type]) {
+        Message.Post(devID, {'setPlannerDropdowns': {type: type, build: planners[type]}});
+        Message.Post(devID, {'generatePlanner': buildWeapon(type, planners[type])});
       }
     }
   }
@@ -553,12 +494,8 @@
     Storage.Set('supply' + category, {'supplies': supplies[category]});
   }
 
-  var savePlanner = function(category) {
+  var savePlanner = function() {
     Storage.Set('planners', {'planners': planners});
-  }
-
-  var savePlanner = function(type) {
-    Storage.Set('planner' + type, {'planner': planner[type]});
   }
 
   var saveUpdateSupply = function(id, category, number) {
@@ -645,6 +582,98 @@
     return true;
   }
 
+  var buildWeapon = function(type, build) {
+    var response = [];
+      if(build.start <= build.end) {
+        var itemHash = {};
+        for(var i = build.start; i <= build.end; i++) {
+          var items = plannersData[type][i].items;
+          for(var j = 0; j < items.length; j++) {
+            var item = items[j];
+            var category = item.type;
+            var id;
+            if(category === 'currency') {
+              id = item.category;
+              category = 'currency';
+            }
+            else if(category === 'element') {
+              id = elements[item.materialType][item.materialTier][build.element].id;
+              category = elements[item.materialType][item.materialTier][build.element].category;
+            } else if(category === 'class') {
+              id = classes[item.materialType][build.type].id;
+              if(id === null) {
+                continue;
+              }
+              category = classes[item.materialType][build.type].category;
+            } else if(category === 'seraph') {
+
+            } else if(category === 'bahamut') {
+              id = bahamuts[build.type].id;
+              category = bahamuts[build.type].category;
+            } else {
+              id = item.id;
+              category = item.category;
+            }
+            var hash = category + '-' + id;
+            if(itemHash[hash] !== undefined) {
+              response[itemHash[hash]].total += item.count;
+            } else {
+              itemHash[hash] = response.length;
+              var current = 0;
+              var tooltip = '';
+              var sequence = 0;
+              if(category === 'currency') {
+                current = Profile.Get(id);
+                if(id === 'crystal') {
+                  tooltip = 'Crystals';
+                  sequence = 0;
+                }
+              } else {
+                current = Supplies.Get(id, category);
+                var itemDatum = weaponSupplyInfo[category][id];
+                if(!itemDatum) {
+                  debugger;
+                }
+                tooltip = createTooltip(itemDatum.name);
+                sequence = itemDatum.sequence;
+              }
+              response.push({
+                'id': id,
+                'category': category,
+                'current': current,
+                'total': item.count,
+                'tooltip': tooltip,
+                'sequence': sequence
+              });
+            }
+          }
+        }
+        response.sort(function(a, b) {
+          if(a.category === b.category) {
+            return a.sequence - b.sequence;
+          } else {
+            var categoryHash = {
+              treasure: 0,
+              raid: 1,
+              material: 2,
+              event: 3,
+              coop: 4,
+              misc: 5,
+              recovery: 6,
+              powerUp: 7,
+              draw: 8,
+              other: 9,
+              currency: 10
+            }
+            return categoryHash[a.category] - categoryHash[b.category];
+          }
+        });
+      }
+      console.log(response);
+      return response;
+      //Message.Post(devID, {'generatePlanner': response});
+  }
+
   var filterSupplies = function(category) {
     filter = category;
     // $supplyList.children().each(function(index) {
@@ -677,16 +706,16 @@
     return tooltip;
   }
 
-  var setPlanner = function(category, type, element, start, end) {
-    if(start !== -1) {
-      for(var i = start; i < end; i++) {
+  // var setPlanner = function(category, type, element, start, end) {
+  //   if(start !== -1) {
+  //     for(var i = start; i < end; i++) {
 
-      }
-    } else {
-      planners[category] = {};
-    }
-    savePlanner(category);
-  }
+  //     }
+  //   } else {
+  //     planners[category] = {};
+  //   }
+  //   savePlanner(category);
+  // }
 
     var createPlannerCurrency = function(category, count) {
     return {
@@ -713,6 +742,21 @@
     }
   }
 
+  var createPlannerBahamut = function(materialType, count) {
+    return {
+      'type': 'bahamut',
+      'materialType': materialType,
+      'count': count
+    }
+  }
+  var createPlannerSeraph = function(materialType, count) {
+    return {
+      'type': 'seraph',
+      'materialType': materialType,
+      'count': count
+    }
+  }
+
   var createPlannerSupply = function(category, id, count) {
     return {
       'type': 'supply',
@@ -729,16 +773,16 @@
     }
   }
 
-  var planners = {
+  var plannersData = {
     'Revenant': [
       {
         'name': 'Awakening',
         'items': [
           createPlannerSupply('material', '1052', 50),
-          createPlannerSupply('material', '1351', 50),
+          createPlannerSupply('material', '1352', 50),
           createPlannerSupply('material', '1353', 50),
+          createPlannerSupply('material', '1151', 50),
           createPlannerSupply('material', '2001', 50),
-          createPlannerSupply('material', '1052', 50),
           createPlannerCurrency('crystal', 100)
         ]
       },
@@ -845,9 +889,19 @@
     ],
     'Class': [
       {
+        'name': 'Redeem',
+        'items': [
+          createPlannerClass('creed', 1),
+          createPlannerClass('distinction', 1),
+          createPlannerSupply('material', '2003', 1)
+        ]
+      },
+      {
         'name': 'Forge',
         'items': [
-          createPlannerClass('primal'),
+          createPlannerClass('primal1', 70),
+          createPlannerClass('primal2', 10),
+          createPlannerClass('primal3', 10),
           createPlannerClass('coop1', 15),
           createPlannerClass('coop2', 15),
           createPlannerClass('creed', 10),
@@ -868,7 +922,6 @@
           createPlannerSupply('material', '1201', 120),
           createPlannerSupply('material', '1', 5),
           createPlannerSupply('powerUp', '20003', 2),
-          createPlannerElement('quartz', '0', 50),
         ]
       },
       {
@@ -876,17 +929,325 @@
         'items': [
           createPlannerClass('distinction', 30),
           createPlannerClass('stone', 512),
-          createPlannerClass('grimoire1', 15),
-          createPlannerClass('grimoire2', 15),
+          createPlannerElement('grimoire', '0', 15),
+          createPlannerElement('grimoire', '1', 15),
           createPlannerElement('magna', '4', 30),
           createPlannerElement('primal', '2', 200),
           createPlannerSupply('raid', '107', 3),
           createPlannerSupply('material', '1', 15),
         ]
       }
+    ],
+    'Seraph': [
+      {
+        'name': 'Forge',
+        'items': [
+          createPlannerElement('orb', '0', 5),
+          createPlannerElement('tome', '0', 5),
+          createPlannerElement('treasure', '0', 5),
+          createPlannerElement('treasure', '1', 3),
+          createPlannerElement('tome', '2', 10),
+          createPlannerElement('scale', '0', 1),
+        ]
+      },
+      {
+        'name': 'Uncap 1',
+        'items': [
+          createPlannerElement('orb', '0', 10),
+          createPlannerElement('orb', '1', 3),
+          createPlannerElement('tome', '0', 10),
+          createPlannerElement('treasure', '0', 20),
+          createPlannerElement('tome', '2', 30),
+          createPlannerElement('scale', '0', 5),
+          createPlannerElement('primarch', '0', 1),
+        ]
+      },
+      {
+        'name': 'Uncap 2',
+        'items': [
+          createPlannerElement('orb', '1', 15),
+          createPlannerElement('tome', '1', 20),
+          createPlannerElement('treasure', '1', 20),
+          createPlannerElement('tome', '2', 30),
+          createPlannerElement('magna', '0', 30),
+          createPlannerSupply('material', '2001', 3),
+          createPlannerElement('fragment', '0', 3),
+          createPlannerElement('primarch', '0', 1),
+        ]
+      },
+      {
+        'name': 'Uncap 3',
+        'items': [
+          createPlannerElement('treasure', '2', 50),
+          createPlannerElement('treasure', '3', 80),
+          createPlannerElement('primal', '2', 20),
+          createPlannerElement('magna', '2', 10),
+          createPlannerElement('magna', '1', 20),
+          createPlannerSupply('material', '2002', 3),
+          createPlannerElement('fragment', '0', 7),
+          createPlannerElement('primarch', '0', 1),
+        ]
+      },
+      {
+        'name': 'SSR Upgrade',
+        'items': [
+          createPlannerSupply('material', '2003', 2),
+          createPlannerSupply('raid', '59', 2),
+          createPlannerElement('primal', '3', 20),
+          createPlannerElement('magna', '6', 2),
+          createPlannerElement('magna', '7', 10),
+          createPlannerElement('magna', '4', 20),
+          createPlannerElement('primarch', '1', 10),
+          createPlannerElement('treasure', '4', 30),
+          createPlannerElement('fragment', '0', 16),
+          createPlannerElement('primarch', '0', 1),
+        ]
+      },
+    ],
+    'Bahamut': [
+      {
+        'name': 'Core',
+        'items': [
+          createPlannerSupply('raid', '59', 1)
+        ]
+      },
+      {
+        'name': 'Nova',
+        'items': [
+          createPlannerSupply('raid', '59', 3),
+          createPlannerSupply('material', '1111', 30),
+          createPlannerSupply('material', '1121', 30),
+          createPlannerSupply('material', '1131', 30),
+          createPlannerSupply('material', '1141', 30),
+          createPlannerSupply('material', '1151', 30),
+          createPlannerSupply('material', '1161', 30),
+          createPlannerSupply('material', '1', 7),
+          createPlannerBahamut('magna', 20)
+        ]
+      },
+      {
+        'name': 'Coda',
+        'items': [
+          createPlannerSupply('raid', '79', 5),
+          createPlannerSupply('material', '2003', 3)
+        ]
+      },
     ]
   }
+  var createClass = function(type, avenger, skofnung, nirvana, keraunos, oliver, hellion, ipetam, rosenbogen, langeleik, romulus, faust, murakumo, muramasa, ascalon, nebuchad, kapilavastu, misericorde) {
+    return {
+      'Avenger': createPlannerSupply(type, avenger),
+      'Skofnung': createPlannerSupply(type, skofnung),
+      'Nirvana': createPlannerSupply(type, nirvana),
+      'Keraunos': createPlannerSupply(type, keraunos),
+      'Oliver': createPlannerSupply(type, oliver),
+      'Hellion': createPlannerSupply(type, hellion),
+      'Ipetam': createPlannerSupply(type, ipetam),
+      'Rosenbogen': createPlannerSupply(type, rosenbogen),
+      'Langeleik': createPlannerSupply(type, langeleik),
+      'Romulus': createPlannerSupply(type, romulus),
+      'Faust': createPlannerSupply(type, faust),
+      'Murakumo': createPlannerSupply(type, murakumo),
+      'Muramasa': createPlannerSupply(type, muramasa),
+      'Ascalon': createPlannerSupply(type, ascalon),
+      'Nebuchad': createPlannerSupply(type, nebuchad),
+      'Kapilavastu': createPlannerSupply(type, kapilavastu),
+      'Misericorde': createPlannerSupply(type, misericorde)
+    }
+  }
 
+  var classes = {
+    'creed': createClass('coop',
+      '20211',
+      '20211',
+      '20221',
+      '20221',
+      '20211',
+      '20211',
+      '20221',
+      '20211',
+      '20221',
+      '20211',
+      '20221',
+      '20211',
+      '20221',
+      '20211',
+      '20221',
+      '20221',
+      '20211'
+    ),
+    'distinction': createClass('coop',
+      '20411',
+      '20421',
+      '20431',
+      '20441',
+      '20451',
+      '20471',
+      '20461',
+      '20481',
+      '20491',
+      '20501',
+      '20511',
+      '20671',
+      '20681',
+      '20691',
+      '20701',
+      '20751',
+      '20761'
+    ),
+    'tome': createClass('material',
+      '1311',
+      '1321',
+      '1351',
+      '1331',
+      '1341',
+      '1311',
+      '1361',
+      '1341',
+      '1321',
+      '1351',
+      '1331',
+      '1351',
+      '1361',
+      '1311',
+      '1361',
+      '1321',
+      '1341'
+    ),
+    'primal1': createClass('coop',
+      '20611',
+      '20621',
+      '20651',
+      '20631',
+      '20641',
+      '20611',
+      '20661',
+      '20641',
+      '20621',
+      '20651',
+      '20631',
+      '20651',
+      '20661',
+      '20611',
+      '20661',
+      '20621',
+      '20641'
+    ),
+    'primal2': createClass('coop',
+      null,
+      null,
+      '20651',
+      '20631',
+      '20641',
+      '20611',
+      null,
+      '20641',
+      '20621',
+      '20651',
+      '20631',
+      '20651',
+      '20661',
+      null,
+      '20661',
+      '20621',
+      '20641'
+    ),
+    'primal3': createClass('coop',
+      null,
+      null,
+      '20651',
+      null,
+      '20641',
+      '20611',
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      '20661',
+      null,
+      '20661',
+      null,
+      '20641'
+    ),
+    'coop1': createClass('coop',
+      '20111',
+      '20121',
+      '20111',
+      '20131',
+      '20141',
+      '20111',
+      '20121',
+      '20141',
+      '20121',
+      '20111',
+      '20131',
+      '20111',
+      '20121',
+      '20111',
+      '20121',
+      '20121',
+      '20141'
+    ),
+    'coop2': createClass('coop',
+      '20111',
+      '20121',
+      '20141',
+      '20131',
+      '20141',
+      '20111',
+      '20131',
+      '20141',
+      '20121',
+      '20141',
+      '20131',
+      '20141',
+      '20131',
+      '20111',
+      '20131',
+      '20121',
+      '20141'
+    ),
+    'stone': createClass('material',
+      '4041',
+      '4011',
+      '4051',
+      '4051',
+      '4061',
+      '4071',
+      '4021',
+      '4081',
+      '4091',
+      '4031',
+      '4021',
+      '4101',
+      '4101',
+      '4011',
+      '4061',
+      '4051',
+      '4021'
+    ),
+    'quartz': createClass('material',
+      '5011',
+      '5021',
+      '5051',
+      '5031',
+      '5041',
+      '5011',
+      '5061',
+      '5041',
+      '5021',
+      '5051',
+      '5031',
+      '5051',
+      '5061',
+      '5011',
+      '5061',
+      '5021',
+      '5041'
+    ),
+  }
   var elements = {
     'orb': {
       '0': {
@@ -943,7 +1304,7 @@
       }
     },
     'magna': {
-      '0': {
+      '0': { //silver anima
         'Fire': createSupplyInfo('raid', '11'),
         'Water': createSupplyInfo('raid', '12'),
         'Earth': createSupplyInfo('raid', '13'),
@@ -951,7 +1312,7 @@
         'Light': createSupplyInfo('raid', '25'),
         'Dark' : createSupplyInfo('raid', '30')
       },
-      '1': {
+      '1': { //omega anima
         'Fire': createSupplyInfo('raid', '19'),
         'Water': createSupplyInfo('raid', '20'),
         'Earth': createSupplyInfo('raid', '21'),
@@ -959,7 +1320,7 @@
         'Light': createSupplyInfo('raid', '26'),
         'Dark' : createSupplyInfo('raid', '31')
       },
-      '2': {
+      '2': { //fragment
         'Fire': createSupplyInfo('raid', '47'),
         'Water': createSupplyInfo('raid', '48'),
         'Earth': createSupplyInfo('raid', '49'),
@@ -967,7 +1328,7 @@
         'Light': createSupplyInfo('raid', '50'),
         'Dark' : createSupplyInfo('raid', '51')
       },
-      '3': {
+      '3': { //true anima
         'Fire': createSupplyInfo('raid', '41'),
         'Water': createSupplyInfo('raid', '42'),
         'Earth': createSupplyInfo('raid', '43'),
@@ -975,13 +1336,29 @@
         'Light': createSupplyInfo('raid', '45'),
         'Dark' : createSupplyInfo('raid', '46')
       },
-      '4': {
+      '4': { //centrum
         'Fire': createSupplyInfo('raid', '101'),
         'Water': createSupplyInfo('raid', '102'),
         'Earth': createSupplyInfo('raid', '103'),
         'Wind': createSupplyInfo('raid', '104'),
         'Light': createSupplyInfo('raid', '105'),
         'Dark' : createSupplyInfo('raid', '106')
+      },
+      '6': { //tier 2 omega anima
+        'Fire': createSupplyInfo('raid', '76'),
+        'Water': createSupplyInfo('raid', '73'),
+        'Earth': createSupplyInfo('raid', '74'),
+        'Wind': createSupplyInfo('raid', '77'),
+        'Light': createSupplyInfo('raid', '78'),
+        'Dark' : createSupplyInfo('raid', '75')
+      },
+      '7': { //tier 3 anima
+        'Fire': createSupplyInfo('raid', '85'),
+        'Water': createSupplyInfo('raid', '68'),
+        'Earth': createSupplyInfo('raid', '87'),
+        'Wind': createSupplyInfo('raid', '92'),
+        'Light': createSupplyInfo('raid', '67'),
+        'Dark' : createSupplyInfo('raid', '72')
       }
     },
     'quartz': {
@@ -993,7 +1370,112 @@
         'Light': createSupplyInfo('material', '5051'),
         'Dark' : createSupplyInfo('material', '5061')
       }
-    }
+    },
+    'primal': {
+      '2': {
+        'Fire': createSupplyInfo('event', '10018'),
+        'Water': createSupplyInfo('event', '10005'),
+        'Earth': createSupplyInfo('event', '10011'),
+        'Wind': createSupplyInfo('event', '10027'),
+        'Light': createSupplyInfo('event', '10046'),
+        'Dark' : createSupplyInfo('event', '10065')
+      },
+      '3': {
+        'Fire': createSupplyInfo('event', '10019'),
+        'Water': createSupplyInfo('event', '10006'),
+        'Earth': createSupplyInfo('event', '10012'),
+        'Wind': createSupplyInfo('event', '10028'),
+        'Light': createSupplyInfo('event', '10047'),
+        'Dark' : createSupplyInfo('event', '10066')
+      }
+    },
+    'grimoire': {
+      '0': {
+        'Fire': createSupplyInfo('coop', '20711'),
+        'Water': createSupplyInfo('coop', '20721'),
+        'Earth': createSupplyInfo('coop', '20731'),
+        'Wind': createSupplyInfo('coop', '20741'),
+        'Light': createSupplyInfo('coop', '20711'),
+        'Dark' : createSupplyInfo('coop', '20721')
+      },
+      '1': {
+        'Fire': createSupplyInfo('coop', '20711'),
+        'Water': createSupplyInfo('coop', '20721'),
+        'Earth': createSupplyInfo('coop', '20731'),
+        'Wind': createSupplyInfo('coop', '20741'),
+        'Light': createSupplyInfo('coop', '20741'),
+        'Dark' : createSupplyInfo('coop', '20731')
+      }
+    },
+    'primarch': {
+      '0': {
+        'Fire': createSupplyInfo('material', '5211'),
+        'Water': createSupplyInfo('material', '5221'),
+        'Earth': createSupplyInfo('material', '5231'),
+        'Wind': createSupplyInfo('material', '5241'),
+      },
+      '1': {
+        'Fire': createSupplyInfo('raid', '506'),
+        'Water': createSupplyInfo('raid', '507'),
+        'Earth': createSupplyInfo('raid', '508'),
+        'Wind': createSupplyInfo('raid', '509'),
+      }
+    },
+    'fragment': {
+      '0': {
+        'Fire': createSupplyInfo('material', '5111'),
+        'Water': createSupplyInfo('material', '5121'),
+        'Earth': createSupplyInfo('material', '5131'),
+        'Wind': createSupplyInfo('material', '5141'),
+      }
+    },
+    'treasure': {
+      '0': {
+        'Fire': createSupplyInfo('treasure', '4'),
+        'Water': createSupplyInfo('treasure', '6'),
+        'Earth': createSupplyInfo('treasure', '8'),
+        'Wind': createSupplyInfo('treasure', '2'),
+      },
+      '1': {
+        'Fire': createSupplyInfo('treasure', '5'),
+        'Water': createSupplyInfo('treasure', '7'),
+        'Earth': createSupplyInfo('treasure', '9'),
+        'Wind': createSupplyInfo('treasure', '3'),
+      },
+      '2': {
+        'Fire': createSupplyInfo('treasure', '15'),
+        'Water': createSupplyInfo('treasure', '16'),
+        'Earth': createSupplyInfo('treasure', '17'),
+        'Wind': createSupplyInfo('treasure', '14'),
+      },
+      '3': {
+        'Fire': createSupplyInfo('treasure', '33'),
+        'Water': createSupplyInfo('treasure', '23'),
+        'Earth': createSupplyInfo('treasure', '52'),
+        'Wind': createSupplyInfo('treasure', '38'),
+      },
+      '4': {
+        'Fire': createSupplyInfo('treasure', '120'),
+        'Water': createSupplyInfo('treasure', '99'),
+        'Earth': createSupplyInfo('treasure', '124'),
+        'Wind': createSupplyInfo('treasure', '91'),
+      },
+    },
+  }
+  var seraphs = {
+
+  }
+  var bahamuts = {
+    'Sabre': createSupplyInfo('raid', '47'),
+    'Dagger': createSupplyInfo('raid', '51'),
+    'Spear': createSupplyInfo('raid', '32'),
+    'Axe': createSupplyInfo('raid', '49'),
+    'Staff': createSupplyInfo('raid', '50'),
+    'Gun': createSupplyInfo('raid', '47'),
+    'Bow': createSupplyInfo('raid', '32'),
+    'Melee': createSupplyInfo('raid', '49'),
+    'Harp': createSupplyInfo('raid', '48'),
+    'Katana': createSupplyInfo('raid', '48'),
   }
 
     var tooltips = {
@@ -2015,6 +2497,10 @@
       "name": "Samurai Distinction",
       "sequence": 505210
     },
+    "20681": {
+      "name": "Ninja Distinction",
+      "sequence": 505310
+    },
     "20691": {
       "name": "Sword Master Distinction",
       "sequence": 505410
@@ -2066,6 +2552,56 @@
     "25019": {
       "name": "Blurred Memoria",
       "sequence": 550190
+    }
+  },
+  "event": {
+    "10018": {
+      "name": "Ifrit Anima",
+      "sequence": 400230
+    },
+    "10005": {
+      "name": "Cocytus Anima",
+      "sequence": 400030
+    },
+    "10011": {
+      "name": "Vohu Manah Anima",
+      "sequence": 400130
+    },
+    "10027": {
+      "name": "Sagittarius Anima",
+      "sequence": 400330
+    },
+    "10046": {
+      "name": "Corow Anima",
+      "sequence": 400530
+    },
+    "10065": {
+      "name": "Diablo Anima",
+      "sequence": 400830
+    },
+    "10019": {
+      "name": "Ifrit Omega Anima",
+      "sequence": 400240
+    },
+    "10006": {
+      "name": "Cocytus Omega Anima",
+      "sequence": 400040
+    },
+    "10012": {
+      "name": "Vohu Manah Omega Anima",
+      "sequence": 400140
+    },
+    "10028": {
+      "name": "Sagittarius Omega Anima",
+      "sequence": 400340
+    },
+    "10047": {
+      "name": "Corow Omega Anima",
+      "sequence": 400540
+    },
+    "10066": {
+      "name": "Diablo Omega Anima",
+      "sequence": 400840
     }
   }
 }

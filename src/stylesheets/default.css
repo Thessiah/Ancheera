@@ -8259,6 +8259,7 @@ body {
 }
 
 .link-heading {
+  color: #2a3439 !important;
   display: block;
   text-decoration: none !important;
 }
@@ -8569,8 +8570,18 @@ body {
   transform: translate(-50%, -50%);
 }
 
-.dropdown-toggle {
+.hide {
+  position: absolute;
+  top: -9999px;
+  left: -9999px;
+}
+
+.dropdown-toggle, .dropdown-toggle:hover, .dropdown-toggle:active, .open .dropdown-toggle {
   width: 120px !important;
+  background-color: #9fbede !important;
+  border-color: #9fbede !important;
+  outline: none !important;
+  box-shadow: none !important;
 }
 
 .dropdown {

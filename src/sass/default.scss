@@ -580,6 +580,7 @@ body {
 
 
 .link-heading {
+  color: $base-text-color !important;
   display: block;
   text-decoration: none !important
 }
@@ -991,9 +992,20 @@ body {
   transform: translate(-50%,-50%);
 }
 
-.dropdown-toggle {
-    width: 120px !important;
+.hide {
+   position: absolute;
+   top: -9999px;
+   left: -9999px;
 }
+
+.dropdown-toggle, .dropdown-toggle:hover, .dropdown-toggle:active, .open .dropdown-toggle{
+    width: 120px !important;
+      background-color: $anchira-sky-color !important;
+  border-color: $anchira-sky-color !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
 .dropdown {
   display: inline-block;
 }
