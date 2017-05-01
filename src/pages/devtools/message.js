@@ -448,23 +448,23 @@
     }   
   }
   var setBar = function(id, value) {
-    if(id !== '#bp-bar') {
+    // if(id !== '#bp-bar') {
       if(jQueryCache[id] === undefined) {
         jQueryCache[id] = $(id);
       }
       jQueryCache[id].css('width', value);
-    } else {
-      if(jQueryCache[id] === undefined) {
-        jQueryCache[id] = $(id).find('.active-circle-icon');
-      }
-      jQueryCache[id].each(function(index) {
-        if(index >= value) {
-          $(this).hide();
-        } else {
-          $(this).show();
-        }
-      });
-    }
+    // } else {
+    //   if(jQueryCache[id] === undefined) {
+    //     jQueryCache[id] = $(id).find('.active-circle-icon');
+    //   }
+    //   jQueryCache[id].each(function(index) {
+    //     if(index >= value) {
+    //       $(this).hide();
+    //     } else {
+    //       $(this).show();
+    //     }
+    //   });
+    // }
   }
   var setColor = function(id, value) {
     if(jQueryCache[id] === undefined) {
@@ -562,7 +562,7 @@
     } else {
       tooltipText = name;
     }
-    tooltipText = category + '-' + id + ':' + sequence + '-' + name;
+    //tooltipText = category + '-' + id + ':' + sequence + '-' + name;
     newItem.prop('title', tooltipText);
     newItem.tooltip();
         //alert(3);
@@ -904,8 +904,7 @@
       if($bars.hasClass('progress-bar-danger')) {
         $bars.removeClass('progress-bar-danger').addClass('progress-bar-custom');
       }
-      $('.active-circle-img').attr('src', '../../assets/images/night_full.png');
-      $('.inactive-circle-img').attr('src', '../../assets/images/night_empty.png');
+      $("rect[id='mask-fill']").css("fill", "#2a2a2a");
     }
     else if(theme === 'Vira') {
       sheetURL += 'garbage1';
@@ -918,8 +917,7 @@
       if($bars.hasClass('progress-bar-custom')) {
         $bars.removeClass('progress-bar-custom').addClass('progress-bar-danger');
       }
-      $('.active-circle-img').attr('src', '../../assets/images/circle_full.png');
-      $('.inactive-circle-img').attr('src', '../../assets/images/circle_empty.png');
+      $("rect[id='mask-fill']").css("fill", "#f5f5f5");
     }
     if(theme === 'Vira' || theme === 'Narumaya') {
       $('#contents').hide();

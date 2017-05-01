@@ -242,12 +242,12 @@ body {
   display: block;
   >#ap {
     //float: left;
+    margin-left: 4px;
     display: inline-block;
   }
   >#bp {
-    float: right;
-    margin-right: 6px;
-    //display: inline-block;
+    margin-left: 2px;
+    display: inline-block;
   }
   >#special {
         @extend .img-rounded;
@@ -275,6 +275,37 @@ body {
       margin-right: 1px;
     }
   }
+//   .bp-mask-container{
+//     display: inline-block;
+//     margin-left: -1px;
+//     margin-right: -4px;
+//     //position:relative;
+//     width:200px; height:20px;
+//     //margin:0 auto;
+//     overflow:hidden;
+// }
+// .bp-mask{
+//   @extend .img-rounded;
+//     content:'';
+//     margin-left: 1px;
+//     //display:inline-block;
+//     position:absolute;
+//     //left:175px; top:25px;
+//     border-radius: 2px;
+//     width:14px; height:20px;
+//     box-shadow: 0px 0px 0px 2000px black;
+// }
+svg{
+  //display:block;
+  position: absolute;
+  z-index: 10;
+  width:100%;
+  height:auto;
+  margin:0 auto;
+}
+path{
+  fill:#E3DFD2;
+}
 
   > .panel {
     margin-left: 7px; //20px;
@@ -283,26 +314,39 @@ body {
     margin-bottom: 4px;
     vertical-align: top;
     display: inline-block;
-    width: 172px;
+    width: 174px;
     height: 50px;
     //background-color: $anchira-sky-color;
     background-color: $anchira-background-white;
     >#ap-bar-container {
+      white-space: nowrap;
       background-color: $anchira-background-grey;
-      margin: 25px 11px;
+      margin: 24px 6px;
     }
-    >#bp-bar{
-      margin: 20px 19px;
-      >#active-circle-icons {
-        z-index: 2;
-        //display: none;
-      }
-      >.circle-icons {
-        position: absolute;
-      }
+    >#bp-bar-container {
+      white-space: nowrap;
+      background-color: $anchira-background-grey;
+      margin: 24px 6px;
     }
+    // >#bp-bar{
+    //   margin: 20px 19px;
+    //   >#active-circle-icons {
+    //     z-index: 2;
+    //     //display: none;
+    //   }
+    //   >.circle-icons {
+    //     margin-left: -13px;
+    //     position: absolute;
+    //   }
+    //   .active-circle-icon {
+    //     margin-left: -2px;
+    //   }
+    //   .active-circle-img {
+    //     @extend .img-rounded;
+    //   }
+    // }
     >.bar{
-      width: 148px;
+      width: 158px !important;
       position: absolute;
     }
     >.ap-bp-info {

@@ -294,7 +294,7 @@
     }});
     Message.PostAll({setBar: {
       'id': '#bp-bar',
-      'value': currBP
+      'value': ((currBP / maxBP) * 100) + '%'
     }});
     // $bpNumber.text('EP: ' + currBP + '/' + maxBP);
     // $bpBar.each(function(index) {

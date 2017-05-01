@@ -114,6 +114,7 @@ var options = [
     'isMagFest',
     'increasedRenownLimit',
     'freeSingleRoll',
+    'primarchDaily',
     'sortRaidsDifficulty',
     'copyJapaneseName',
     'windowTheme',

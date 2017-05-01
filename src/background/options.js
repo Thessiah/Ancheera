@@ -14,6 +14,7 @@
     isMagFest: false,
     increasedRenownLimit: false,
     freeSingleRoll: false,
+    primarchDaily: false,
     sortRaidsDifficulty: false,
     copyJapaneseName: false,
     windowTheme: 'Anchira Day',
@@ -115,7 +116,7 @@
     Initialize: function(callback) {
       Storage.Get(['options'], function(response) {
         if(response.options !== undefined) {
-          if(response.options['300291'] == undefined) {
+          if(response.options['primarchDaily'] == undefined) {
             for(var key in options) {
               if(response.options[key] == undefined) {
                 response.options[key] = options[key];

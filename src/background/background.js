@@ -3,7 +3,7 @@
   var currURL = '';
   var pageLoaded = true;
 
-  var CURRENT_VERSION = '1.1.0';
+  var CURRENT_VERSION = '1.1.1';
   var BASE_VERSION = '1.0.1';
   var patchNotes = {
     '1.0.1': {
@@ -19,11 +19,17 @@
       'notes': ['-Weapon Series planner added',
                 'Try it out in the supply tab!',
                 '-Vira and Narumaya themes removed']
+    },
+    '1.1.1': {
+      'index': 2,
+      'notes': ['-Revenant 5* added to planner',
+                '-Primarch daily changed to option']
     }
   }
   var patchNoteList = [
     '1.0.1',
-    '1.1.0'
+    '1.1.0',
+    '1.1.1'
   ]
   var currentVersion = undefined;
 

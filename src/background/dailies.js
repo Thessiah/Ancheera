@@ -222,6 +222,13 @@
         }});
         setDailies([['freeSingleRoll'], dailies['freeSingleRoll']], true);
       });
+      Options.Get('primarchDaily', function(id, value) {
+        Message.PostAll({'hideObject': {
+          'id': '#dailies-primarchs-Panel',
+          'value': !value
+        }});
+        setDailies([['primarchs'], dailies['primarchs']], true);
+      });
       Object.keys(dailies.distinctions).forEach(function(key) {
         Options.Get(key, function(id, value) {
           id = id[0];
@@ -304,6 +311,10 @@
       Message.PostAll({'hideObject': {
         'id': '#dailies-freeSingleRoll-Panel',
         'value': !Options.Get('freeSingleRoll')
+      }});
+      Message.PostAll({'hideObject': {
+        'id': '#dailies-primarchs-Panel',
+        'value': !Options.Get('primarchDaily')
       }});
 
       var response = [];
@@ -506,6 +517,8 @@
       var canRoll = false;
       if(json.enable_term_free_legend !== undefined && json.enable_term_free_legend !== false) {
         canRoll = true;
+      } else if(json.enable_term_free_legend_10 !== undefined && json.enable_term_free_legend_10 !== false ) {
+        canRoll = true;
       }
       setDailies([['freeSingleRoll'], canRoll]);
     },
@@ -636,9 +649,11 @@
     var collapse = true;
     if(category[0] === 'draw-rupie' || category[0] === 'tweet' || category[0] === 'freeSingleRoll' || category[0] === 'primarchs') {
       category[0] = 'misc';
-      if(dailies['draw-rupie'] !==  0 || dailies['tweet'] || dailies['primarchs'] !== 0) {
+      if(dailies['draw-rupie'] !==  0 || dailies['tweet']) {
         collapse = false;
       } else if(Options.Get('freeSingleRoll') && dailies['freeSingleRoll']) {
+        collapse = false;
+      } else if(Options.Get('primarchDaily') && dailies['primarchs'] !== 0) {
         collapse = false;
       }
     } else if(category[0] === 'coop') {
@@ -698,7 +713,7 @@
     } else if(category[0] === 'tweet') {
       str += 'Tweet refill: ';
     } else if(category[0] === 'freeSingleRoll') {
-      str += 'Free Single Roll: ';
+      str += 'Free Gacha Roll: ';
     } else if(category[0] === 'primarchs') {
       str += 'Primarchs: ';
     } else if(category[0] === 'coop') {

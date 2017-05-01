@@ -7965,11 +7965,12 @@ body {
   display: block;
 }
 #ap-bp-panel > #ap {
+  margin-left: 4px;
   display: inline-block;
 }
 #ap-bp-panel > #bp {
-  float: right;
-  margin-right: 6px;
+  margin-left: 2px;
+  display: inline-block;
 }
 #ap-bp-panel > #special {
   background-color: #2a2a2a;
@@ -7994,6 +7995,16 @@ body {
   float: right;
   margin-right: 1px;
 }
+#ap-bp-panel svg {
+  position: absolute;
+  z-index: 10;
+  width: 100%;
+  height: auto;
+  margin: 0 auto;
+}
+#ap-bp-panel path {
+  fill: #E3DFD2;
+}
 #ap-bp-panel > .panel, #ap-bp-panel > .sky-panel, #ap-bp-panel > .white-panel, #time-buffs #ap-bp-panel > #time, #time-buffs #ap-bp-panel > #buffs, #ap-bp-panel > .buttonPanel {
   margin-left: 7px;
   margin-right: 1px;
@@ -8001,25 +8012,22 @@ body {
   margin-bottom: 4px;
   vertical-align: top;
   display: inline-block;
-  width: 172px;
+  width: 174px;
   height: 50px;
   background-color: #2a2a2a;
 }
 #ap-bp-panel > .panel > #ap-bar-container, #ap-bp-panel > .sky-panel > #ap-bar-container, #ap-bp-panel > .white-panel > #ap-bar-container, #time-buffs #ap-bp-panel > #time > #ap-bar-container, #time-buffs #ap-bp-panel > #buffs > #ap-bar-container, #ap-bp-panel > .buttonPanel > #ap-bar-container {
+  white-space: nowrap;
   background-color: #e1e1e1;
-  margin: 25px 11px;
+  margin: 24px 6px;
 }
-#ap-bp-panel > .panel > #bp-bar, #ap-bp-panel > .sky-panel > #bp-bar, #ap-bp-panel > .white-panel > #bp-bar, #time-buffs #ap-bp-panel > #time > #bp-bar, #time-buffs #ap-bp-panel > #buffs > #bp-bar, #ap-bp-panel > .buttonPanel > #bp-bar {
-  margin: 20px 19px;
-}
-#ap-bp-panel > .panel > #bp-bar > #active-circle-icons, #ap-bp-panel > .sky-panel > #bp-bar > #active-circle-icons, #ap-bp-panel > .white-panel > #bp-bar > #active-circle-icons, #time-buffs #ap-bp-panel > #time > #bp-bar > #active-circle-icons, #time-buffs #ap-bp-panel > #buffs > #bp-bar > #active-circle-icons, #ap-bp-panel > .buttonPanel > #bp-bar > #active-circle-icons {
-  z-index: 2;
-}
-#ap-bp-panel > .panel > #bp-bar > .circle-icons, #ap-bp-panel > .sky-panel > #bp-bar > .circle-icons, #ap-bp-panel > .white-panel > #bp-bar > .circle-icons, #time-buffs #ap-bp-panel > #time > #bp-bar > .circle-icons, #time-buffs #ap-bp-panel > #buffs > #bp-bar > .circle-icons, #ap-bp-panel > .buttonPanel > #bp-bar > .circle-icons {
-  position: absolute;
+#ap-bp-panel > .panel > #bp-bar-container, #ap-bp-panel > .sky-panel > #bp-bar-container, #ap-bp-panel > .white-panel > #bp-bar-container, #time-buffs #ap-bp-panel > #time > #bp-bar-container, #time-buffs #ap-bp-panel > #buffs > #bp-bar-container, #ap-bp-panel > .buttonPanel > #bp-bar-container {
+  white-space: nowrap;
+  background-color: #e1e1e1;
+  margin: 24px 6px;
 }
 #ap-bp-panel > .panel > .bar, #ap-bp-panel > .sky-panel > .bar, #ap-bp-panel > .white-panel > .bar, #time-buffs #ap-bp-panel > #time > .bar, #time-buffs #ap-bp-panel > #buffs > .bar, #ap-bp-panel > .buttonPanel > .bar {
-  width: 148px;
+  width: 158px !important;
   position: absolute;
 }
 #ap-bp-panel > .panel > .ap-bp-info, #ap-bp-panel > .sky-panel > .ap-bp-info, #ap-bp-panel > .white-panel > .ap-bp-info, #time-buffs #ap-bp-panel > #time > .ap-bp-info, #time-buffs #ap-bp-panel > #buffs > .ap-bp-info, #ap-bp-panel > .buttonPanel > .ap-bp-info {
