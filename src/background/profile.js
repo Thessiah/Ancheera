@@ -100,7 +100,7 @@
         tuples['levelNextExp'] =  remain - json.values.pc.param.new.exp;
         APBP.SetMax();
       } else {
-        tuples['levelNextExp'] = json.values.pc.param.remain_next_exp - (json.values.get_exp.exp + json.values.get_exp.exp_bonus);
+        tuples['levelNextExp'] = parseInt(json.values.pc.param.remain_next_exp) - (parseInt(json.values.get_exp.exp) + parseInt(json.values.get_exp.exp_bonus));
       }
       tuples['level'] = json.values.pc.param.new.level;
       tuples['levelPercent'] = json.values.pc.param.new.exp_width + '%';
@@ -114,14 +114,14 @@
         }
         tuples['jobNextExp'] = remain - json.values.pc.job.new.exp;
       } else {
-        tuples['jobNextExp'] = json.values.pc.job.remain_next_exp - (json.values.get_exp.job_exp + json.values.get_exp.job_exp_bonus);
+        tuples['jobNextExp'] = parseInt(json.values.pc.job.remain_next_exp) - (parseInt(json.values.get_exp.job_exp) + parseInt(json.values.get_exp.job_exp_bonus));
       }
       tuples['job'] = json.values.pc.job.new.level;
       tuples['jobPercent'] = json.values.pc.job.new.exp_width + '%';
       if(tuples['job'] === 20) {
         tuples['zenith'] = parseInt(json.values.pc.job.zenith.after_lp);
         tuples['zenithPercent'] = json.values.pc.job.zenith.after_exp_gauge + '%';
-        tuples['zenithNextExp'] = profile['zenithNextExp'] -(json.values.get_exp.job_exp + json.values.get_exp.job_exp_bonus);
+        tuples['zenithNextExp'] = profile['zenithNextExp'] -(parseInt(json.values.get_exp.job_exp) + parseInt(json.values.get_exp.job_exp_bonus));
       }
       var list = json.rewards.reward_list;
       var item;
@@ -280,10 +280,15 @@
           tuples['jobPercent'] = jobPercent.substring(jobPercent.indexOf(': ') + 2, jobPercent.indexOf(';'));
         }
       }
-
-      tuples['jobPoints'] = parseInt(jobPoints);
-      tuples['renown'] = parseInt(renown);
-      tuples['prestige'] = parseInt(prestige);
+      if(!isNaN(jobPoints)) {
+       tuples['jobPoints'] = parseInt(jobPoints);
+      }
+      if(!isNaN(renown)) {
+        tuples['renown'] = parseInt(renown);
+      }
+      if(!isNaN(prestige)) {
+        tuples['prestige'] = parseInt(prestige);
+      }
       setProfile(tuples);
     },
     AddLupi: function(amt) {

@@ -7856,6 +7856,13 @@ body {
   border-width: 5px 5px 0;
 }
 
+.tooltip.bottom .tooltip-arrow {
+  left: 50%;
+  margin-left: 0px;
+  border-bottom-color: #f5f5f5;
+  border-width: 0 5px 5px;
+}
+
 .tooltip-inner {
   color: #2a2a2a;
   background: #f5f5f5;

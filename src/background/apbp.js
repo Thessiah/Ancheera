@@ -159,8 +159,8 @@
       return currAP;
     },
     SetMax: function() {
-      addAP(maxAP - currAP);
-      addBP(maxBP - currBP);
+      addAP(maxAP);
+      addBP(maxBP);
     }
   }
   //   //COOP??
@@ -271,8 +271,8 @@
     for(var i = 0; i < responseAP.length; i++) {
       responseAP[i](curr);
     }
-    currAP = curr;
-    maxAP = max;
+    currAP = parseInt(curr);
+    maxAP = parseInt(max);
     Message.PostAll({setText: {
       'id': '#ap-number',
       'value': 'AP: ' + currAP + '/' + maxAP
@@ -286,8 +286,8 @@
   }
 
   var setBP = function(curr, max) {
-    currBP = curr;
-    maxBP = max;
+    currBP = parseInt(curr);
+    maxBP = parseInt(max);
     Message.PostAll({setText: {
       'id': '#bp-number',
       'value': 'EP: ' + currBP + '/' + maxBP

@@ -3,7 +3,7 @@
 
   "name": "AnCheera",
   "description": "The GBF Companion Extension that's absolutely bananas.",
-  "version": "1.1.0",
+  "version": "1.1.2.1",
 
   "icons": { "16": "src/assets/images/icon16.png",
             "48": "src/assets/images/icon48.png",

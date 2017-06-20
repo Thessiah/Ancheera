@@ -610,6 +610,9 @@
             } else if(category === 'bahamut') {
               id = bahamuts[build.type].id;
               category = bahamuts[build.type].category;
+            } else if(category === 'revenantFiveStar') {
+              id = revenantFiveStars[item.materialType][build.type].id;
+              category = revenantFiveStars[item.materialType][build.type].category;
             } else {
               id = item.id;
               category = item.category;
@@ -757,6 +760,14 @@
     }
   }
 
+  var createPlannerRevenantFiveStar = function(materialType, count) {
+    return {
+      'type': 'revenantFiveStar',
+      'materialType': materialType,
+      'count': count
+    }
+  }
+
   var createPlannerSupply = function(category, id, count) {
     return {
       'type': 'supply',
@@ -792,6 +803,7 @@
           createPlannerElement('orb', '0', 250),
           createPlannerElement('tome', '2', 250),
           createPlannerSupply('material', '1202', 250),
+          createPlannerElement('magna', '3', 3),
         ]
       },
       {
@@ -1032,6 +1044,64 @@
           createPlannerSupply('material', '2003', 3)
         ]
       },
+    ],
+    'Revenant 5*': [
+      {
+        'name': 'Silver Forge',
+        'items': [
+          createPlannerRevenantFiveStar('shard', 40)
+        ]
+      },
+      {
+        'name': 'Silver 4*',
+        'items': [
+          createPlannerRevenantFiveStar('stone', 300),
+          createPlannerSupply('material', '5011', 300),
+          createPlannerSupply('material', '5021', 300),
+          createPlannerSupply('material', '5031', 300),
+          createPlannerSupply('material', '5041', 300),
+          createPlannerSupply('material', '5051', 300),
+          createPlannerSupply('material', '5061', 300),
+        ]
+      },
+      {
+        'name': 'Gold Forge',
+        'items': [
+          createPlannerSupply('material', '1011', 250),
+          createPlannerSupply('material', '1021', 250),
+          createPlannerSupply('material', '1031', 250),
+          createPlannerSupply('material', '1041', 250),
+          createPlannerSupply('material', '1051', 250),
+          createPlannerSupply('material', '1061', 250),
+
+          createPlannerSupply('material', '1313', 250),
+          createPlannerSupply('material', '1323', 250),
+          createPlannerSupply('material', '1333', 250),
+          createPlannerSupply('material', '1343', 250),
+          createPlannerSupply('material', '1353', 250),
+          createPlannerSupply('material', '1363', 250),
+
+          createPlannerSupply('material', '1202', 1500),
+
+          createPlannerSupply('powerUp', '20004', 1),
+          createPlannerSupply('raid', '203', 10),
+          createPlannerSupply('raid', '107', 10),
+          createPlannerSupply('material', '2003', 5),
+          createPlannerRevenantFiveStar('fragment', 100),
+          createPlannerRevenantFiveStar('distinction', 30)
+        ]
+      },
+      {
+        'name': 'Character 5*',
+        'items': [
+          createPlannerRevenantFiveStar('centrum', 30),
+          createPlannerRevenantFiveStar('urn', 10),
+          createPlannerRevenantFiveStar('spirit', 2),
+          createPlannerRevenantFiveStar('grimoire1', 15),
+          createPlannerRevenantFiveStar('grimoire2', 15),
+          createPlannerSupply('material', '1204', 100),
+        ]
+      },
     ]
   }
   var createClass = function(type, avenger, skofnung, nirvana, keraunos, oliver, hellion, ipetam, rosenbogen, langeleik, romulus, faust, murakumo, muramasa, ascalon, nebuchad, kapilavastu, misericorde) {
@@ -1054,6 +1124,123 @@
       'Kapilavastu': createPlannerSupply(type, kapilavastu),
       'Misericorde': createPlannerSupply(type, misericorde)
     }
+  }
+
+  var createRevenantFiveStar = function(type, uno, song, sarasa, quatre, funf, six, siete, octo, nio, esser) {
+    return {
+      'Uno': createPlannerSupply(type, uno),
+      'Song': createPlannerSupply(type, song),
+      'Sarasa': createPlannerSupply(type, sarasa),
+      'Quatre': createPlannerSupply(type, quatre),
+      'Funf': createPlannerSupply(type, funf),
+      'Six': createPlannerSupply(type, six),
+      'Siete': createPlannerSupply(type, siete),
+      'Octo': createPlannerSupply(type, octo),
+      'Nio': createPlannerSupply(type, nio),
+      'Esser': createPlannerSupply(type, esser),
+    }
+  }
+
+  var revenantFiveStars = {
+    'shard': createRevenantFiveStar('material',
+      '5431',
+      '5481',
+      '5441',
+      '5421',
+      '5451',
+      '5471',
+      '5411',
+      '5501',
+      '5491',
+      '5461'
+    ),
+    'stone': createRevenantFiveStar('material',
+      '4031',
+      '4081',
+      '4041', 
+      '4021', 
+      '4051', 
+      '4071', 
+      '4011', 
+      '4101', 
+      '4091', 
+      '4061' 
+    ),
+    'fragment': createRevenantFiveStar('material',
+      '5611',
+      '5621', 
+      '5631', 
+      '5641', 
+      '5651', 
+      '5661', 
+      '5671', 
+      '5681', 
+      '5691', 
+      '5701'
+    ),
+    'distinction': createRevenantFiveStar('coop',
+      '20421',
+      '20481',
+      '20411',
+      '20461',
+      '20431',
+      '20471',
+      '20691',
+      '20671',
+      '20491',
+      '20451'
+    ),
+    'centrum': createRevenantFiveStar('raid',
+      '102',
+      '105',
+      '103',
+      '102',
+      '105',
+      '106',
+      '104',
+      '103',
+      '104',
+      '101'
+    ),
+    'urn': createRevenantFiveStar('raid',
+      '112', 
+      '115', 
+      '113', 
+      '112', 
+      '115', 
+      '116', 
+      '114', 
+      '113', 
+      '114', 
+      '111'
+    ),
+    'spirit': createRevenantFiveStar('raid',
+      '81', '80', '81', '81', '80', '81', '80', '81', '80', '80' 
+    ),
+    'grimoire1': createRevenantFiveStar('coop',
+      '20721',
+      '20711',
+      '20731',
+      '20721',
+      '20711',
+      '20721',
+      '20741',
+      '20731',
+      '20741',
+      '20711'
+    ),
+    'grimoire2': createRevenantFiveStar('coop',
+      '20721',
+      '20741',
+      '20731',
+      '20721',
+      '20741',
+      '20731',
+      '20741',
+      '20731',
+      '20741',
+      '20711'
+    ),
   }
 
   var classes = {
@@ -2354,7 +2541,123 @@
     "6009": {
       "name": "Qing Jadeite",
       "sequence": 215900
-    }
+    },
+    "5411": {
+      "name": "Silver Sword Shard",
+      "sequence": 220100
+    },
+    "5421": {
+      "name": "Silver Dagger Shard",
+      "sequence": 220200
+    },
+    "5431": {
+      "name": "Silver Spear Shard",
+      "sequence": 220300
+    },
+    "5441": {
+      "name": "Silver Axe Shard",
+      "sequence": 220400
+    },
+    "5451": {
+      "name": "Silver Staff Shard",
+      "sequence": 220500
+    },
+    "5461": {
+      "name": "Silver Gun Shard",
+      "sequence": 220600
+    },
+    "5471": {
+      "name": "Silver Gauntlet Shard",
+      "sequence": 220700
+    },
+    "5481": {
+      "name": "Silver Bow Shard",
+      "sequence": 220800
+    },
+    "5491": {
+      "name": "Silver Harp Shard",
+      "sequence": 220900
+    },
+    "5501": {
+      "name": "Silver Katana Shard",
+      "sequence": 221000
+    },
+    "5611": {
+      "name": "One-Star Fragment",
+      "sequence": 221100
+    },
+    "5621": {
+      "name": "Two-Star Fragment",
+      "sequence": 221200
+    },
+    "5631": {
+      "name": "Three-Star Fragment",
+      "sequence": 221300
+    },
+    "5641": {
+      "name": "Four-Star Fragment",
+      "sequence": 221400
+    },
+    "5651": {
+      "name": "Five-Star Fragment",
+      "sequence": 221500
+    },
+    "5661": {
+      "name": "Six-Star Fragment",
+      "sequence": 221600
+    },
+    "5671": {
+      "name": "Seven-Star Fragment",
+      "sequence": 221700
+    },
+    "5681": {
+      "name": "Eight-Star Fragment",
+      "sequence": 221800
+    },
+    "5691": {
+      "name": "Nine-Star Fragment",
+      "sequence": 221900
+    },
+    "5701": {
+      "name": "Ten-Star Fragment",
+      "sequence": 222100
+    },
+    //     'shard': createRevenantFiveStar('material',
+    //   '5431',
+    //   '5481',
+    //   '5441',
+    //   '5421',
+    //   '5451',
+    //   '5471',
+    //   '5411',
+    //   '5501',
+    //   '5491',
+    //   '5461'
+    // ),
+    // 'stone': createRevenantFiveStar('material',
+    //   '4031',
+    //   '4081',
+    //   '4041', 
+    //   '4021', 
+    //   '4051', 
+    //   '4071', 
+    //   '4011', 
+    //   '4101', 
+    //   '4091', 
+    //   '4061' 
+    // ),
+    // 'fragment': createRevenantFiveStar('material',
+    //   '5611',
+    //   '5621', 
+    //   '5631', 
+    //   '5641', 
+    //   '5651', 
+    //   '5661', 
+    //   '5671', 
+    //   '5681', 
+    //   '5691', 
+    //   '5701'
+    // ),
   },
   "coop": {
     "20001": {

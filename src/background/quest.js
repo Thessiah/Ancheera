@@ -732,10 +732,14 @@
     StartBattle: function(json, devID) {
       var id = '' + json.raid_id;
       var currQuest;
-      if(json.twitter !== undefined) {
+      if(json.twitter !== undefined && json.twitter.battle_id !== undefined) {
            Message.Post(devID, {'setClick': {
             'id': '#quest-copy',
             'value': json.twitter.battle_id + ' (' +  json.twitter.monster + ') '
+          }});
+          Message.Post(devID, {'setTooltip': {
+            'id': '#quest-copy',
+            'text': json.twitter.battle_id + ' (' +  json.twitter.monster + ') '
           }});
         }
       if(quest !== null && quest.id === id) {
@@ -1025,7 +1029,10 @@
         'id': '#quest-copy',
         'value': code + ' (Co-Op Room) '
       }});
-
+      Message.Post(devID, {'setTooltip': {
+        'id': '#quest-copy',
+        'text': code + ' (Co-Op Room) '
+      }});
     },
     UpdateInProgress: function(json, devID) {
       var inProgress = json.option.quest.init_list.progress_quest_info;

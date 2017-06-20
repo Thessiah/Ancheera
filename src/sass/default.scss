@@ -98,6 +98,13 @@ body {
   border-top-color: $base-text-color;
   border-width: 5px 5px 0;
 }
+.tooltip.bottom .tooltip-arrow {
+
+  left: 50%;
+  margin-left: 0px;
+  border-bottom-color: $base-text-color;
+  border-width: 0 5px 5px;
+}
 .tooltip-inner {
   color: $anchira-background-white;
   background: $base-text-color;

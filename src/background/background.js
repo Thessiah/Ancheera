@@ -3,7 +3,7 @@
   var currURL = '';
   var pageLoaded = true;
 
-  var CURRENT_VERSION = '1.1.1';
+  var CURRENT_VERSION = '1.1.2';
   var BASE_VERSION = '1.0.1';
   var patchNotes = {
     '1.0.1': {
@@ -22,14 +22,23 @@
     },
     '1.1.1': {
       'index': 2,
-      'notes': ['-Revenant 5* added to planner',
-                '-Primarch daily changed to option']
+      'notes': ['-Primarch daily changed to option',
+                '-Small UI tweaks']
+    },
+    '1.1.2': {
+      'index': 3,
+      'notes': ['-GW 5* planner added',
+                '(sorry it\'s so late D:)',
+                '(also sorry no weapon drop tracking orz)',
+                '-Tooltips added to repeat last quest',
+                'and copy to clipboard buttons']
     }
   }
   var patchNoteList = [
     '1.0.1',
     '1.1.0',
-    '1.1.1'
+    '1.1.1',
+    '1.1.2'
   ]
   var currentVersion = undefined;
 
@@ -39,6 +48,10 @@
 
   Storage.GetMultiple(['version'], function(response) {
     currentVersion = response['version'];
+    if(!currentVersion) {
+      currentVersion = CURRENT_VERSION;
+      Storage.Set('version', CURRENT_VERSION);
+    }
   });
 
   var generateNote = function(id) {
@@ -264,6 +277,7 @@ chrome.runtime.onConnect.addListener(function (port) {
     }
     if(message.debug) {
       Message.Notify('hey', 'its me ur brother', 'apNotifications');
+      APBP.SetMax();
       // Dailies.Reset();
     }
     if(message.weaponBuild) {

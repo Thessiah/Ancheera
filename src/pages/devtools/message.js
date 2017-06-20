@@ -27,6 +27,8 @@
     $currCategory = $(this).parent('li');
   });
 
+  $('.tooltip-down').tooltip();
+
   var $raidsPanel = $('#raids-panel');
   var $dailyRaidList = $('#daily-raid-list');
   var $completedRaidList = $('#completed-raid-list');
@@ -122,6 +124,11 @@
       'type': ['Sabre', 'Dagger', 'Spear', 'Axe', 'Staff', 'Gun', 'Melee', 'Bow', 'Harp', 'Katana'],
       'start': ['Core', 'Nova', 'Coda'],
       'end': ['Core', 'Nova', 'Coda']
+    },
+    'Revenant 5*': {
+      'type': ['Uno', 'Song', 'Sarasa', 'Quatre', 'Funf', 'Six', 'Siete', 'Octo', 'Nio', 'Esser'],
+      'start': ['Silver Forge', 'Silver 4*', 'Gold Forge', 'Character 5*'],
+      'end': ['Silver Forge', 'Silver 4*', 'Gold Forge', 'Character 5*']
     }
   }
   var dropdownLocater = {
@@ -318,6 +325,8 @@
             setPlannerItemAmount(msg.setPlannerItemAmount.id, msg.setPlannerItemAmount.sequence, msg.setPlannerItemAmount.current)
           } else if(msg.setPlannerDropdowns) {
             setPlannerDropdowns(msg.setPlannerDropdowns.type, msg.setPlannerDropdowns.build);
+          } else if(msg.setTooltip) {
+            setTooltip(msg.setTooltip.id, msg.setTooltip.text)
           }
         }
       }
@@ -402,6 +411,9 @@
     }
     if(message.setPlannerDropdowns) {
       setPlannerDropdowns(message.setPlannerDropdowns.type, message.setPlannerDropdowns.build);
+    }
+    if(message.setTooltip) {
+      setTooltip(message.setTooltip.id, message.setTooltip.text);
     }
   });
   
@@ -517,6 +529,19 @@
     } else {
       jQueryCache[id].removeClass('open-url');
     }
+  }
+  var setTooltip = function(id, text) {
+    if(jQueryCache[id] === undefined) {
+      jQueryCache[id] = $(id);
+    }
+    jQueryCache[id].attr('title', text)
+          .tooltip('fixTitle')
+          console.log(id.substring(1));
+          if($('.tooltip').length > 0 && $('.tooltip').prev().prop("id") == id.substring(1)) {
+            jQueryCache[id].tooltip('show');
+          }
+          //.tooltip('show');
+    //jQueryCache[id].prop('title', text);
   }
   var beforeObject = function(id, targetID) {
     if(jQueryCache[id] === undefined) {
