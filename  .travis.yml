@@ -1,0 +1,13 @@
+language: node_js
+node_js:
+  - "node"
+script:
+    - jest
+env:
+  global:
+    - CC_TEST_REPORTER_ID=8d6299baf8d480efac6b57fc8d97c48ffea2dd001eea12000ed31cfd21117cec
+    - GIT_COMMITTED_AT=$(if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then git log -1 --pretty=format:%ct; else git log -1 --skip 1 --pretty=format:%ct; fi)
+
+before_script:
+  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+  - chmod +x ./cc-test-reporter
