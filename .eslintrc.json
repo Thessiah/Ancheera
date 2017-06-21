@@ -14,10 +14,13 @@
     "plugins": [
         "react"
     ],
+    "globals": {
+        "chrome": true
+    },
     "rules": {
         "indent": [
             "error",
-            4
+            2
         ],
         "linebreak-style": [
             "error",
