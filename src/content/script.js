@@ -2,7 +2,7 @@
   $(window).on('beforeunload', function() {
     chrome.runtime.sendMessage({ refresh: true });
   });
-  
+
   var tempImageURLS = {};
 
   chrome.runtime.onMessage.addListener(function(message, sender, sendResponse){
@@ -53,11 +53,13 @@
         type = 'event';
       }
 
-      messageDevTools({checkRaids: {
-        'raids':     raids,
-        'unclaimed': unclaimed,
-        'type':      type
-      }});
+      messageDevTools({
+        checkRaids: {
+          'raids':     raids,
+          'unclaimed': unclaimed,
+          'type':      type
+        }
+      });
     }
   });
 
