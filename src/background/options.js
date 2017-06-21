@@ -106,19 +106,19 @@
     '300531', '300541',
     '300561', '300571',
     '300581', '300591',
-
     '300471', '301061'
   ];
+  
   var isHL = false;
   var responseList = {};
 
   window.Options = {
     Initialize: function(callback) {
       Storage.Get(['options'], function(response) {
-        if(response.options !== undefined) {
-          if(response.options['primarchDaily'] == undefined) {
-            for(var key in options) {
-              if(response.options[key] == undefined) {
+        if (response.options !== undefined) {
+          if (response.options['primarchDaily'] == undefined) {
+            for (var key in options) {
+              if (response.options[key] == undefined) {
                 response.options[key] = options[key];
               }
             }
@@ -127,7 +127,7 @@
           }
           else {
             options = response.options;
-            if(options.windowTheme === 'Narumaya' || options.windowTheme === 'Vira') {
+            if (options.windowTheme === 'Narumaya' || options.windowTheme === 'Vira') {
               options.windowTheme = 'Tiamat Night';
               Storage.Set('options', options);
             }
@@ -136,28 +136,28 @@
           Storage.Set('options', options);
         }
         Profile.Get('level', function(value) {
-          if(!isHL && value >= 101) {
+          if (!isHL && value >= 101) {
             isHL = true;
-            for(var i = 0; i < hlRaids.length; i++) {
-              if(options[hlRaids[i]] === null) {
+            for (var i = 0; i < hlRaids.length; i++) {
+              if (options[hlRaids[i]] === null) {
                 setOption(hlRaids[i], false);
               }
             }
           }
         });
-        if(callback !== undefined) {
+        if (callback !== undefined) {
           callback();
         }
       });
     },
     Get: function(id, response) {
-      if(response !== undefined) {
-        if(responseList[id] === undefined) {
+      if (response !== undefined) {
+        if (responseList[id] === undefined) {
           responseList[id] = [];
         }
         responseList[id].push(response);
       }
-      if(options[id] === undefined) {
+      if (options[id] === undefined) {
         options[id] = false;
       }
       return options[id];
@@ -168,11 +168,11 @@
   };
 
   var setOption = function(id, value) {
-    if(options[id] !== value) {
+    if (options[id] !== value) {
       options[id] = value;
       Storage.Set('options', options);
-      if(responseList[id] !== undefined) {
-        for(var i = 0; i < responseList[id].length; i++) {
+      if (responseList[id] !== undefined) {
+        for (var i = 0; i < responseList[id].length; i++) {
           responseList[id][i](id, value);
         }
       }

@@ -1,8 +1,8 @@
 (function() {
   var newBuff = function(id, level, endTime) {
     return {
-      id: id,
-      level: level,
+      id:      id,
+      level:   level,
       endTime: endTime
     };
   };
@@ -16,7 +16,7 @@
     '6': 10301
   };
 
-  var buffs = [];
+  var buffs      = [];
   var buffTimers = [];
   // var $buffs = $('#buffs');
   // var $buffTimes = $buffs.find('.item-count');
@@ -24,11 +24,11 @@
   window.Buffs = {
     Initialize: function() {
       Storage.Get(['buffs'], function(response) {
-        if(response['buffs'] !== undefined) {
+        if (response['buffs'] !== undefined) {
           buffs = response['buffs'];
           var updated = false;
-          for(var i = 0; i < buffs.length; i++) {
-            if(Date.now() < buffs[i].endTime) {
+          for (var i = 0; i < buffs.length; i++) {
+            if (Date.now() < buffs[i].endTime) {
               startBuffTimer(buffs[i]);
             } else {
               buffs.splice(i, 1);
@@ -36,10 +36,10 @@
               updated = true;
             }
           }
-          if(updated) {
+          if (updated) {
             saveBuffs();
           }
-          for(var i = 0; i < 3; i++) {
+          for (var i = 0; i < 3; i++) {
             setBuff(i);
           }
         } else {
@@ -49,14 +49,14 @@
     },
     InitializeDev: function() {
       var response = [];
-      for(var i = 0; i < 3; i++) {
+      for (var i = 0; i < 3; i++) {
         response.push(getJquery('text', i));
         response.push(getJquery('image', i));
       }
       return response;
     },
     StartBuff: function(json, payload) {
-      if(json.success) {
+      if (json.success) {
         var id = payload.support_id;
         var level = payload.support_level;
         var duration = parseInt(payload.support_time);
@@ -97,25 +97,25 @@
 
   var getJquery = function(type, index) {
     var id = '#buffs-' + index + '-';
-    if(buffs.length > index) {
-      if(type === 'text') {
+    if (buffs.length > index) {
+      if (type === 'text') {
         return {'setText':{
           'id': id + 'time',
           'value': Time.ParseTime(Math.abs(buffs[index].endTime - Date.now()), 'h').replace(',','')
         }};
-      } else if(type === 'image') {
+      } else if (type === 'image') {
         return {'setImage':{
           'id': id + 'image',
           'value': supportURL + buffInfo[buffs[index].id] + '_' + buffs[index].level + '.png'
         }};
       }
     } else {
-      if(type === 'text') {
+      if (type === 'text') {
         return {'setText':{
           'id': id + 'time',
           'value': ''
         }};
-      } else if(type === 'image') {
+      } else if (type === 'image') {
         return {'setImage':{
           'id': id + 'image',
           'value': '../../assets/images/icons/handtinytrans.gif'
@@ -127,11 +127,11 @@
   var startBuffTimer = function(buff) {
     buffTimers.push(setInterval(function() {
       var index = buffs.indexOf(buff);
-      if(Date.now() >= buff.endTime) {
+      if (Date.now() >= buff.endTime) {
         buffs.splice(index, 1);
         clearInterval(buffTimers[index]);
         buffTimers.splice(index, 1);
-        for(var i = index; i < 3; i++) {
+        for (var i = index; i < 3; i++) {
           setBuff(i);
         }
         saveBuffs();

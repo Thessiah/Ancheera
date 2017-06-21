@@ -1,16 +1,17 @@
 (function() {
   var nextQuest = null;
-  var nextCoop = null;
-  var currCoop = null;
+  var nextCoop  = null;
+  var currCoop  = null;
   var nextRaids = null;
   var isMagFest = false;
   var nextRaids = {};
   var currRaids = [];
-  var imageURL = '../../assets/images/';
-  var greyIcon = '../../assets/images/icons/6201763.png';
+  var imageURL  = '../../assets/images/';
+  var greyIcon  = '../../assets/images/icons/6201763.png';
   var blankIcon = '../../assets/images/icons/handtinytrans.gif';
-  var eyeIcon = '../../assets/images/icons/5100123.png';
-  var dogeIcon = '../../assets/images/icons/1300023.png';
+  var eyeIcon   = '../../assets/images/icons/5100123.png';
+  var dogeIcon  = '../../assets/images/icons/1300023.png';
+
   var raidImageURL = 'http://gbf.game-a1.mbga.jp/assets_en/img/sp/assets/summon/qm/';
   var isHL = false;
 
@@ -20,12 +21,13 @@
   //var mainCharacterImageURL = "http://gbf.game-a1.mbga.jp/assets_en/img/sp/assets/leader/raid_normal/";
   //var characterImageURL = "http://gbf.game-a1.mbga.jp/assets_en/img/sp/assets/npc/raid_normal/";
   var mainCharacterImageURL = 'http://gbf.game-a1.mbga.jp/assets_en/img/sp/assets/leader/quest/';
-  var characterImageURL = 'http://gbf.game-a1.mbga.jp/assets_en/img/sp/assets/npc/quest/';
-  var enemyImageURL = 'http://gbf.game-a1.mbga.jp/assets_en/img/sp/assets/enemy/s/';
-  var skillImageURL = 'http://gbf.game-a.mbga.jp/assets_en/img/sp/ui/icon/ability/m/';
-  var skillImageClosingURL = '.png?1458197995';
-  var buffImageURL = 'http://gbf.game-a1.mbga.jp/assets_en/img/sp/ui/icon/status/x64/';
-  var summonImageURL = 'http://gbf.game-a.mbga.jp/assets_en/img/sp/assets/summon/m/';
+  var characterImageURL     = 'http://gbf.game-a1.mbga.jp/assets_en/img/sp/assets/npc/quest/';
+  var enemyImageURL         = 'http://gbf.game-a1.mbga.jp/assets_en/img/sp/assets/enemy/s/';
+  var skillImageURL         = 'http://gbf.game-a.mbga.jp/assets_en/img/sp/ui/icon/ability/m/';
+  var skillImageClosingURL  = '.png?1458197995';
+  var buffImageURL          = 'http://gbf.game-a1.mbga.jp/assets_en/img/sp/ui/icon/status/x64/';
+  var summonImageURL        = 'http://gbf.game-a.mbga.jp/assets_en/img/sp/assets/summon/m/';
+
   var remainingQuests = {
     '300011' : null,
     '300021' : null,
@@ -89,9 +91,10 @@
     '300471' : null,
     '301061' : null,
   };
+
   var createRaid = function(sequence, sequence2, name, max, magDelta, url, animeIDs, animeCounts, animeTypes, isHL) {
     return {
-      sequence: sequence,
+      sequence:  sequence,
       sequence2: sequence2,
       name: name,
       max: max,
@@ -104,6 +107,7 @@
       isEnabled: true,
     };
   };
+
   var raidList = [
     '300011', '300021', '300031', '300041', '300051', '300421', '301381', '300441', '300451',
     '300061', '300071', '300081', '300091', '300101', '300411', '301071', '300491', '300501',
@@ -122,8 +126,8 @@
     //   '300211', '300221', '300271', '300561',
     //   '300241', '300251', '300281', '300581'
     // ]
-  var currRaidList = [];
-  var hiddenRaidList = [];
+  var currRaidList      = [];
+  var hiddenRaidList    = [];
   var completedRaidList = [];
 
   var raidInfo = {
@@ -298,7 +302,7 @@
   var raids = [];
   var createQuest = function(id, url, devID) {
     var devIDs = [];
-    if(devID !== undefined) {
+    if (devID !== undefined) {
       devIDs.push(devID);
     }
     return {
@@ -388,7 +392,7 @@
     var bossID = null;
     var currency1 = null;
     var currency2 = null;
-    if(url.indexOf('teamraid') !== -1) {
+    if (url.indexOf('teamraid') !== -1) {
       currency1 = '10022';
       bossID = '7139';
       bosses.push({
@@ -431,22 +435,22 @@
 
   window.Quest = {
     Initialize: function(callback) {
-      if(Options.Get('sortRaidsDifficulty')) {
+      if (Options.Get('sortRaidsDifficulty')) {
         raidList.sort(sortByDifficulty);
       }
-      for(var i = 0; i < raidList.length; i++) {
+      for (var i = 0; i < raidList.length; i++) {
         // if(Options.Get(raidList[i])) {
         currRaidList.push(raidList[i]);
         // }
       }
       Storage.GetMultiple(['quests'], function(response) {
-        if(response['quests'] !== undefined) {
+        if (response['quests'] !== undefined) {
           var modified = false;
-          if(response['quests']['301061'] == undefined) {
-            for(var key in remainingQuests) {
-              if(response['quests'][key] == undefined) {
+          if (response['quests']['301061'] == undefined) {
+            for (var key in remainingQuests) {
+              if (response['quests'][key] == undefined) {
                 //response['quests'][key] = remainingQuests[key];
-                if(!Options.Get('isMagFest')) {
+                if (!Options.Get('isMagFest')) {
                   response['quests'][key] = raidInfo[key].max;
                 } else {
                   response['quests'][key] = raidInfo[key].max + raidInfo[key].magDelta;
@@ -458,17 +462,17 @@
 
 
 
-          for(var i = 0; i < raidList.length; i++) {
+          for (var i = 0; i < raidList.length; i++) {
             setRemainingRaids(raidList[i], response['quests'][raidList[i]]);
           }
           //remainingQuests = response['quests'].dailies;
-          if(modified) {
+          if (modified) {
             saveRemainingRaids();
           }
         } else {
-          for(var i = 0; i < raidList.length; i++) {
+          for (var i = 0; i < raidList.length; i++) {
             console.log(Options.Get('isMagFest'));
-            if(!Options.Get('isMagFest')) {
+            if (!Options.Get('isMagFest')) {
               setRemainingRaids(raidList[i], raidInfo[raidList[i]].max);
             } else {
               setRemainingRaids(raidList[i], raidInfo[raidList[i]].max + raidInfo[raidList[i]].magDelta);
@@ -476,18 +480,18 @@
           }
           saveRemainingRaids();
         }
-        if(callback !== undefined) {
+        if (callback !== undefined) {
           callback();
         }
       });
       isMagFest = Options.Get('isMagFest', function(id, value) {
         var currMag = isMagFest;
         isMagFest = value;
-        for(var i = 0; i < raidList.length; i++) {
+        for (var i = 0; i < raidList.length; i++) {
           raidID = raidList[i];
-          if(currMag && !value) {
+          if (currMag && !value) {
             setRemainingRaids(raidID, remainingQuests[raidID] - raidInfo[raidID].magDelta);
-          } else if(!currMag && value) {
+          } else if (!currMag && value) {
             setRemainingRaids(raidID, remainingQuests[raidID] + raidInfo[raidID].magDelta);
           } else {
             setRemainingRaids(raidID, remainingQuests[raidID]);
@@ -498,7 +502,7 @@
       Options.Get('sortRaidsDifficulty', function(id, value) {
         sortRaids(value);
       });
-      for(var i = 0; i < raidList.length; i++) {
+      for (var i = 0; i < raidList.length; i++) {
         Options.Get(raidList[i], function(id, value) {
           setRemainingJquery(id);
           // Message.PostAll({'hideObject': {
@@ -507,10 +511,10 @@
           //   }});
         });
       }
-      for(var i = 0; i < raidList.length; i++) {
+      for (var i = 0; i < raidList.length; i++) {
         var id = raidList[i];
-        if(raidInfo[id].animeIDs !== null) {
-          for(var j = 0; j < raidInfo[id].animeIDs.length; j++) {
+        if (raidInfo[id].animeIDs !== null) {
+          for (var j = 0; j < raidInfo[id].animeIDs.length; j++) {
             var temp = id;
             Supplies.Get(raidInfo[id].animeIDs[j], raidInfo[id].animeTypes[j], function(animeID, num) {
               Message.PostAll({'setText': {
@@ -521,23 +525,23 @@
           }
         }
       }
-      for(var i = 0; i < events.length; i++) {
-        if(events[i].currency1 !== null) {
+      for (var i = 0; i < events.length; i++) {
+        if (events[i].currency1 !== null) {
           Supplies.Get(events[i].currency1, 'event', function(id, num) {
-            for(var i = 0; i < events.length; i++) {
-              if(events[i].currency1 === id) {
+            for (var i = 0; i < events.length; i++) {
+              if (events[i].currency1 === id) {
                 Message.PostAll({'setText': {
                   'id': '#event-item-' + i,
                   'value': num
                 }});
-                for(var j = 0; j < events[i].bosses.length; j++) {
-                  if(num >= events[i].bosses[j].currency1) {
+                for (var j = 0; j < events[i].bosses.length; j++) {
+                  if (num >= events[i].bosses[j].currency1) {
                     events[i].bosses[j].hasCurrency = true;
                   } else {
                     events[i].bosses[j].hasCurrency = false;
                   }
                   var url;
-                  if(!events[i].bosses[j].hasAP || ! events[i].bosses[j].hasCurrency) {
+                  if (!events[i].bosses[j].hasAP || ! events[i].bosses[j].hasCurrency) {
                     url = events[i].url;
                   } else {
                     url = events[i].url + '/supporter/' + events[i].bossID + events[i].bosses[j].id + '/1';
@@ -553,15 +557,15 @@
         }
       }
       APBP.GetAP(function(num) {
-        for(var i = 0; i < events.length; i++) {
-          for(var j = 0; j < events[i].bosses.length; j++) {
-            if(num >= events[i].bosses[j].ap) {
+        for (var i = 0; i < events.length; i++) {
+          for (var j = 0; j < events[i].bosses.length; j++) {
+            if (num >= events[i].bosses[j].ap) {
               events[i].bosses[j].hasAP = true;
             } else {
               events[i].bosses[j].hasAP = false;
             }
             var url;
-            if(!events[i].bosses[j].hasAP || ! events[i].bosses[j].hasCurrency) {
+            if (!events[i].bosses[j].hasAP || ! events[i].bosses[j].hasCurrency) {
               url = events[i].url;
             } else {
               url = events[i].url + '/supporter/' + events[i].bossID + events[i].bosses[j].id + '/1';
@@ -576,17 +580,17 @@
     },
     InitializeDev: function() {
       var response = [];
-      for(var i = 0; i < raidList.length; i++) {
+      for (var i = 0; i < raidList.length; i++) {
         var raid = raidInfo[raidList[i]];
         var animeAmounts = null;
-        if(raid.animeIDs !== null) {
+        if (raid.animeIDs !== null) {
           animeAmounts = [];
-          for(var j = 0; j < raid.animeIDs.length; j++) {
+          for (var j = 0; j < raid.animeIDs.length; j++) {
             animeAmounts[j] = Supplies.Get(raid.animeIDs[j], raid.animeTypes[j]);
           }
         }
         var max = raid.max;
-        if(Options.Get('isMagFest')) {
+        if (Options.Get('isMagFest')) {
           max += raid.magDelta;
         }
         response.push({'addQuest': {
@@ -600,36 +604,36 @@
         }});
 
       }
-      for(var i = 0; i < completedRaidList.length; i++) {
+      for (var i = 0; i < completedRaidList.length; i++) {
         response.push({'appendObject': {
           'id': '#daily-raid-' + completedRaidList[i],
           'target': '#completed-raid-list'
         }});
       }
-      for(var i = 0; i < 4; i++) {
+      for (var i = 0; i < 4; i++) {
         response.push({'addQuestCharacter': {
           'index': i
         }});
       }
-      for(var i = 0; i < 3; i++) {
+      for (var i = 0; i < 3; i++) {
         response.push({'addQuestEnemy': {
           'index': i
         }});
       }
       //setQuestsJQuery();
-      for(var i = 0; i < events.length; i++) {
+      for (var i = 0; i < events.length; i++) {
         response.push({'setText': {
           'id': '#event-item-' + i,
           'value': Supplies.Get(events[i].currency1, 'event')
         }});
-        for(var j = 0; j < events[i].bosses.length; j++) {
+        for (var j = 0; j < events[i].bosses.length; j++) {
           response.push({'setClick': {
             'id': '#event-image-' + j,
             'value': events[i].bosses[j].url
           }});
         }
       }
-      for(var i = 0; i < raidList.length; i++) {
+      for (var i = 0; i < raidList.length; i++) {
         response.push({'hideObject': {
           'id': '#daily-raid-' + raidList[i],
           'value': !Options.Get(raidList[i])
@@ -639,9 +643,9 @@
     },
 
     Reset: function() {
-      for(var key in remainingQuests) {
-        if(remainingQuests.hasOwnProperty(key)) {
-          if(!Options.Get('isMagFest')) {
+      for (var key in remainingQuests) {
+        if (remainingQuests.hasOwnProperty(key)) {
+          if (!Options.Get('isMagFest')) {
             setRemainingRaids(key, raidInfo[key].max);
           } else {
             setRemainingRaids(key, raidInfo[key].max + raidInfo[key].magDelta);
@@ -652,8 +656,8 @@
     },
     CheckDailyRaid: function(json, url) {
       id = url.substring(url.lastIndexOf('/') + 1, url.indexOf('?'));
-      if(remainingQuests[id] !== undefined) {
-        if(json.result === 'ok') {
+      if (remainingQuests[id] !== undefined) {
+        if (json.result === 'ok') {
           setRemainingRaids(id, parseInt(json.limited_count));
         } else {
           setRemainingRaids(id, 0);
@@ -662,27 +666,27 @@
       saveRemainingRaids();
     },
     CreateQuest: function(json, payload, devID) {
-      if(json.result !== undefined && json.result === 'ok') {
+      if (json.result !== undefined && json.result === 'ok') {
         quest = createQuest(json.raid_id, '#raid/', devID);
         var id = '' + payload.quest_id;
-        if(id !== undefined) {
-          if(remainingQuests[id] !== undefined) {
+        if (id !== undefined) {
+          if (remainingQuests[id] !== undefined) {
             setRemainingRaids(id, remainingQuests[id] - 1);
             saveRemainingRaids();
-            if(raidInfo[id].animeIDs !== null && payload.use_item_id !== undefined) {
+            if (raidInfo[id].animeIDs !== null && payload.use_item_id !== undefined) {
               var index = raidInfo[id].animeIDs.indexOf(payload.use_item_id);
               Supplies.Increment(raidInfo[id].animeIDs[index], '10', -raidInfo[id].animeCounts[index]);
             }
           }
-          for(var i = 0; i < events.length; i++) {
-            if(events[i].bossID !== null) {
-              for(var j = 0; j < events[i].bosses.length; j++) {
-                if(id === (events[i].bossID + events[i].bosses[j].id)) {
+          for (var i = 0; i < events.length; i++) {
+            if (events[i].bossID !== null) {
+              for (var j = 0; j < events[i].bosses.length; j++) {
+                if (id === (events[i].bossID + events[i].bosses[j].id)) {
                   APBP.InitializeQuest({'action_point': events[i].bosses[j].ap});
-                  if(events[i].currency1 !== null) {
+                  if (events[i].currency1 !== null) {
                     Supplies.Increment(events[i].currency1, '10', -events[i].bosses[j].currency1);
                   }
-                  if(events[i].currency2 !== null) {
+                  if (events[i].currency2 !== null) {
                     Supplies.Increment(events[i].currency2, '10', -events[i].bosses[j].currency2);
                   }
                 }
@@ -694,15 +698,15 @@
       }
     },
     CheckMulti: function(json) {
-      if(json.is_multi) {
+      if (json.is_multi) {
         quest.url = '#raid_multi/';
       }
     },
     CreateRaid: function(json, devID) {
-      if(json.result !== false && json.is_host === false) {
+      if (json.result !== false && json.is_host === false) {
         var id = '' + json.raid_id;
-        for(var i = 0; i < raids.length; i++) {
-          if(raids.id === id) {
+        for (var i = 0; i < raids.length; i++) {
+          if (raids.id === id) {
             return;
           }
         }
@@ -712,17 +716,17 @@
     },
     CompleteQuest: function(url) {
       var id = url.substring(url.lastIndexOf('/') + 1, url.indexOf('?'));
-      if(quest !== null) {
+      if (quest !== null) {
         //console.log(quest.id);
       }
-      for(var i = 0; i < raids.length; i++) {
+      for (var i = 0; i < raids.length; i++) {
         //console.log(raids[i].id);
       }
-      if(quest !== null && quest.id === id) {
+      if (quest !== null && quest.id === id) {
         quest = null;
       } else {
-        for(var i = 0; i < raids.length; i++) {
-          if(raids[i].id === id) {
+        for (var i = 0; i < raids.length; i++) {
+          if (raids[i].id === id) {
             raids.splice(i, 1);
           }
         }
@@ -732,7 +736,7 @@
     StartBattle: function(json, devID) {
       var id = '' + json.raid_id;
       var currQuest;
-      if(json.twitter !== undefined && json.twitter.battle_id !== undefined) {
+      if (json.twitter !== undefined && json.twitter.battle_id !== undefined) {
         Message.Post(devID, {'setClick': {
           'id': '#quest-copy',
           'value': json.twitter.battle_id + ' (' +  json.twitter.monster + ') '
@@ -742,28 +746,28 @@
           'text': json.twitter.battle_id + ' (' +  json.twitter.monster + ') '
         }});
       }
-      if(quest !== null && quest.id === id) {
+      if (quest !== null && quest.id === id) {
         quest.image = enemyImageURL + json.boss.param[0].cjs.substring(json.boss.param[0].cjs.lastIndexOf('_') + 1) + '.png';
         currQuest = quest;
 
       } else {
         var exists = false;
         var image = enemyImageURL + json.boss.param[0].cjs.substring(json.boss.param[0].cjs.lastIndexOf('_') + 1) + '.png';
-        for(var i = 0; i < raids.length; i++) {
-          if(raids[i].id === id) {
+        for (var i = 0; i < raids.length; i++) {
+          if (raids[i].id === id) {
             exists = true;
             raids[i].image = image;
             currQuest = raids[i];
             break;
           }
         }
-        if(!exists) {
+        if (!exists) {
           raids.push(createQuest(id, '#raid_multi/', devID));
           raids[raids.length - 1].image = image;
           currQuest = raids[raids.length - 1];
         }
       }
-      if(currQuest.devIDs.indexOf(devID) === -1) {
+      if (currQuest.devIDs.indexOf(devID) === -1) {
         currQuest.devIDs.push(devID);
       }
       setQuestsJQuery();
@@ -872,22 +876,22 @@
       // setBattleJQuery(currQuest);
     },
     BattleAction: function(json, payload, devID) {
-      if(json.popup !== undefined) {
+      if (json.popup !== undefined) {
         return;
       }
       var id = '' + payload.raid_id;
       var currQuest;
-      if(quest !== null && quest.id === id) {
+      if (quest !== null && quest.id === id) {
         currQuest = quest;
       } else {
-        for(var i = 0; i < raids.length; i++) {
-          if(raids[i].id === id) {
+        for (var i = 0; i < raids.length; i++) {
+          if (raids[i].id === id) {
             currQuest = raids[i];
             break;
           }
         }
       }
-      if(currQuest.devIDs.indexOf(devID) === -1) {
+      if (currQuest.devIDs.indexOf(devID) === -1) {
         currQuest.devIDs.push(devID);
       }
       // //is_event
@@ -928,33 +932,33 @@
       //   currQuest.summons[5].cooldown = parseInt(json.status.supporter.recast);
       // }
       var refresh = false;
-      for(var i = 0; i < json.scenario.length; i++) {
+      for (var i = 0; i < json.scenario.length; i++) {
         // if(json.scenario[i].cmd === 'finished') {
         //   currQuest.url = currQuest.url.replace('raid', 'result');
         //   if(Options.Get('skip')) {
         //     Message.Post(devID, {'openURL': currQuest.url + currQuest.id});
         //   }
         // }
-        if(json.scenario[i].cmd === 'win') {
+        if (json.scenario[i].cmd === 'win') {
           currQuest.id = '' + json.scenario[i].raid_id;
-          if(json.scenario[i].is_last_raid) {
+          if (json.scenario[i].is_last_raid) {
             currQuest.url = currQuest.url.replace('raid', 'result');
-            if(Options.Get('skip')) {
+            if (Options.Get('skip')) {
               Message.Post(devID, {'openURL': currQuest.url + currQuest.id});
               return;
             }
           }
-          if(Options.Get('skip') && Options.Get('skipNext')) {
+          if (Options.Get('skip') && Options.Get('skipNext')) {
             Message.Post(devID, {'openURL': currQuest.url + currQuest.id});
             return;
           }
         }
-        if(Options.Get('ougiRefresh') && (json.scenario[i].cmd == 'special' || json.scenario[i].cmd == 'special_npc'))
+        if (Options.Get('ougiRefresh') && (json.scenario[i].cmd == 'special' || json.scenario[i].cmd == 'special_npc'))
         {
           refresh = true;
         }
       }
-      if(refresh)
+      if (refresh)
       {
         //Message.Post(devID, {'refresh': true});
         Message.Post(devID, {'openURL': currQuest.url + currQuest.id});
@@ -991,9 +995,9 @@
       // }
     },
     SetCurrentQuest: function(json) {
-      if(json.progress_quest_info !== undefined) {
+      if (json.progress_quest_info !== undefined) {
         var id = json.progress_quest_info[0].raid_id;
-        if(quest === null) {
+        if (quest === null) {
           quest = createQuest(id, '#raid/');
         } else {
           quest.id = id;
@@ -1010,11 +1014,11 @@
     },
     AbandonQuest: function(payload) {
       var id = '' + payload.raid_id;
-      if(quest !== null && quest.id === id) {
+      if (quest !== null && quest.id === id) {
         quest = null;
       } else {
-        for(var i = 0; i < raids.length; i++) {
-          if(raids[i].id === id) {
+        for (var i = 0; i < raids.length; i++) {
+          if (raids[i].id === id) {
             raids.splice(i, 1);
             break;
           }
@@ -1036,18 +1040,18 @@
     },
     UpdateInProgress: function(json, devID) {
       var inProgress = json.option.quest.init_list.progress_quest_info;
-      if(inProgress !== undefined && inProgress.length > 0) {
+      if (inProgress !== undefined && inProgress.length > 0) {
         quest = createQuest(inProgress[0].raid_id, '#raid/', devID);
       }
     },
     CopyTweet: function(json) {
-      if(Options.Get('copyJapaneseName') && json.tweet_mode === 0 && json.twitter.forced_message !== undefined) {
+      if (Options.Get('copyJapaneseName') && json.tweet_mode === 0 && json.twitter.forced_message !== undefined) {
         var start = json.twitter.forced_message.indexOf('\n');
         var end = json.twitter.forced_message.lastIndexOf('\n');
-        if(start !== -1 && end !== -1) {
+        if (start !== -1 && end !== -1) {
           var english = json.twitter.forced_message.substring(start + 1, end);
           console.log(english);
-          if(tweetHash[english] !== undefined) {
+          if (tweetHash[english] !== undefined) {
             copy(tweetHash[english]);
           }
         }
@@ -1061,7 +1065,7 @@
   var setQuestsJQuery = function() {
     var image;
     var url;
-    if(quest !== null) {
+    if (quest !== null) {
       image = quest.image;
       url = quest.url + quest.id;
     } else {
@@ -1076,8 +1080,8 @@
       'id': '#quest-image-curr',
       'value': url
     }});
-    for(var i = 0; i < 4; i++) {
-      if(i < raids.length) {
+    for (var i = 0; i < 4; i++) {
+      if (i < raids.length) {
         image = raids[i].image;
         url = raids[i].url + raids[i].id;
       } else {
@@ -1099,14 +1103,14 @@
   };
   var setBattleJQuery = function(currQuest) {
     var devID;
-    for(var k = 0; k < currQuest.devIDs.length; k++) {
+    for (var k = 0; k < currQuest.devIDs.length; k++) {
       devID = currQuest.devIDs[k];
-      if(!Message.Post(devID, undefined)) {
+      if (!Message.Post(devID, undefined)) {
         currQuest.devIDs.splice(k, 1);
         k--;
       } else {
-        for(var i = 0; i < 4; i++) {
-          if(currQuest.characters[pos] !== null && i < currQuest.formation.length) {
+        for (var i = 0; i < 4; i++) {
+          if (currQuest.characters[pos] !== null && i < currQuest.formation.length) {
             var pos = currQuest.formation[i];
             Message.Post(devID, {'hideObject': {
               'id': '#quest-character-' + i,
@@ -1116,8 +1120,8 @@
               'id': '#quest-character-image-' + i,
               'value': currQuest.characters[pos].image
             }});
-            for(var j = 0; j < currQuest.characters[pos].skills.length; j++) {
-              if(currQuest.characters[pos].skills[j] !== null) {
+            for (var j = 0; j < currQuest.characters[pos].skills.length; j++) {
+              if (currQuest.characters[pos].skills[j] !== null) {
                 Message.Post(devID, {'hideObject': {
                   'id': '#quest-skill-' + i + '-' + j,
                   'value': false
@@ -1126,7 +1130,7 @@
                   'id': '#quest-skill-image-' + i + '-' + j,
                   'value': currQuest.characters[pos].skills[j].image
                 }});
-                if(currQuest.characters[pos].skills[j].cooldown === 0) {
+                if (currQuest.characters[pos].skills[j].cooldown === 0) {
                   Message.Post(devID, {'setText': {
                     'id': '#quest-skill-text-' + i + '-' + j,
                     'value': ''
@@ -1159,8 +1163,8 @@
             }});
           }
         }
-        for(var i = 0; i < currQuest.enemies.length; i++) {
-          if(currQuest.enemies[i] !== null) {
+        for (var i = 0; i < currQuest.enemies.length; i++) {
+          if (currQuest.enemies[i] !== null) {
             Message.Post(devID, {'hideObject': {
               'id': '#quest-enemy-' + i,
               'value': false
@@ -1176,13 +1180,13 @@
             }});
           }
         }
-        for(var i = 0; i < currQuest.summons.length; i++) {
-          if(currQuest.summons[i] !== null) {
+        for (var i = 0; i < currQuest.summons.length; i++) {
+          if (currQuest.summons[i] !== null) {
             Message.Post(devID, {'setImage': {
               'id': '#quest-summon-image-' + i,
               'value': currQuest.summons[i].image
             }});
-            if(currQuest.summons[i].cooldown === 0) {
+            if (currQuest.summons[i].cooldown === 0) {
               Message.Post(devID, {'setText': {
                 'id': '#quest-summon-text-' + i,
                 'value': ''
@@ -1222,30 +1226,30 @@
   };
 
   var setRemainingRaids = function(id, amount) {
-    if(remainingQuests[id] !== undefined) {
-      if(amount < 0) {
+    if (remainingQuests[id] !== undefined) {
+      if (amount < 0) {
         amount = 0;
       }
-      if(remainingQuests[id] !== amount && amount <= 0) {
+      if (remainingQuests[id] !== amount && amount <= 0) {
         var currIndex = currRaidList.indexOf(id);
         currRaidList.splice(currIndex, 1);
         var found = false;
-        for(var i = 0; i < completedRaidList.length; i++) {
-          if(!Options.Get('sortRaidsDifficulty')) {
-            if(raidInfo[id].sequence < raidInfo[completedRaidList[i]].sequence) {
+        for (var i = 0; i < completedRaidList.length; i++) {
+          if (!Options.Get('sortRaidsDifficulty')) {
+            if (raidInfo[id].sequence < raidInfo[completedRaidList[i]].sequence) {
               completedRaidList.splice(i, 0, id);
               found = true;
               break;
             }
           } else {
-            if(raidInfo[id].sequence2 < raidInfo[completedRaidList[i]].sequence2) {
+            if (raidInfo[id].sequence2 < raidInfo[completedRaidList[i]].sequence2) {
               completedRaidList.splice(i, 0, id);
               found = true;
               break;
             }
           }
         }
-        if(!found) {
+        if (!found) {
           completedRaidList.push(id);
         }
 
@@ -1264,26 +1268,26 @@
         //   // $completedRaidList.append($dailyRaidList.find('#daily-raid-' + id));
         //   completedRaidList.push(id);
         // }
-      } else if(remainingQuests[id] !== amount && amount > 0 && completedRaidList.indexOf(id) !== -1) {
+      } else if (remainingQuests[id] !== amount && amount > 0 && completedRaidList.indexOf(id) !== -1) {
         var currIndex = completedRaidList.indexOf(id);
         completedRaidList.splice(currIndex, 1);
         var found = false;
-        for(var i = 0; i < currRaidList.length; i++) {
-          if(!Options.Get('sortRaidsDifficulty')) {
-            if(raidInfo[id].sequence < raidInfo[currRaidList[i]].sequence) {
+        for (var i = 0; i < currRaidList.length; i++) {
+          if (!Options.Get('sortRaidsDifficulty')) {
+            if (raidInfo[id].sequence < raidInfo[currRaidList[i]].sequence) {
               currRaidList.splice(i, 0, id);
               found = true;
               break;
             }
           } else {
-            if(raidInfo[id].sequence2 < raidInfo[currRaidList[i]].sequence2) {
+            if (raidInfo[id].sequence2 < raidInfo[currRaidList[i]].sequence2) {
               currRaidList.splice(i, 0, id);
               found = true;
               break;
             }
           }
         }
-        if(!found) {
+        if (!found) {
           currRaidList.push(id);
         }
         // currRaidList.splice(newIndex, 0, id);
@@ -1320,7 +1324,7 @@
   };
 
   var setRemainingJquery = function(id) {
-    if(!Options.Get('isMagFest')) {
+    if (!Options.Get('isMagFest')) {
       Message.PostAll({'setText': {
         'id': '#remaining-' + id,
         'value': remainingQuests[id] + '/' + raidInfo[id].max
@@ -1333,7 +1337,7 @@
       }});
       // $raidsPanel.find('#remaining-' + id).first().text(amount + '/' + (raidInfo[id].max + raidInfo[id].magDelta));
     }
-    if(Options.Get(id)) {
+    if (Options.Get(id)) {
       Message.PostAll({'hideObject': {
         'id': '#daily-raid-' + id,
         'value': false
@@ -1344,10 +1348,10 @@
         'value': true
       }});
     }
-    if(remainingQuests[id] !== 0) {
-      for(var i = 0; i < currRaidList.length; i++) {
-        if(!Options.Get('sortRaidsDifficulty')) {
-          if(raidInfo[id].sequence < raidInfo[currRaidList[i]].sequence && Options.Get(currRaidList[i])) {
+    if (remainingQuests[id] !== 0) {
+      for (var i = 0; i < currRaidList.length; i++) {
+        if (!Options.Get('sortRaidsDifficulty')) {
+          if (raidInfo[id].sequence < raidInfo[currRaidList[i]].sequence && Options.Get(currRaidList[i])) {
             Message.PostAll({'beforeObject': {
               'id': '#daily-raid-' + id,
               'target': '#daily-raid-' + currRaidList[i]
@@ -1355,7 +1359,7 @@
             return;
           }
         } else {
-          if(raidInfo[id].sequence2 < raidInfo[currRaidList[i]].sequence2 && Options.Get(currRaidList[i])) {
+          if (raidInfo[id].sequence2 < raidInfo[currRaidList[i]].sequence2 && Options.Get(currRaidList[i])) {
             Message.PostAll({'beforeObject': {
               'id': '#daily-raid-' + id,
               'target': '#daily-raid-' + currRaidList[i]
@@ -1370,9 +1374,9 @@
       }});
       return;
     } else {
-      for(var i = 0; i < completedRaidList.length; i++) {
-        if(!Options.Get('sortRaidsDifficulty')) {
-          if(raidInfo[id].sequence < raidInfo[completedRaidList[i]].sequence && Options.Get(completedRaidList[i])) {
+      for (var i = 0; i < completedRaidList.length; i++) {
+        if (!Options.Get('sortRaidsDifficulty')) {
+          if (raidInfo[id].sequence < raidInfo[completedRaidList[i]].sequence && Options.Get(completedRaidList[i])) {
             Message.PostAll({'beforeObject': {
               'id': '#daily-raid-' + id,
               'target': '#daily-raid-' + completedRaidList[i]
@@ -1380,7 +1384,7 @@
             return;
           }
         } else {
-          if(raidInfo[id].sequence2 < raidInfo[completedRaidList[i]].sequence2 && Options.Get(completedRaidList[i])) {
+          if (raidInfo[id].sequence2 < raidInfo[completedRaidList[i]].sequence2 && Options.Get(completedRaidList[i])) {
             Message.PostAll({'beforeObject': {
               'id': '#daily-raid-' + id,
               'target': '#daily-raid-' + completedRaidList[i]
@@ -1450,7 +1454,7 @@
   };
   var sortRaids = function(byDifficulty) {
     var sort;
-    if(!byDifficulty) {
+    if (!byDifficulty) {
       sort = sortByElement;
     } else {
       sort = sortByDifficulty;
@@ -1458,15 +1462,15 @@
     raidList.sort(sort);
     currRaidList.sort(sort);
     completedRaidList.sort(sort);
-    for(var i = 0; i < raidList.length; i++) {
+    for (var i = 0; i < raidList.length; i++) {
       Message.PostAll({'hideObject': {
         'id': '#daily-raid-' + raidList[i],
         'value': true
       }});
     }
-    for(var i = 0; i < currRaidList.length; i++) {
+    for (var i = 0; i < currRaidList.length; i++) {
       var id = currRaidList[i];
-      if(Options.Get(id)) {
+      if (Options.Get(id)) {
         Message.PostAll({'hideObject': {
           'id': '#daily-raid-' + id,
           'value': false
@@ -1477,9 +1481,9 @@
         }});
       }
     }
-    for(var i = 0; i < completedRaidList.length; i++) {
+    for (var i = 0; i < completedRaidList.length; i++) {
       var id = completedRaidList[i];
-      if(Options.Get(id)) {
+      if (Options.Get(id)) {
         Message.PostAll({'hideObject': {
           'id': '#daily-raid-' + id,
           'value': false

@@ -1,0 +1,32 @@
+{
+  '1.0.1': {
+    'index': 0,
+    'notes': ['-Vira and Narumaya themes added',
+      '-Supply name + location tooltips added',
+      '(thanks lolPseudoSmart for supply locations)',
+      '-Primarch misc daily added',
+      '-Primarch raid + xeno jp names added'
+    ]
+  },
+  '1.1.0': {
+    'index': 1,
+    'notes': ['-Weapon Series planner added',
+      'Try it out in the supply tab!',
+      '-Vira and Narumaya themes removed'
+    ]
+  },
+  '1.1.1': {
+    'index': 2,
+    'notes': ['-Primarch daily changed to option',
+      '-Small UI tweaks'
+    ]
+  },
+  '1.1.2': {
+    'index': 3,
+    'notes': ['-GW 5* planner added',
+      '(sorry it\'s so late D:)',
+      '(also sorry no weapon drop tracking orz)',
+      '-Tooltips added to repeat last quest',
+      'and copy to clipboard buttons'
+    ]
+  }

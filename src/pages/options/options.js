@@ -203,10 +203,10 @@ var options = [
 var $raids = $('#raids');
 var $raid = $raids.find('.raid').first().clone();
 $raids.find('.raid').first().remove();
-for(var i = 0; i < options.length; i++) {
+for (var i = 0; i < options.length; i++) {
   var key = options[i];
-  if(raidInfo.hasOwnProperty(key)) {
-    if(raidInfo[key].name !== null) {
+  if (raidInfo.hasOwnProperty(key)) {
+    if (raidInfo[key].name !== null) {
       var newRaid = $raid.clone();
       newRaid.attr('id', 'raid-' + key);
       newRaid.children('.check').attr('id', key);
@@ -226,8 +226,8 @@ for(var i = 0; i < options.length; i++) {
       newRaid.children('.name').text('  ');
       newRaid.appendTo('#' + raidInfo[key].type);
     }
-  } else if(distinctionInfo.hasOwnProperty(key)) {
-    if(distinctionInfo[key].name !== null) {
+  } else if (distinctionInfo.hasOwnProperty(key)) {
+    if (distinctionInfo[key].name !== null) {
       var newRaid = $raid.clone();
       newRaid.attr('id', 'distinction-' + key);
       newRaid.children('.check').attr('id', key);
@@ -272,13 +272,13 @@ $('select').each(function() {
 });
 
 var checkEnabled = function(obj) {
-  if(obj.attr('id') === 'enableNotifications') {
+  if (obj.attr('id') === 'enableNotifications') {
     var checked = obj.is(':checked');
     $('#notifications').find('.check').each(function() {
       $(this).prop('disabled', !checked);
     });
     $('#notifications').find('.name').each(function() {
-      if(checked) {
+      if (checked) {
         $(this).css('color', '#333333');
       } else {
         $(this).css('color', 'grey');
@@ -287,11 +287,11 @@ var checkEnabled = function(obj) {
   }
 };
 
-for(var i = 0; i < options.length; i++) {
+for (var i = 0; i < options.length; i++) {
   chrome.runtime.sendMessage({getOption : options[i]
   }, function(response) {
-    if(response.value !== null) {
-      if(response.id === 'windowTheme' || response.id === 'notificationTheme') {
+    if (response.value !== null) {
+      if (response.id === 'windowTheme' || response.id === 'notificationTheme') {
         $('#' + response.id).val(response.value);
       } else {
         $('#' + response.id).prop('checked', response.value);
