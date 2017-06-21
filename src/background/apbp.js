@@ -3,8 +3,8 @@
   var maxAP          = 0;
   var currBP         = 0;
   var maxBP          = 0;
-  var apTime         = {hour:0, minute:0, second:0};
-  var bpTime         = {hour:0, minute:0, second:0};
+  var apTime         = { hour: 0, minute: 0, second: 0 };
+  var bpTime         = { hour: 0, minute: 0, second: 0 };
   var apTimer;
   var bpTimer;
   var availableRaids = {};
@@ -27,6 +27,7 @@
           status = json.option.user_status;
         }
       }
+
       if (status !== undefined) {
         setAP(status.ap, status.max_ap);
         setBP(status.bp, status.max_bp);
@@ -52,6 +53,7 @@
         } else {
           stopAPTimer();
         }
+
         if (status.battle_point_remain.indexOf('00:00') === -1) {
           index  = status.battle_point_remain.indexOf('h');
           hour   = bpTime.hour;
@@ -134,7 +136,6 @@
     },
 
     ClearRaid: function(json, url) {
-
       // var index = url.indexOf('/check_reward/') + '/check_reward/'.length;
       // if (currRaids[index] !== null) {
       //   delete currRaids[index];
@@ -150,6 +151,7 @@
         }
       }
     },
+
     GetAP: function(response) {
       if (response !== undefined) {
         if (responseAP.indexOf(response) === -1) {
@@ -158,6 +160,7 @@
       }
       return currAP;
     },
+
     SetMax: function() {
       addAP(maxAP);
       addBP(maxBP);
@@ -277,8 +280,8 @@
       'id': '#ap-number',
       'value': 'AP: ' + currAP + '/' + maxAP
     }});
-    Message.PostAll({setBar: {
       'id': '#ap-bar',
+      Message.PostAll({setBar: {
       'value': ((currAP / maxAP) * 100) + '%'
     }});
     // $apNumber.text('AP: ' + currAP + '/' + maxAP);
