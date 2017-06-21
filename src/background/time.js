@@ -700,8 +700,6 @@
     }
     storeTime(tuples);
     //Storage.Set('assault', assaultTimes);
-
-
     setAssaultTime();
   };
 
