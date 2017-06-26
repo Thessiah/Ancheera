@@ -106,37 +106,37 @@
   var dropdownHash = {
     'Revenant': {
       'element' : ['Fire', 'Water', 'Earth', 'Wind', 'Light', 'Dark'],
-      'start' : ['Awakening', 'Element', 'Upgrade 1', 'Upgrade 2', 'Upgrade 3', 'Upgrade 4', 'Upgrade 5', 'Upgrade 6'],
-      'end' : ['Awakening', 'Element', 'Upgrade 1', 'Upgrade 2', 'Upgrade 3', 'Upgrade 4', 'Upgrade 5', 'Upgrade 6']
+      'start' :   ['Awakening', 'Element', 'Upgrade 1', 'Upgrade 2', 'Upgrade 3', 'Upgrade 4', 'Upgrade 5', 'Upgrade 6'],
+      'end' :     ['Awakening', 'Element', 'Upgrade 1', 'Upgrade 2', 'Upgrade 3', 'Upgrade 4', 'Upgrade 5', 'Upgrade 6']
     },
     'Class': {
-      'type': ['Avenger', 'Skofnung', 'Nirvana', 'Keraunos', 'Oliver', 'Hellion', 'Ipetam', 'Rosenbogen', 'Langeleik', 'Romulus', 'Faust', 'Murakumo', 'Muramasa', 'Ascalon', 'Nebuchad', 'Kapilavastu' ,'Misericorde'],
+      'type':     ['Avenger', 'Skofnung', 'Nirvana', 'Keraunos', 'Oliver', 'Hellion', 'Ipetam', 'Rosenbogen', 'Langeleik', 'Romulus', 'Faust', 'Murakumo', 'Muramasa', 'Ascalon', 'Nebuchad', 'Kapilavastu' ,'Misericorde'],
       'element' : ['Fire', 'Water', 'Earth', 'Wind', 'Light', 'Dark'],
-      'start' : ['Redeem', 'Forge', 'Rebuild', 'Element'],
-      'end' : ['Redeem', 'Forge', 'Rebuild', 'Element']
+      'start' :   ['Redeem', 'Forge', 'Rebuild', 'Element'],
+      'end' :     ['Redeem', 'Forge', 'Rebuild', 'Element']
     },
     'Seraph': {
       'element' : ['Fire', 'Water', 'Earth', 'Wind'],
-      'start' : ['Forge', 'Uncap 1', 'Uncap 2', 'Uncap 3', 'SSR Upgrade'],
-      'end' : ['Forge', 'Uncap 1', 'Uncap 2', 'Uncap 3', 'SSR Upgrade']
+      'start' :   ['Forge', 'Uncap 1', 'Uncap 2', 'Uncap 3', 'SSR Upgrade'],
+      'end' :     ['Forge', 'Uncap 1', 'Uncap 2', 'Uncap 3', 'SSR Upgrade']
     },
     'Bahamut': {
-      'type': ['Sabre', 'Dagger', 'Spear', 'Axe', 'Staff', 'Gun', 'Melee', 'Bow', 'Harp', 'Katana'],
+      'type':  ['Sabre', 'Dagger', 'Spear', 'Axe', 'Staff', 'Gun', 'Melee', 'Bow', 'Harp', 'Katana'],
       'start': ['Core', 'Nova', 'Coda'],
-      'end': ['Core', 'Nova', 'Coda']
+      'end':   ['Core', 'Nova', 'Coda']
     },
     'Revenant 5*': {
-      'type': ['Uno', 'Song', 'Sarasa', 'Quatre', 'Funf', 'Six', 'Siete', 'Octo', 'Nio', 'Esser'],
+      'type':  ['Uno', 'Song', 'Sarasa', 'Quatre', 'Funf', 'Six', 'Siete', 'Octo', 'Nio', 'Esser'],
       'start': ['Silver Forge', 'Silver 4*', 'Gold Forge', 'Character 5*'],
-      'end': ['Silver Forge', 'Silver 4*', 'Gold Forge', 'Character 5*']
+      'end':   ['Silver Forge', 'Silver 4*', 'Gold Forge', 'Character 5*']
     }
   };
   var dropdownLocater = {
     'planner': $weaponPlanner,
-    'type': $weaponType,
+    'type':    $weaponType,
     'element': $weaponElement,
-    'start': $weaponStart,
-    'end': $weaponEnd
+    'start':   $weaponStart,
+    'end':     $weaponEnd
   };
 
   var weaponBuild = {};
@@ -202,11 +202,11 @@
           }
           //hideAllSupplies();
           console.log({weaponBuild: {
-            'type': weaponType,
+            'type':  weaponType,
             'build': weaponBuild
           }});
           Message.Post({weaponBuild: {
-            'type': weaponType,
+            'type':  weaponType,
             'build': weaponBuild
           }});
           //all options selected; publish weapon event with params
@@ -243,7 +243,7 @@
     'My name is Shackleford.\nRusty Shackleford.'
   ];
 
-  var message = messages[Math.floor(Math.random() * messages.length)];
+  var message  = messages[Math.floor(Math.random() * messages.length)];
   var $message = $('#message');
 
   var setMessage = function(msg) {
@@ -489,7 +489,7 @@
       jQueryCache[id] = $(id);
     }
     times[id] = {
-      'jst': jstTime,
+      'jst':    jstTime,
       'normal': normalTime
     };
     if (isJST) {
@@ -534,8 +534,7 @@
     if (jQueryCache[id] === undefined) {
       jQueryCache[id] = $(id);
     }
-    jQueryCache[id].attr('title', text)
-      .tooltip('fixTitle');
+    jQueryCache[id].attr('title', text).tooltip('fixTitle');
     console.log(id.substring(1));
     if ($('.tooltip').length > 0 && $('.tooltip').prev().prop('id') == id.substring(1)) {
       jQueryCache[id].tooltip('show');
@@ -622,9 +621,9 @@
   var $plannerItem = $('.weapon-item').first().clone();
   $('.weapon-item').remove();
   var $plannerIncompleteList = $('#weapon-item-incomplete');
-  var $plannerCompleteList = $('#weapon-item-complete');
-  var incompleteActiveCount = 0;
-  var completeActiveCount = 0;
+  var $plannerCompleteList   = $('#weapon-item-complete');
+  var incompleteActiveCount  = 0;
+  var completeActiveCount    = 0;
 
   var generatePlanner = function(planner) {
     var incompleteCount = 0;
@@ -656,14 +655,14 @@
       //   completeCount++;
       // }
       if (item.current < item.total) {
-        $list = $plannerIncompleteList;
+        $list  = $plannerIncompleteList;
         $items = $incompleteItems;
-        count = incompleteCount;
+        count  = incompleteCount;
         incompleteCount++;
       } else {
-        $list = $plannerCompleteList;
+        $list  = $plannerCompleteList;
         $items = $completeItems;
-        count = completeCount;
+        count  = completeCount;
         completeCount++;
       }
       if (count >= $items.length) {
@@ -724,7 +723,7 @@
     }
     $item.children('.item-img').first().attr('src', imgURL);
     var $current = $item.find('.item-current').first();
-    var $total = $item.find('.item-total').first();
+    var $total   = $item.find('.item-total').first();
     $current.text(truncateNumber(current));
     $current.data('value', current);
     $current.attr('id', 'planner-' + sequence + '-' + id + '-current');
@@ -760,7 +759,7 @@
   var setPlannerDropdowns = function(type, build) {
     dropdownLocater['planner'].find('.dropdown-text').text(type);
     initializeDropdowns(type);
-    weaponType = type;
+    weaponType  = type;
     weaponBuild = build;
     Object.keys(build).forEach(function(key) {
       dropdownLocater[key].show();
@@ -791,15 +790,15 @@
     } else {
       var categoryHash = {
         treasure: 0,
-        raid: 1,
+        raid:     1,
         material: 2,
-        event: 3,
-        coop: 4,
-        misc: 5,
+        event:    3,
+        coop:     4,
+        misc:     5,
         recovery: 6,
-        powerUp: 7,
-        draw: 8,
-        other: 9,
+        powerUp:  7,
+        draw:     8,
+        other:    9,
         currency: 10
       };
       return categoryHash[$a.data('category')] - categoryHash[$b.data('category')];

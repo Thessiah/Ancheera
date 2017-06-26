@@ -482,6 +482,7 @@
       }
       setDailies(array);
     },
+
     CheckRenown: function(json) {
       var array = [];
       if (json.option !== undefined)

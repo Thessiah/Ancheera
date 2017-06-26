@@ -17,7 +17,8 @@
         "react"
     ],
     "globals": {
-        "chrome": true
+        "chrome": true,
+        "Message": true
     },
     "rules": {
         "indent": [
