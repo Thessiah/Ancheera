@@ -1,25 +1,25 @@
 {
   "manifest_version": 2,
 
-  "name": "AnCheera",
-  "description": "The GBF Companion Extension that's absolutely bananas.",
-  "version": "1.1.2.1",
+  "name": "Lyria",
+  "description": "Granblue Fantasy Companion Extension.",
+  "version": "1.0.0",
 
   "icons": { "16": "src/assets/images/icon16.png",
             "48": "src/assets/images/icon48.png",
-            "128": "src/assets/images/icon128.png" 
+            "128": "src/assets/images/icon128.png"
             },
 
   "browser_action": {
     "default_icon": "src/assets/images/icon128.png"
-  },   
-  
+  },
+
   "options_ui": {
     "page": "src/pages/options/options.html",
     "chrome_style": true
   },
-  
-  
+
+
   "background": {
     "scripts": [
       "src/background/message.js",
