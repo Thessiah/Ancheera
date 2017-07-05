@@ -18,12 +18,12 @@
       '5':  createItem(10, false),
     },
     monthlies: {
-      '20013': createItem(5, false),
-      '20003': createItem(5, false),
+      '20013':      createItem(5, false),
+      '20003':      createItem(5, false),
       '1039900000': createItem(20, false),
       '1029900000': createItem(50, false),
-      '2': createItem(100, false),
-      '5': createItem(200, false),
+      '2':          createItem(100, false),
+      '5':          createItem(200, false),
     }
   };
   var casinoData = {
@@ -132,8 +132,8 @@
       }
     },
     BuyCasino: function(json, payload) {
-      var id = json.article.item_ids[0];
-      var dailies = {};
+      var id        = json.article.item_ids[0];
+      var dailies   = {};
       var monthlies = {};
       if (casino.dailies[id] !== undefined) {
         dailies[id] = casino.dailies[id].amount - parseInt(payload.num);
@@ -141,21 +141,7 @@
       if (casino.monthlies[id] !== undefined) {
         monthlies[id] = casino.monthlies[id].amount - parseInt(payload.num);
       }
-      console.log(dailies);
-      console.log(monthlies);
       setCasino(dailies, monthlies);
-      // var id = json.article.name;
-      // if(id === 'Half Elixir' || id === 'Soul Berry') {
-      //   remainingMonthlyItems[id] -= remainingDailyItems[id];
-      //   if(remainingMonthlyItems[id] < 0) {
-      //     remainingMonthlyItems[id] = 0;
-      //   }
-      // } else if(remainingMonthlyItems[id] !== undefined) {
-      //   remainingMonthlyItems[id] = 0;
-      // }
-      // if(remainingDailyItems[id] !== undefined) {
-      //   remainingDailyItems[id] = 0;
-      // }
     }
   };
   var setCasino = function(dailies, monthlies, updatedPages) {
@@ -186,7 +172,7 @@
         updated = true;
       }
     });
-    //console.log(JSON.stringify(casino));
+
     if (updated) {
       Storage.Set('casino', casino);
     }
@@ -194,14 +180,14 @@
 
   var checkCollapse = function(type) {
     var collapse = true;
-    var keys = Object.keys(casino[type]);
+    var keys     = Object.keys(casino[type]);
     for (var i = 0; i < keys.length; i++) {
       if (casino[type][keys[i]].amount !== 0) {
         collapse = false;
       }
     }
     return {'collapsePanel':{
-      'id': '#collapse-casino-' + type,
+      'id':    '#collapse-casino-' + type,
       'value': collapse
     }};
   };
@@ -209,7 +195,7 @@
   var getJquery = function(type, key) {
     var id = '#casino-' + type + '-' + key;
     return {'setText': {
-      'id': '#casino-' + type + '-' + key,
+      'id':    id,
       'value': casino[type][key].amount + '/' + casinoData[type][key]
     }};
   };
@@ -225,7 +211,7 @@
   };
 
   var checkUpdated = function() {
-    var dailies = {};
+    var dailies   = {};
     var monthlies = {};
     Object.keys(casino.dailies).forEach(function(key) {
       if (!casino.dailies[key].updated) {

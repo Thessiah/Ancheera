@@ -210,13 +210,7 @@ for (var i = 0; i < options.length; i++) {
       var newRaid = $raid.clone();
       newRaid.attr('id', 'raid-' + key);
       newRaid.children('.check').attr('id', key);
-      // if(raidInfo[key].isHL) {
-      //   newRaid.children('.check').prop('checked', false);
-      // } else {
-      //   newRaid.children('.check').prop('checked', true);
-      // }
       newRaid.children('.name').text(raidInfo[key].name);
-      //$raids.children('#' + raidInfo[key].type).append(newRaid);
       newRaid.appendTo('#' + raidInfo[key].type);
     }
     else
@@ -231,25 +225,11 @@ for (var i = 0; i < options.length; i++) {
       var newRaid = $raid.clone();
       newRaid.attr('id', 'distinction-' + key);
       newRaid.children('.check').attr('id', key);
-      // if(raidInfo[key].isHL) {
-      //   newRaid.children('.check').prop('checked', false);
-      // } else {
-      //   newRaid.children('.check').prop('checked', true);
-      // }
       newRaid.children('.name').text(distinctionInfo[key].name);
-      //$raids.children('#' + raidInfo[key].type).append(newRaid);
       newRaid.appendTo('#d' + distinctionInfo[key].type);
-    }
-    else
-    {
-      // var newRaid = $raid.clone();
-      // newRaid.children('.check').hide();
-      // newRaid.children('.name').text('  ');
-      // newRaid.appendTo('#' + raidInfo[key].type);
     }
   }
 }
-
 
 $(':checkbox').each(function() {
   $(this).click(function() {
@@ -264,7 +244,7 @@ $(':checkbox').each(function() {
 $('select').each(function() {
   $(this).on('change', function() {
     chrome.runtime.sendMessage({setOption: {
-      'id': [$(this).attr('id')],
+      'id':    [$(this).attr('id')],
       'value': this.value
     }
     });

@@ -284,8 +284,6 @@
       Message.PostAll({setBar: {
       'value': ((currAP / maxAP) * 100) + '%'
     }});
-    // $apNumber.text('AP: ' + currAP + '/' + maxAP);
-    // $apBar.css('width', ((currAP / maxAP) * 100) + '%');
   };
 
   var setBP = function(curr, max) {
@@ -299,14 +297,6 @@
       'id': '#bp-bar',
       'value': ((currBP / maxBP) * 100) + '%'
     }});
-    // $bpNumber.text('EP: ' + currBP + '/' + maxBP);
-    // $bpBar.each(function(index) {
-    //   if (index >= currBP) {
-    //     $(this).hide();
-    //   } else {
-    //     $(this).show();
-    //   }
-    // });
   };
 
   var setAPTime = function() {
@@ -355,7 +345,6 @@
       'id': '#bp-time',
       'value': str
     }});
-    // $bpTime.text(str);
   };
 
   var resetAPTimer = function() {
@@ -378,9 +367,6 @@
         var max = maxAP * 20;
         if ((apTime.minute % 10 === 4 || apTime.minute % 10 === 9) && !(apTime.hour === Math.floor((maxAP * 5 - 1) / 60) && apTime.minute === (maxAP * 5 - 1) % 60)) {
           setAP(currAP + 1, maxAP);
-          // if (currAP == 50) {
-          //   Message.Notify('You have 50 AP!', currAP + '/' + maxAP + ' AP\n' + currBP + '/' + maxBP + ' EP');
-          // }
         }
         apTime.second = 59;
       }

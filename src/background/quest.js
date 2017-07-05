@@ -94,17 +94,17 @@
 
   var createRaid = function(sequence, sequence2, name, max, magDelta, url, animeIDs, animeCounts, animeTypes, isHL) {
     return {
-      sequence:  sequence,
-      sequence2: sequence2,
-      name: name,
-      max: max,
-      magDelta: magDelta,
-      url: imageURL + 'quests/' + url,
-      animeIDs: animeIDs,
+      sequence:    sequence,
+      sequence2:   sequence2,
+      name:        name,
+      max:         max,
+      magDelta:    magDelta,
+      url:         imageURL + 'quests/' + url,
+      animeIDs:    animeIDs,
       animeCounts: animeCounts,
-      animeTypes: animeTypes,
-      isHL: isHL,
-      isEnabled: true,
+      animeTypes:  animeTypes,
+      isHL:        isHL,
+      isEnabled:   true,
     };
   };
 
@@ -118,14 +118,6 @@
     '300291', '301051', '300471', '301061'
   ];
 
-    //   var currRaidList = [
-    //   '300031', '300041', '300051', '300441',
-    //   '300081', '300091', '300101', '300491',
-    //   '300141', '300151', '300161', '300511',
-    //   '300181', '300191', '300261', '300531',
-    //   '300211', '300221', '300271', '300561',
-    //   '300241', '300251', '300281', '300581'
-    // ]
   var currRaidList      = [];
   var hiddenRaidList    = [];
   var completedRaidList = [];
@@ -306,45 +298,36 @@
       devIDs.push(devID);
     }
     return {
-      id: id,
-      url: url,
-      image: greyIcon,
+      id:         id,
+      url:        url,
+      image:      greyIcon,
       characters: [null, null, null, null, null, null],
-      formation: [],
-      buffs: [],
-      enemies: [null, null, null],
-      summons: [null, null, null, null, null, null],
-      devIDs: devIDs
+      formation:  [],
+      buffs:      [],
+      enemies:    [null, null, null],
+      summons:    [null, null, null, null, null, null],
+      devIDs:     devIDs
     };
   };
 
-    // var characters = [
-    //   null,
-    //   null,
-    //   null,
-    //   null
-    // ];
-
-    //var buffs = [];
-
   var createCharacter = function(image, currHP, maxHP, currCharge, maxCharge) {
     return {
-      image: image,
-      currHP: currHP,
-      maxHP: maxHP,
+      image:      image,
+      currHP:     currHP,
+      maxHP:      maxHP,
       currCharge: currCharge,
-      maxCharge: maxCharge,
-      skills: [null, null, null, null],
-      buffs: []
+      maxCharge:  maxCharge,
+      skills:     [null, null, null, null],
+      buffs:      []
     };
   };
   var createSkill = function(name, image, cooldown, turns, time) {
     return {
-      name: name,
-      image: image,
+      name:     name,
+      image:    image,
       cooldown: cooldown,
-      turns: turns,
-      time: time,
+      turns:    turns,
+      time:     time,
     };
   };
   var createBuff = function(owner, image, turns) {
@@ -359,13 +342,13 @@
 
   var createEnemy = function(image, currHP, maxHP, currCharge, maxCharge, mode) {
     return {
-      image: image,
-      currHP: currHP,
-      maxHP: maxHP,
+      image:      image,
+      currHP:     currHP,
+      maxHP:      maxHP,
       currCharge: currCharge,
-      maxCharge: maxCharge,
-      mode: mode,
-      debuffs: []
+      maxCharge:  maxCharge,
+      mode:       mode,
+      debuffs:    []
     };
   };
 
@@ -373,46 +356,48 @@
     return {
       owner: owner,
       image: image,
-      time: time
+      time:  time
     };
   };
   var createSummon = function(image, cooldown) {
     return {
-      image: image,
+      image:    image,
       cooldown: cooldown
     };
   };
+
   var questImageURLs = {};
-
-  var events = [];
-
+  var events         = [];
 
   var createEvent = function(url) {
-    var bosses = [];
-    var bossID = null;
+    var bosses    = [];
+    var bossID    = null;
     var currency1 = null;
     var currency2 = null;
     if (url.indexOf('teamraid') !== -1) {
       currency1 = '10022';
-      bossID = '7139';
+      bossID    = '7139';
+
       bosses.push({
-        'image': eyeIcon,
-        'id': '31',
-        'ap': 25,
-        'currency1': 0,
-        'currency2': 0,
-        'hasAP': false,
+        'image':       eyeIcon,
+        'id':          '31',
+        'ap':          25,
+        'currency1':   0,
+        'currency2':   0,
+        'hasAP':       false,
         'hasCurrency': true
       });
+
       bosses.push({
-        'image': dogeIcon,
-        'id': '41',
-        'ap': 30,
-        'currency1': 2,
-        'currency2': 0,
-        'hasAP': false,
+        'image':       dogeIcon,
+        'id':          '41',
+        'ap':          30,
+        'currency1':   2,
+        'currency2':   0,
+        'hasAP':       false,
         'hasCurrency': false
       });
+
       bosses.push({
         'image': dogeIcon,
         'id': '51',
@@ -439,9 +424,7 @@
         raidList.sort(sortByDifficulty);
       }
       for (var i = 0; i < raidList.length; i++) {
-        // if(Options.Get(raidList[i])) {
         currRaidList.push(raidList[i]);
-        // }
       }
       Storage.GetMultiple(['quests'], function(response) {
         if (response['quests'] !== undefined) {
@@ -449,7 +432,6 @@
           if (response['quests']['301061'] == undefined) {
             for (var key in remainingQuests) {
               if (response['quests'][key] == undefined) {
-                //response['quests'][key] = remainingQuests[key];
                 if (!Options.Get('isMagFest')) {
                   response['quests'][key] = raidInfo[key].max;
                 } else {
@@ -460,12 +442,9 @@
             modified = true;
           }
 
-
-
           for (var i = 0; i < raidList.length; i++) {
             setRemainingRaids(raidList[i], response['quests'][raidList[i]]);
           }
-          //remainingQuests = response['quests'].dailies;
           if (modified) {
             saveRemainingRaids();
           }
@@ -505,10 +484,6 @@
       for (var i = 0; i < raidList.length; i++) {
         Options.Get(raidList[i], function(id, value) {
           setRemainingJquery(id);
-          // Message.PostAll({'hideObject': {
-          //     'id': '#daily-raid-' + id,
-          //     'value': !value
-          //   }});
         });
       }
       for (var i = 0; i < raidList.length; i++) {
@@ -531,7 +506,7 @@
             for (var i = 0; i < events.length; i++) {
               if (events[i].currency1 === id) {
                 Message.PostAll({'setText': {
-                  'id': '#event-item-' + i,
+                  'id':   '#event-item-' + i,
                   'value': num
                 }});
                 for (var j = 0; j < events[i].bosses.length; j++) {
@@ -620,7 +595,7 @@
           'index': i
         }});
       }
-      //setQuestsJQuery();
+
       for (var i = 0; i < events.length; i++) {
         response.push({'setText': {
           'id': '#event-item-' + i,
@@ -655,7 +630,7 @@
       saveRemainingRaids();
     },
     CheckDailyRaid: function(json, url) {
-      id = url.substring(url.lastIndexOf('/') + 1, url.indexOf('?'));
+      var id = url.substring(url.lastIndexOf('/') + 1, url.indexOf('?'));
       if (remainingQuests[id] !== undefined) {
         if (json.result === 'ok') {
           setRemainingRaids(id, parseInt(json.limited_count));
@@ -667,6 +642,7 @@
     },
     CreateQuest: function(json, payload, devID) {
       if (json.result !== undefined && json.result === 'ok') {
+        // TODO: Why is this a global? Who's using it?
         quest = createQuest(json.raid_id, '#raid/', devID);
         var id = '' + payload.quest_id;
         if (id !== undefined) {
@@ -716,6 +692,7 @@
     },
     CompleteQuest: function(url) {
       var id = url.substring(url.lastIndexOf('/') + 1, url.indexOf('?'));
+
       if (quest !== null) {
         //console.log(quest.id);
       }
@@ -771,109 +748,6 @@
         currQuest.devIDs.push(devID);
       }
       setQuestsJQuery();
-      // if(json.player !== undefined) {
-      //   for(var i = 0; i < 6; i++) {
-      //     if(i < json.player.number) {
-      //       var character = json.player.param[i];
-      //       var image;
-      //       if(i !== 0) {
-      //         image = characterImageURL + character.pid_image + '.jpg';
-      //       } else {
-      //         image = mainCharacterImageURL + character.pid_image + '.jpg';
-      //       }
-      //       if(currQuest.characters[i] === null) {
-      //         currQuest.characters[i] = createCharacter(image, parseInt(character.hp), parseInt(character.hpmax), parseInt(character.recast), parseInt(character.recastmax));
-      //       } else {
-      //         currQuest.characters[i].image = image;
-      //         currQuest.characters[i].currHP = parseInt(character.hp);
-      //         currQuest.characters[i].maxHP = parseInt(character.hpmax);
-      //         currQuest.characters[i].currCharge = parseInt(character.recast);
-      //         currQuest.characters[i].maxCharge = parseInt(character.recastmax);
-      //       }
-      //     } else {
-      //       currQuest.characters[i] = null;
-      //     }
-      //   }
-      // }
-      // if(json.ability !== undefined) {
-      //   for(var i = 0; i < 4; i++) {
-      //     if(json.ability[(i + 1)] !== undefined) {
-      //       var pos = json.ability[(i + 1)].pos;
-      //       for(var j = 0; j < 4; j++) {
-      //         var skill = json.ability[(i + 1)].list[(j + 1)];
-      //         if(skill !== undefined) {
-      //           image = skillImageURL + skill[0].class.substring(11, skill[0].class.indexOf(' ')) + skillImageClosingURL;
-      //           var turns = parseInt(skill[0].duration) || null;
-      //           var time = parseInt(skill[0]['duration-second']) || null;
-      //           if(currQuest.characters[pos].skills[j] === null) {
-      //             currQuest.characters[pos].skills[j] = createSkill(skill[0]['ability-name'], image, parseInt(skill[0]['ability-recast']), turns, time);
-      //           } else {
-      //             currQuest.characters[pos].skills[j].name = skill[0]['ability-name'];
-      //             currQuest.characters[pos].skills[j].image = image;
-      //             currQuest.characters[pos].skills[j].cooldown = parseInt(skill[0]['ability-recast']);
-      //             currQuest.characters[pos].skills[j].turns = turns;
-      //             currQuest.characters[pos].skills[j].time = time;
-      //           }
-      //         } else {
-      //           currQuest.characters[pos].skills[j] = null;
-      //         }
-      //       }
-      //     }
-      //   }
-      // }
-      // if(json.formation !== undefined) {
-      //   currQuest.formation = [];
-      //   for(var i = 0; i < json.formation.length; i++) {
-      //     currQuest.formation.push(parseInt(json.formation[i]));
-      //   }
-      // }
-      // if(json.boss !== undefined) {
-      //   for(var i = 0; i < 3; i++) {
-      //     if(i < json.boss.number) {
-      //       var boss = json.boss.param[i];
-      //       var image = enemyImageURL + boss.cjs.substring(boss.cjs.lastIndexOf('_') + 1) + '.png';
-      //       if(currQuest.enemies[i] === null || currQuest.enemies[i].image !== image) {
-      //         currQuest.enemies[i] = createEnemy(image, parseInt(boss.hp), parseInt(boss.hpmax), parseInt(boss.recastmax), parseInt(boss.recast), parseInt(boss.modeguage));
-      //         if(boss.recastmax === 99999) {
-      //           currQuest.enemies[i].currCharge = 0;
-      //           currQuest.enemies[i].maxCharge = 0;
-      //         }
-      //         if(boss.modeflag === 0) {
-      //           currQuest.enemies[i].mode = null;
-      //         }
-      //       }
-      //     } else {
-      //       currQuest.enemies[i] = null;
-      //     }
-      //   }
-      // }
-      // if(json.summon !== undefined) {
-      //   for(var i = 0; i < 5; i++) {
-      //     var summon = json.summon[i];
-      //     if(summon.id !== '') {
-      //       var image = summonImageURL + summon.id + '.jpg';
-      //       if(currQuest.summons[i] === null) {
-      //         currQuest.summons[i] = createSummon(image, parseInt(summon.recast));
-      //       } else {
-      //         currQuest.summons[i].image = image;
-      //         currQuest.summons[i].cooldown = parseInt(summon.recast);
-      //       }
-      //     } else {
-      //       currQuest.summons[i] = null;
-      //     }
-      //   }
-      // }
-      // if(json.supporter !== undefined) {
-      //   var summon = json.supporter;
-      //   var image = summonImageURL + summon.id + '.jpg';
-      //   if(currQuest.summons[5] === null) {
-      //     currQuest.summons[5] = createSummon(image, parseInt(summon.recast));
-      //   } else {
-      //     currQuest.summons[5].image = image;
-      //     currQuest.summons[5].cooldown = parseInt(summon.recast);
-      //   }
-      // }
-      // setBattleJQuery(currQuest);
     },
     BattleAction: function(json, payload, devID) {
       if (json.popup !== undefined) {
@@ -894,51 +768,9 @@
       if (currQuest.devIDs.indexOf(devID) === -1) {
         currQuest.devIDs.push(devID);
       }
-      // //is_event
-      // //is_event_quest
-      // if(json.status !== undefined) {
-      //   for(var i = 0; i < 4; i++) {
-      //     if(json.status.ability[(i + 1)] !== undefined) {
-      //       var pos = json.status.ability[(i + 1)].pos;
-      //       for(var j = 0; j < 4; j++) {
-      //         var skill = json.status.ability[(i + 1)].list[(j + 1)];
-      //         if(skill !== undefined) {
-      //           image = skillImageURL + skill[0].class.substring(11, skill[0].class.indexOf(' ')) + skillImageClosingURL;
-      //           var turns = parseInt(skill[0].duration) || null;
-      //           var time = parseInt(skill[0]['duration-second']) || null;
-      //           if(currQuest.characters[pos].skills[j] === null) {
-      //             currQuest.characters[pos].skills[j] = createSkill(skill[0]['ability-name'], image, parseInt(skill[0]['ability-recast']), turns, time);
-      //           } else {
-      //             currQuest.characters[pos].skills[j].name = skill[0]['ability-name'];
-      //             currQuest.characters[pos].skills[j].image = image;
-      //             currQuest.characters[pos].skills[j].cooldown = parseInt(skill[0]['ability-recast']);
-      //             currQuest.characters[pos].skills[j].turns = turns;
-      //             currQuest.characters[pos].skills[j].time = time;
-      //           }
-      //         } else {
-      //           currQuest.characters[pos].skills[j] = null;
-      //         }
-      //       }
-      //     }
-      //   }
-      //   for(var i = 0; i < 5; i++) {
-      //     var cooldown = json.status.summon.recast[i];
-      //     if(cooldown !== null) {
-      //       currQuest.summons[i].cooldown = parseInt(cooldown);
-      //     } else {
-      //       currQuest.summons[i] = null;
-      //     }
-      //   }
-      //   currQuest.summons[5].cooldown = parseInt(json.status.supporter.recast);
-      // }
+
       var refresh = false;
       for (var i = 0; i < json.scenario.length; i++) {
-        // if(json.scenario[i].cmd === 'finished') {
-        //   currQuest.url = currQuest.url.replace('raid', 'result');
-        //   if(Options.Get('skip')) {
-        //     Message.Post(devID, {'openURL': currQuest.url + currQuest.id});
-        //   }
-        // }
         if (json.scenario[i].cmd === 'win') {
           currQuest.id = '' + json.scenario[i].raid_id;
           if (json.scenario[i].is_last_raid) {
@@ -958,41 +790,9 @@
           refresh = true;
         }
       }
-      if (refresh)
-      {
-        //Message.Post(devID, {'refresh': true});
+      if (refresh) {
         Message.Post(devID, {'openURL': currQuest.url + currQuest.id});
       }
-      //setQuestsJQuery();
-      //setBattleJQuery(currQuest);
-
-      // if(json.scenario[0].cmd === 'ability') {
-      //   var name = scenario[0].name;
-      //   for(var i = 0; i < characters.length; i++) {
-      //     if(characters[i] !== null) {
-      //       for(var j = 0; j < characters[i].skills.length; j++) {
-      //         var skill = characters[i].skills[j];
-      //         if(skill.name === name) {
-      //           var targets = [];
-      //           for(var k = 1; k < json.scenario.length; k++) {
-      //             if(json.scenario[k].cmd === 'message') {
-      //               if(json.scenario[k].to === 'boss') {
-      //                 for(var l = 0; l < json.scenario[k].list.length; l++) {
-      //                   if(json.scenario[k].list[l].miss === undefined || json.scenario[k].list[l].miss !== -1) {
-      //                   }
-      //                 }
-      //               }
-      //             }
-      //           }
-      //           if(skill.turns !== null) {
-      //           }
-      //           if(skill.time !== null) {
-      //           }
-      //         }
-      //       }
-      //     }
-      //   }
-      // }
     },
     SetCurrentQuest: function(json) {
       if (json.progress_quest_info !== undefined) {
@@ -1058,26 +858,23 @@
       }
     }
   };
-  // var parseRoomID = function(url) {
-  //   return url.substring(url.indexOf('data/') + 5, url.indexOf('/1.json') - 1);
-  // }
 
   var setQuestsJQuery = function() {
     var image;
     var url;
     if (quest !== null) {
       image = quest.image;
-      url = quest.url + quest.id;
+      url   = quest.url + quest.id;
     } else {
       image = blankIcon;
-      url = '';
+      url   = '';
     }
     Message.PostAll({'setImage': {
-      'id': '#quest-image-curr',
+      'id':    '#quest-image-curr',
       'value': image
     }});
     Message.PostAll({'setClick': {
-      'id': '#quest-image-curr',
+      'id':    '#quest-image-curr',
       'value': url
     }});
     for (var i = 0; i < 4; i++) {
@@ -1098,9 +895,10 @@
       }});
     }
   };
-  var hideBattleJQuery = function(currQuest, isHidden) {
 
+  var hideBattleJQuery = function(currQuest, isHidden) {
   };
+
   var setBattleJQuery = function(currQuest) {
     var devID;
     for (var k = 0; k < currQuest.devIDs.length; k++) {
@@ -1252,22 +1050,6 @@
         if (!found) {
           completedRaidList.push(id);
         }
-
-        // if(newIndex !== completedRaidList.length) {
-        //   Message.PostAll({'beforeObject': {
-        //     'id': '#daily-raid-' + id,
-        //     'target': '#daily-raid-' + completedRaidList[newIndex]
-        //   }});
-        //   // $completedRaidList.find('#daily-raid-' + completedRaidList[newIndex]).before($dailyRaidList.find('#daily-raid-' + id));
-
-        // } else {
-        //   Message.PostAll({'appendObject': {
-        //     'id': '#daily-raid-' + id,
-        //     'target': '#completed-raid-list'
-        //   }});
-        //   // $completedRaidList.append($dailyRaidList.find('#daily-raid-' + id));
-        //   completedRaidList.push(id);
-        // }
       } else if (remainingQuests[id] !== amount && amount > 0 && completedRaidList.indexOf(id) !== -1) {
         var currIndex = completedRaidList.indexOf(id);
         completedRaidList.splice(currIndex, 1);
@@ -1290,36 +1072,9 @@
         if (!found) {
           currRaidList.push(id);
         }
-        // currRaidList.splice(newIndex, 0, id);
-        // currRaidList.push(id);
-        // if(options.Get(id)) {
-        //   var found = false;
-        //   while(newIndex !== currRaidList.length) {
-        //     if(Options.Get(raidList[newIndex])) {
-        //       Message.PostAll({'beforeObject': {
-        //         'id': '#daily-raid-' + id,
-        //         'target': '#daily-raid-' + currRaidList[newIndex]
-        //       }});
-        //       found = true;
-        //       break;
-        //       }
-        //       else  {
-        //         newIndex++;
-        //       }
-        //   }
-        //   if(!found) {
-        //     Message.PostAll({'appendObject': {
-        //       'id': '#daily-raid-' + id,
-        //       'target': '#daily-raid-list'
-        //     }});
-        //     currRaidList.push(id);
-        //   }
-        // }
       }
       remainingQuests[id] = amount;
       setRemainingJquery(id);
-
-
     }
   };
 
@@ -1329,13 +1084,11 @@
         'id': '#remaining-' + id,
         'value': remainingQuests[id] + '/' + raidInfo[id].max
       }});
-      // $raidsPanel.find('#remaining-' + id).first().text(amount + '/' + raidInfo[id].max);
     } else {
       Message.PostAll({'setText': {
         'id': '#remaining-' + id,
         'value': remainingQuests[id] + '/' + (raidInfo[id].max + raidInfo[id].magDelta)
       }});
-      // $raidsPanel.find('#remaining-' + id).first().text(amount + '/' + (raidInfo[id].max + raidInfo[id].magDelta));
     }
     if (Options.Get(id)) {
       Message.PostAll({'hideObject': {
@@ -1398,56 +1151,8 @@
         'target': '#completed-raid-list'
       }});
       return;
-
     }
-    // if(Options.Get(id)) {
-    //   Message.PostAll({'hideObject': {
-    //     'id': '#daily-raid-' + id,
-    //     'value': false
-    //   }});
-    // } else {
-    //   Message.PostAll({'hideObject': {
-    //     'id': '#daily-raid-' + id,
-    //     'value': true
-    //   }});
-    // }
   };
-
-    //         {
-    // 	"300011": 0,
-    // 	"300021": 0,
-    // 	"300031": 0,
-    // 	"300041": 0,
-    // 	"300051": 0,
-    // 	"300061": 0,
-    // 	"300071": 0,
-    // 	"300081": 0,
-    // 	"300091": 0,
-    // 	"300101": 0,
-    // 	"300111": 0,
-    // 	"300121": 0,
-    // 	"300141": 0,
-    // 	"300151": 0,
-    // 	"300161": 0,
-    // 	"300171": 0,
-    // 	"300181": 0,
-    // 	"300191": 0,
-    // 	"300201": 0,
-    // 	"300211": 0,
-    // 	"300221": 0,
-    // 	"300231": 0,
-    // 	"300241": 0,
-    // 	"300251": 3,
-    // 	"300261": 3,
-    // 	"300271": 0,
-    // 	"300281": 3,
-    // 	"300441": 2,
-    // 	"300491": 2,
-    // 	"300511": 2,
-    // 	"300531": 2,
-    // 	"300561": 2,
-    // 	"300581": 2
-    // }
 
   var saveRemainingRaids = function() {
     Storage.Set('quests', remainingQuests);
@@ -1494,7 +1199,6 @@
         }});
       }
     }
-
   };
 
   var copy =  function(str) {

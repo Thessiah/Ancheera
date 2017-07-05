@@ -1,9 +1,7 @@
 (function() {
   var cache = {};
   window.Storage = {
-
     Set: function(key, value) {
-      //chrome.storage.sync.set({[key]: value});
       chrome.storage.local.set({[key]: value});
     },
     SetLocal: function(key, value) {

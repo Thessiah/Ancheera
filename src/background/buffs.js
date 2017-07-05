@@ -18,14 +18,11 @@
 
   var buffs      = [];
   var buffTimers = [];
-  // var $buffs = $('#buffs');
-  // var $buffTimes = $buffs.find('.item-count');
-  // var $buffIcons = $buffs.find('.item-img');
   window.Buffs = {
     Initialize: function() {
       Storage.Get(['buffs'], function(response) {
         if (response['buffs'] !== undefined) {
-          buffs = response['buffs'];
+          buffs       = response['buffs'];
           var updated = false;
           for (var i = 0; i < buffs.length; i++) {
             if (Date.now() < buffs[i].endTime) {
@@ -57,11 +54,11 @@
     },
     StartBuff: function(json, payload) {
       if (json.success) {
-        var id = payload.support_id;
-        var level = payload.support_level;
-        var duration = parseInt(payload.support_time);
+        var id        = payload.support_id;
+        var level     = payload.support_level;
+        var duration  = parseInt(payload.support_time);
         var startTime = Date.now();
-        var index = buffs.length;
+        var index     = buffs.length;
         buffs.push(newBuff(id, level, startTime + duration * 3600000));
         startBuffTimer(buffs[index]);
         saveBuffs();
@@ -73,26 +70,6 @@
   var setBuff = function(index) {
     Message.PostAll(getJquery('text', index));
     Message.PostAll(getJquery('image', index));
-    //var id = '#buffs-' + index + '-';
-    // if(buffs.length > index) {
-    //   Message.PostAll({'setText':{
-    //     'id': id + 'time',
-    //     'value': Time.ParseTime(Math.abs(buffs[index].endTime - Date.now()), 'h').replace(',','')
-    //   }});
-    //   Message.PostAll({'setImage':{
-    //     'id': id + 'image',
-    //     'value': supportURL + buffInfo[buffs[index].id] + '_' + buffs[index].level + '.png'
-    //   }});
-    // } else {
-    //   Message.PostAll({'setText':{
-    //     'id': id + 'time',
-    //     'value': ''
-    //   }});
-    //   Message.PostAll({'setImage':{
-    //     'id': id + 'image',
-    //     'value': '../../assets/images/icons/handtinytrans.gif'
-    //   }});
-    // }
   };
 
   var getJquery = function(type, index) {
@@ -100,24 +77,24 @@
     if (buffs.length > index) {
       if (type === 'text') {
         return {'setText':{
-          'id': id + 'time',
+          'id':    id + 'time',
           'value': Time.ParseTime(Math.abs(buffs[index].endTime - Date.now()), 'h').replace(',','')
         }};
       } else if (type === 'image') {
         return {'setImage':{
-          'id': id + 'image',
+          'id':    id + 'image',
           'value': supportURL + buffInfo[buffs[index].id] + '_' + buffs[index].level + '.png'
         }};
       }
     } else {
       if (type === 'text') {
         return {'setText':{
-          'id': id + 'time',
+          'id':    id + 'time',
           'value': ''
         }};
       } else if (type === 'image') {
         return {'setImage':{
-          'id': id + 'image',
+          'id':    id + 'image',
           'value': '../../assets/images/icons/handtinytrans.gif'
         }};
       }

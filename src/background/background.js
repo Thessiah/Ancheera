@@ -80,54 +80,8 @@
     });
   });
 
-  // window.Message = {
-  //   SetDevText: function(id, text) {
-  //     messageDevTools({'setText': {
-  //       id: id,
-  //       text: text
-  //     }});
-  //   },
-  //   SetDevImage: function(id, src){
-  //     messageDevTools({'setImage': {
-  //       id: id,
-  //       src: src
-  //     }});
-  //   }
-  // }
-
-
   var responseList = {};
-  //var repeat = "";
   chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
-    // if(message.pageLoad) {
-    //   //chrome.storage.sync.set({'test': true});
-    //   pageLoaded = true;
-    //   chrome.tabs.query({active: true, currentWindow: true}, function(tabs){
-    //     if(tabs.length > 0) {
-    //       chrome.tabs.sendMessage(tabs[0].id, {pageLoad: tabs[0].url});
-    //       sendResponse({pageLoad: tabs[0].url});
-    //       var index = tabs[0].url.indexOf('#quest/supporter/');
-    //       console.log('wut' + index);
-    //       if(index !== -1) {
-    //         Message.PostAll({'setClick': {
-    //           'id': '#quest-repeat',
-    //           'value': tabs[0].url.splice(index)
-    //         }});
-    //       } else {
-    //         index = tabs[0].url.indexOf('#event/');
-    //         console.log('hey' + index);
-    //         if(index !== -1 && tabs[0].url.indexOf('/supporter/') !== -1)
-    //         {
-    //           Message.PostAll({'setClick': {
-    //           'id': '#quest-repeat',
-    //           'value': tabs[0].url.splice(index)
-    //         }});
-    //         }
-    //       }
-    //     }
-    //   });
-    //   return true;
-    // }
     if (message.setOption) {
       Options.Set(message.setOption.id, message.setOption.value);
     }
@@ -171,7 +125,6 @@
     }
   });
 
-
   chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
     if (tab.url.indexOf('gbf.game.mbga.jp') !== -1) {
       if (currURL !== tab.url) {
@@ -181,11 +134,8 @@
       if (currURL === tab.url && pageLoaded) {
         chrome.tabs.sendMessage(tabId, {pageUpdate: tab.url});
       }
-
     }
   });
-
-
 
   var connections = {};
 
@@ -238,11 +188,6 @@
       }
       if (message.openURL) {
         chrome.tabs.update(message.id, {'url': message.openURL});
-        // chrome.tabs.query({active: true, currentWindow: true}, function (tabs) {
-        //   if(tabs.length > 0) {
-        //     chrome.tabs.update(tabs[0].id, {'url': message.openURL});
-        //   }
-        // });
         return;
       }
       if (message.getPlanner) {
@@ -278,7 +223,6 @@
       if (message.debug) {
         Message.Notify('hey', 'its me ur brother', 'apNotifications');
         APBP.SetMax();
-        // Dailies.Reset();
       }
       if (message.weaponBuild) {
         Supplies.BuildWeapon(message.id, message.weaponBuild);
@@ -500,13 +444,13 @@
           Profile.BuyUncap();
         }
         if (message.request.url.indexOf('weapon/weapon_material') !== -1 ||
-        message.request.url.indexOf('summon/summon_material') !== -1 ||
-        message.request.url.indexOf('npc/npc_material') !== -1) {
+            message.request.url.indexOf('summon/summon_material') !== -1 ||
+            message.request.url.indexOf('npc/npc_material') !== -1) {
           Profile.SetUpgrade(message.request.response, message.request.url);
         }
         if (message.request.url.indexOf('enhancement_weapon/enhancement') !== -1 ||
-        message.request.url.indexOf('enhancement_summon/enhancement') !== -1 ||
-        message.request.url.indexOf('enhancement_npc/enhancement') !== -1) {
+            message.request.url.indexOf('enhancement_summon/enhancement') !== -1 ||
+            message.request.url.indexOf('enhancement_npc/enhancement') !== -1) {
           Profile.Upgrade(message.request.response);
         }
 
@@ -515,13 +459,6 @@
         }
         if (message.request.url.indexOf('/sell_article/execute') !== -1) {
           Supplies.SellCoop(message.request.response, message.request.payload);
-          //Supplies.SellCoop(JSON.stringify(request.request.postData).replace(/:/g, '').replace(/,/g, '').split('\\\"'));
-          // Profile.SellCoop(request.request.postData);
-          //Profile.SellCoop(JSON.stringify(request.request.postData).replace(/:/g, '').replace(/,/g, '').split('\\\"'));
-          //Message.ConsoleLog(request.request.text.postData.split('\"'));
-          // request.getContent(function(responseBody) {
-          //   Profile.SetShop(message.request.response);
-          // })
         }
         if (message.request.url.indexOf('/raid/start.json?_=') !== -1 || message.request.url.indexOf('/multiraid/start.json?_=') !== -1) {
           Quest.StartBattle(message.request.response, message.id);
@@ -552,7 +489,7 @@
       port.onMessage.removeListener(extensionListener);
 
       var tabs = Object.keys(connections);
-      for (var i=0, len=tabs.length; i < len; i++) {
+      for (var i = 0, len = tabs.length; i < len; i++) {
         if (connections[tabs[i]] == port) {
           delete connections[tabs[i]];
           break;
@@ -560,24 +497,6 @@
       }
     });
   });
-
-  // // Receive message from content script and relay to the devTools page for the
-  // // current tab
-  // chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
-  //     // Messages from content scripts should have sender.tab set
-  //     if (sender.tab) {
-  //       var tabId = sender.tab.id;
-  //       if (tabId in connections) {
-  //         connections[tabId].postMessage(request);
-  //       } else {
-  //         console.log("Tab not found in connection list.");
-  //       }
-  //     } else {
-  //       console.log("sender.tab not defined.");
-  //     }
-
-  //     return true;
-  // });
 
   window.Message = {
     PostAll: function(message) {
@@ -621,8 +540,8 @@
           theme += '2';
         }
         chrome.notifications.create({
-          type: 'basic',
-          title: title,
+          type:   'basic',
+          title:   title,
           message: message,
           iconUrl: 'src/assets/images/' + theme + '.png'
         });

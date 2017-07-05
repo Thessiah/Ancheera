@@ -11,22 +11,7 @@
     '30033': 1
   };
   var coopNum = 3;
-
-  //var defenseRank = 1;
-  var isHL = false;
-  // var defenseShop = {
-  //   '1356': 5,
-  //   '1357': 5,
-  //   '1368': 1,
-  //   '1381': 1
-  // }
-  // var defenseMax = {
-  //   '1356': 5,
-  //   '1357': 5,
-  //   '1368': 1,
-  //   '1381': 1
-  // }
-
+  var isHL    = false;
   var renown = {
     '1': 0,
     '2': 0,
@@ -53,12 +38,6 @@
       '3': 500,
       '4': 500
     },
-    // 'defense' :{
-    //   '1356': 5,
-    //   '1357': 5,
-    //   '1368': 1,
-    //   '1381': 1
-    // },
     'moons': {
       '30031': 1,
       '30032': 1,
@@ -98,12 +77,6 @@
       '3': 0,
       '4': 0
     },
-    // 'defense': {
-    //   '1356': 5,
-    //   '1357': 5,
-    //   '1368': 1,
-    //   '1381': 1
-    // },
     'moons': {
       '30031': 1,
       '30032': 1,
@@ -153,56 +126,6 @@
     '501011': true,
     '501021': true
   };
-    // var $dailiesPanel = $('#dailies-panel');
-    // var $weekliesPanel = $('#weeklies-panel');
-    // var $monthliesPanel = $('#monthlies-panel');
-
-    // var $coopQuests = $dailiesPanel.find('.coop-quest');
-    // var $coopProgresses = $dailiesPanel.find('.coop-progress');
-    // var $drawCount = $dailiesPanel.find('#draw-count');
-    // var $tweetStatus = $dailiesPanel.find('#tweet-status');
-
-    // var $defensePanel = $weekliesPanel.find('#defense-weekly-collapse');
-    // var $renownPanel = $weekliesPanel.find('#renown-weekly-collapse');
-
-    // var $moonPanel = $monthliesPanel.find('#moon-monthly-collapse');
-
-    // var $miscellaneousCollapse = $('#misc-daily-collapse');
-    // var $coopCollapse = $('#coop-daily-collapse');
-    // var $renownCollapse = $('#renown-weekly-collapse');
-    // var $defenseCollapse = $('#defense-weekly-collapse');
-    // var $moonCollapse = $('#moon-monthly-collapse');
-
-    // var $prestige = $('#weekly-prestige');
-    // var $defenseThree = $('#defense-three');
-    // var $defenseTwo = $('#defense-two');
-
-    // var hidePrestige = function(rank) {
-    //   if(rank === null || rank < 101) {
-    //     isHL = false;
-    //     //$prestige.hide();
-    //   } else {
-    //     isHL = true;
-    //     //$prestige.show();
-    //   }
-    //   checkRenown();
-    // }
-
-    // var hideDefenseShop = function(rank) {
-    //   defenseRank = rank;
-    //   if(rank === null || rank < 3) {
-    //     //$defenseThree.hide();
-    //   } else if(rank === 3) {
-    //     //$defenseThree.show();
-    //   }
-    //   if(rank === null || rank < 2) {
-    //     //$defenseTwo.hide();
-    //   } else if(rank >= 2) {
-    //     //$defenseTwo.show();
-    //   }
-    //   checkDefenseShop();
-    // }
-
 
   window.Dailies = {
     Initialize: function(callback) {
@@ -301,12 +224,8 @@
           callback();
         }
       });
-      // Profile.Get('defenseRank', hideDefenseShop);
     },
     InitializeDev: function() {
-      // Object.keys(dailies.renown).forEach(function(key) {
-      //       array.push(['renown', key], dailies.renown[key]);
-      //   });
       increaseRenown(Options.Get('increasedRenownLimit'));
       Message.PostAll({'hideObject': {
         'id': '#dailies-freeSingleRoll-Panel',
@@ -576,12 +495,7 @@
       }
       if (found) {
         var distinctions = Object.keys(dailies.distinctions);
-        // var start = 0;
-        // if(!pre) {
-        //   start = distinctions.indexOf(ids[0]);
-        // }
-        // var end = distinctions.length;
-        var array = [];
+        var array        = [];
         for (var i = 0; i < distinctions.length; i++) {
           var id = distinctions[i];
           if (parseInt(id) >= first && parseInt(id) <= last) {
@@ -602,38 +516,6 @@
         setDailies([['primarchs'], dailies['primarchs'] - 1]);
       }
     }
-    // PurchaseDefense: function(json) {
-    //   // var id = json.article.item_ids[0];
-    //   // if(id === '30031' || id === '30032' || id === '30033') {
-    //   //   if(setMoon(id, 0)) {
-    //   //     saveMoons();
-    //   //   }
-    //   // }
-    // },
-    // CheckDefense: function(json, url) {
-    //   var id;
-    //   var amounts;
-    //   switch(url.substring(url.lastIndexOf('/') + 1, url.indexOf('?'))) {
-    //     case '1':
-    //       amounts = {'1356': 0, '1357': 0};
-    //       break;
-    //     case '2':
-    //       amounts = {'1368': 0};
-    //       break;
-    //     case '3':
-    //       amounts = {'1381': 0};
-    //       break;
-    //   }
-    //   for(var i = 0; i < json.list.length; i++) {
-    //     id = json.list[i].id;
-    //     if(amounts[id] !== undefined) {
-    //       amounts[id] = json.list[i].remain_number;
-    //     }
-    //   }
-    //   Object.keys(amounts).forEach(function(key) {
-    //     setDailies([['defense', key], amounts[key]]);
-    //   });
-    // },
   };
   var setDailies = function(array, override) {//category, value) {
     var category;
@@ -761,7 +643,7 @@
         str += '/1';
       }
     }
-    //console.log('setting text: ' + id + ' ' + str);
+
     return {'setText': {
       'id':    id,
       'value': str

@@ -32,7 +32,7 @@
   var nextUncap = null;
   var nextCost = 0;
   var nextUpgrade = null;
-  
+
   window.Profile = {
     Initialize: function(callback) {
       for (var i = 0; i < restoreIDs.length; i++) {
@@ -296,17 +296,17 @@
       setProfile({'lupi': profile['lupi'] + parseInt(amt)});
     },
     CheckWeaponSummon: function(json) {
-      var tuples = {};
-      tuples['weaponMax'] = parseInt(json.weapon_count.max_count);
+      var tuples             = {};
+      tuples['weaponMax']    = parseInt(json.weapon_count.max_count);
       tuples['weaponNumber'] = json.weapon_count.current_count;
-      tuples['summonMax'] = parseInt(json.summon_count.max_count);
+      tuples['summonMax']    = parseInt(json.summon_count.max_count);
       tuples['summonNumber'] = json.summon_count.current_count;
       setProfile(tuples);
     },
     GetLoot: function(json) {
       var item;
       var tuples = {};
-      var list = json.rewards.reward_list;
+      var list   = json.rewards.reward_list;
       for (var property in list) {
         if (list.hasOwnProperty(property)) {
           for (var i = 0; i < list[property].length; i++) {
@@ -391,7 +391,7 @@
         category = 'summonNumber';
       }
       nextUpgrade = {
-        'amount': json.material_list.length,
+        'amount':   json.material_list.length,
         'category': category
       };
     },
@@ -513,15 +513,16 @@
         value = 0;
       }
       return {setBar : {
-        'id': '#profile-' + category,
+        'id':    '#profile-' + category,
         'value': value
       }};
     }
     return {setText : {
-      'id': '#profile-' + category,
+      'id':    '#profile-' + category,
       'value': value
     }};
   };
+  
   function numberWithCommas(x) {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
   }

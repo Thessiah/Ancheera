@@ -1,24 +1,24 @@
 (function() {
   var options = {
-    ougiRefresh: false,
-    skip: false,
-    skipNext: false,
-    enableNotifications: true,
-    muteNotifications: false,
-    apNotifications: true,
-    epNotifications: true,
-    dailyResetNotifications: true,
-    strikeTimeNotifications:true,
-    angelHaloNotifications: true,
+    ougiRefresh:               false,
+    skip:                      false,
+    skipNext:                  false,
+    enableNotifications:       true,
+    muteNotifications:         false,
+    apNotifications:           true,
+    epNotifications:           true,
+    dailyResetNotifications:   true,
+    strikeTimeNotifications:   true,
+    angelHaloNotifications:    true,
     defenseOrderNotifications: true,
-    isMagFest: false,
-    increasedRenownLimit: false,
-    freeSingleRoll: false,
-    primarchDaily: false,
-    sortRaidsDifficulty: false,
-    copyJapaneseName: false,
-    windowTheme: 'Anchira Day',
-    notificationTheme: 'Monkey',
+    isMagFest:                 false,
+    increasedRenownLimit:      false,
+    freeSingleRoll:            false,
+    primarchDaily:             false,
+    sortRaidsDifficulty:       false,
+    copyJapaneseName:          false,
+    windowTheme:               'Anchira Day',
+    notificationTheme:         'Monkey',
     '300011' : false,
     '300021' : false,
     '300031' : true,
@@ -100,7 +100,8 @@
     '20761' : false
   };
 
-  var hlRaids = ['300441', '300451',
+  var hlRaids = [
+    '300441', '300451',
     '300491', '300501',
     '300511', '300521',
     '300531', '300541',
@@ -108,7 +109,7 @@
     '300581', '300591',
     '300471', '301061'
   ];
-  
+
   var isHL = false;
   var responseList = {};
 
