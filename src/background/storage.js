@@ -1,12 +1,15 @@
 (function() {
   var cache = {};
+
   window.Storage = {
     Set: function(key, value) {
       chrome.storage.local.set({[key]: value});
     },
+
     SetLocal: function(key, value) {
       chrome.storage.local.set({[key]: value});
     },
+
     GetSync: function(key, sendResponse) {
       chrome.storage.sync.get(key, function(response) {
         if (chrome.runtime.lastError) {
@@ -16,6 +19,7 @@
         }
       });
     },
+
     Get: function(key, sendResponse) {
       chrome.storage.local.get(key, function(response) {
         if (chrome.runtime.lastError) {
@@ -30,6 +34,7 @@
         }
       });
     },
+
     GetMultipleSync: function(key, sendResponse) {
       chrome.storage.sync.get(key, function(response) {
         if (chrome.runtime.lastError) {
@@ -43,6 +48,7 @@
         }
       });
     },
+    
     GetMultiple: function(key, sendResponse) {
       chrome.storage.local.get(key, function(response) {
         if (chrome.runtime.lastError) {

@@ -18,6 +18,7 @@
 
   var buffs      = [];
   var buffTimers = [];
+
   window.Buffs = {
     Initialize: function() {
       Storage.Get(['buffs'], function(response) {
@@ -44,6 +45,7 @@
         }
       });
     },
+
     InitializeDev: function() {
       var response = [];
       for (var i = 0; i < 3; i++) {
@@ -52,6 +54,7 @@
       }
       return response;
     },
+    
     StartBuff: function(json, payload) {
       if (json.success) {
         var id        = payload.support_id;

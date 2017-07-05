@@ -1,20 +1,20 @@
 (function() {
   var supplies = {
     treasureHash: {},
-    recovery: {},
-    powerUp: {},
-    treasure: {},
-    raid: {},
-    material: {},
-    event: {},
-    coop: {},
-    misc: {},
-    draw: {},
-    other: {}
+    recovery:     {},
+    powerUp:      {},
+    treasure:     {},
+    raid:         {},
+    material:     {},
+    event:        {},
+    coop:         {},
+    misc:         {},
+    draw:         {},
+    other:        {}
   };
-  var responseList = {
-  };
-  var planners = {
+
+  var responseList = {};
+  var planners     = {
     current: null,
   };
 
@@ -41,16 +41,19 @@
             }
           }
         }
+
         if (callback !== undefined) {
           callback();
         }
       });
+
       Storage.GetMultiple(['planners'], function(response) {
         if (response['planners'] !== undefined) {
           planners = response['planners'].planners;
         }
       });
     },
+
     InitializeDev: function() {
       var response = [];
       var item;
@@ -69,6 +72,7 @@
           });
         }
       });
+
       var type = planners.current;
       if (type && planners[type]) {
         response.push({'setPlannerDropdowns': {type: type, build: planners[type]}});
@@ -76,6 +80,7 @@
       }
       return response;
     },
+
     Get: function(id, category, response) {
       if (response !== undefined) {
         if (responseList[category] === undefined) {
@@ -97,18 +102,21 @@
       }
       return 0;
     },
+
     Set: function(id, item_kind, amount) {
       var category = getCategory(id, item_kind);
       if (category !== undefined) {
         updateSupply(id, category, amount);
       }
     },
+
     Increment: function(id, item_kind, amount) {
       var category = getCategory(id, item_kind);
       if (category !== undefined) {
         updateSupply(id, category, supplies[category][id].count + amount);
       }
     },
+
     SetRecovery: function(json) {
       if (json !== undefined) {
         var updated = false;
@@ -128,6 +136,7 @@
         }
       }
     },
+
     SetPowerUp: function(json) {
       if (json !== undefined) {
         var updated = false;
@@ -147,6 +156,7 @@
         }
       }
     },
+
     SetTreasure: function(json) {
       if (json !== undefined) {
         var categories = ['treasure', 'raid', 'material', 'event', 'coop', 'misc'];
@@ -192,6 +202,7 @@
         }
       }
     },
+
     SetDraw: function(json) {
       if (json !== undefined) {
         var updated = false;
@@ -211,19 +222,20 @@
         }
       }
     },
+
     SetOther: function(json) {
     },
+
     GetLoot: function(json) {
       var item;
-      var updated =[];
-      var list = json.rewards.reward_list;
-      console.log(list);
+      var updated = [];
+      var list    = json.rewards.reward_list;
+
       for (var property in list) {
         if (list.hasOwnProperty(property)) {
           for (var i = 0; i < list[property].length; i++) {
-            console.log(item);
             item = list[property][i];
-            category = getCategory(item.id, item.item_kind);
+            var category = getCategory(item.id, item.item_kind);
             if (category !== undefined && incrementSupply(item.id, category, 1)) {
               if (updated.indexOf(category) === -1) {
                 updated.push(category);
@@ -233,12 +245,11 @@
         }
       }
       list = json.rewards.article_list;
-      console.log(list);
+
       for (var property in list) {
         if (list.hasOwnProperty(property)) {
-          item = list[property];
-          console.log(item);
-          category = getCategory(item.id, '' + item.kind);
+          item     = list[property];
+          var category = getCategory(item.id, '' + item.kind);
           if (category !== undefined && incrementSupply(item.id, category, item.count)) {
             if (updated.indexOf(category) === -1) {
               updated.push(category);
@@ -246,24 +257,26 @@
           }
         }
       }
+
       for (var i = 0; i < updated.length; i++) {
-        console.log(updated);
         saveSupply(updated[i]);
       }
     },
+
     GetGift: function(json) {
-      var id = json.item_id;
+      var id       = json.item_id;
       var category = getCategory(id, json.item_kind_id);
       if (category !== undefined && incrementSupply(id, category, parseInt(json.number))) {
         saveSupply(category);
       }
     },
+
     GetAllGifts: function(json) {
       var item;
       var category;
       var updated = [];
       for (var i = 0; i < json.presents.length; i++) {
-        item = json.presents[i];
+        item     = json.presents[i];
         category = getCategory(item.item_id, item.item_kind_id);
         if (category !== undefined && incrementSupply(item.item_id, category, parseInt(item.number))) {
           if (updated.indexOf(category) === -1) {
@@ -275,20 +288,22 @@
         saveSupply(updated[i]);
       }
     },
+
     PurchaseItem: function(json) {
       if (json.article.item_ids.length > 0 && json.article.is_get.result) {
-        var updated = [];
-        var id = json.article.item_ids[0];
+        var updated  = [];
+        var id       = json.article.item_ids[0];
         var category = getCategory(id, json.article.item_kind[0]);
         if (category !== undefined && updateSupply(id, category, parseInt(json.article.is_get.item_cnt) + parseInt(json.purchase_number))) {
           if (updated.indexOf(category) === -1) {
             updated.push(category);
           }
         }
+
         var article;
         var articleNumber;
         for (var i = 0; i < 4; i++) {
-          article = json.article['article' + ('' + i)];
+          article       = json.article['article' + ('' + i)];
           articleNumber = json.article['article' + ('' + i) + '_number'];
           if (article !== '' && articleNumber !== '' && article !== undefined && article.master !== undefined) {
             id = article.master.id;
@@ -305,12 +320,14 @@
         }
       }
     },
+
     UseRecovery: function(json, payload) {
       if (json.success && json.result.use_flag) {
         var id = payload.item_id.toString();
         incrementSupply(id, 'recovery', -payload.num);
       }
     },
+
     SellCoop: function(json, payload) {
       if (json.success) {
         var id = payload.item_id;
@@ -347,7 +364,7 @@
       var id;
       var category;
       for (var i = 0; i < json.treasure_id.length; i++) {
-        id = json.treasure_id[i];
+        id       = json.treasure_id[i];
         category = getCategory(id, '10');
         if (category !== undefined && updateSupply(id, category, json.num[i])) {
           if (updated.indexOf(category) === -1) {
@@ -361,12 +378,13 @@
     },
 
     BuyCasino: function(json, payload) {
-      var id = json.article.item_ids[0];
+      var id       = json.article.item_ids[0];
       var category = getCategory(id, json.article.item_kind[0]);
       if (incrementSupply(id, category, parseInt(payload.num))) {
         saveSupply();
       }
     },
+
     CheckUncapItem: function(json) {
       var updated = false;
       var item;
@@ -380,18 +398,21 @@
         saveSupply('powerUp');
       }
     },
+
     SetUncapItem: function(json) {
       nextUncap = json.item_id;
-
     },
+
     SetUncap: function(json) {
       nextUncap = null;
     },
+
     Uncap: function(json) {
       if (nextUncap !== null && nextUncap !== undefined) {
         incrementSupply(nextUncap, 'powerUp', -1);
       }
     },
+
     SetNpcUncap: function(json) {
       nextNpcUncap = [];
       var updated  = [];
@@ -404,6 +425,7 @@
           item_kind: item.item_kind.id,
           cost:      item.item_number,
         });
+
         category = getCategory(item.item_id, item.item_kind.id);
         if (category !== undefined && updateSupply(item.item_id, category, parseInt(item.item_possessed))) {
           if (updated.indexOf(category) === -1) {
@@ -411,10 +433,12 @@
           }
         }
       }
+
       for (var i = 0; i < updated.length; i++) {
         saveSupply(updated[i]);
       }
     },
+
     NpcUncap: function(json) {
       var updated = [];
       var category;
@@ -425,6 +449,7 @@
           updated.push(category);
         }
       }
+
       for (var i = 0; i < updated.length; i++) {
         saveSupply(updated[i]);
       }
@@ -518,9 +543,11 @@
       count:    parseInt(number),
       sequence: sequence,
     };
+
     if (category !== 'recovery' && category !== 'powerUp' && category !== 'draw') {
       supplies.treasureHash[id] = category;
     }
+
     var intNum = number;
     if (number > 9999) {
       intNum = 9999;
@@ -539,6 +566,7 @@
       'sequence': sequence,
       'current':  number
     }});
+    
     if (responseList[category] !== undefined && responseList[category][id] !== undefined) {
       for (var i = 0; i < responseList[category][id].length; i++) {
         responseList[category][id][i](id, intNum);

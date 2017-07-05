@@ -497,6 +497,7 @@
     });
   });
 
+// TODO: I think this is supposed to be the contents of message.js
   window.Message = {
     PostAll: function(message) {
       Object.keys(connections).forEach(function(key) {
@@ -505,6 +506,7 @@
         }
       });
     },
+
     Post: function(id, message) {
       if (connections[id] !== undefined) {
         if (message !== undefined) {
@@ -515,6 +517,7 @@
         return false;
       }
     },
+
     Notify: function(title, message, source) {
       if (Options.Get('enableNotifications') && Options.Get(source)) {
         var theme = Options.Get('notificationTheme');
@@ -546,19 +549,23 @@
         });
       }
     },
+
     OpenURL: function(url, devID) {
       chrome.runtime.sendMessage({openURL: {
         url: url
       }});
 
     },
+
     MessageBackground: function(message, sendResponse) {
     },
+
     MessageTabs: function(message, sendResponse) {
       chrome.runtime.sendMessage({tabs: message}, function(response) {
         sendResponse(response);
       });
     },
+
     ConsoleLog: function(sender, message) {
       chrome.runtime.sendMessage({consoleLog: {
         sender: sender,
