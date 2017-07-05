@@ -8,7 +8,7 @@ Please let me know if you have any questions, or if you guys manage to create a 
 
 ## Reddit Threads
 
-[Does anyone know how to use this extension?](https://www.reddit.com/r/Granblue_en/comments/5ret3l/does_anyone_know_how_to_use_this_extension)
-[I'm the dev for the Chrome extension AnCheera and I would like to clarify some stuff](https://www.reddit.com/r/Granblue_en/comments/5rj4he/im_the_dev_for_the_chrome_extension_ancheera_and)
-[AnCheera dev here; I'm probably not going to work on AnCheera anymore](https://www.reddit.com/r/Granblue_en/comments/6gu7wn/ancheera_dev_here_im_probably_not_going_to_work)
-[AnCheera Github repository is now available. Thank you all for all the support over the last year :)](https://www.reddit.com/r/Granblue_en/comments/6ifhqa/ancheera_github_repository_is_now_available_thank)
+* [Does anyone know how to use this extension?](https://www.reddit.com/r/Granblue_en/comments/5ret3l/does_anyone_know_how_to_use_this_extension)  
+* [I'm the dev for the Chrome extension AnCheera and I would like to clarify some stuff](https://www.reddit.com/r/Granblue_en/comments/5rj4he/im_the_dev_for_the_chrome_extension_ancheera_and)  
+* [AnCheera dev here; I'm probably not going to work on AnCheera anymore](https://www.reddit.com/r/Granblue_en/comments/6gu7wn/ancheera_dev_here_im_probably_not_going_to_work)  
+* [AnCheera Github repository is now available. Thank you all for all the support over the last year :)](https://www.reddit.com/r/Granblue_en/comments/6ifhqa/ancheera_github_repository_is_now_available_thank)
