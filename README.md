@@ -9,4 +9,4 @@ To install the extension, go to the Chrome App Store and add the extension to Ch
 To use AnCheera, Open the Developer Tools and select the "Ancheera" tab.
 
 ## Background Information
-Please see the HISTORY.md and DEVELOPMENT.md for background information about Ancheera.
+Please see the [History](HISTORY.md) and [Development](DEVELOPMENT.md) for background information about Ancheera.
