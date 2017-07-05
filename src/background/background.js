@@ -73,7 +73,6 @@
             Profile.Initialize();
             Buffs.Initialize();
             //Info.Initialize();
-
           });
         });
       });
@@ -233,10 +232,10 @@
       if (message.request) {
         //verify current ap/ep
         if (message.request.url.indexOf('/user/status?') !== -1 ||
-         message.request.url.indexOf('/user/data_assets?') !== -1 ||
-         message.request.url.indexOf('/user/content/index?') !== -1 ||
-         message.request.url.indexOf('/quest/content/') !== -1 ||
-         message.request.url.indexOf('/coopraid/content/') !== -1) {
+            message.request.url.indexOf('/user/data_assets?') !== -1 ||
+            message.request.url.indexOf('/user/content/index?') !== -1 ||
+            message.request.url.indexOf('/quest/content/') !== -1 ||
+            message.request.url.indexOf('/coopraid/content/') !== -1) {
           APBP.VerifyAPBP(message.request.response);
           Profile.SetLupiCrystal(message.request.response);
         }

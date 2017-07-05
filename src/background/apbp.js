@@ -271,17 +271,17 @@
   };
 
   var setAP = function(curr, max) {
-    for(var i = 0; i < responseAP.length; i++) {
+    for (var i = 0; i < responseAP.length; i++) {
       responseAP[i](curr);
     }
     currAP = parseInt(curr);
-    maxAP = parseInt(max);
+    maxAP  = parseInt(max);
     Message.PostAll({setText: {
-      'id': '#ap-number',
+      'id':    '#ap-number',
       'value': 'AP: ' + currAP + '/' + maxAP
     }});
-      'id': '#ap-bar',
-      Message.PostAll({setBar: {
+    Message.PostAll({setBar: {
+      'id':    '#ap-bar',
       'value': ((currAP / maxAP) * 100) + '%'
     }});
   };
@@ -321,8 +321,8 @@
       'id': '#ap-time',
       'value': str
     }});
-    // $apTime.text(str);
   };
+
   var setBPTime = function() {
     var str = '';
     if (bpTime.hour > 0) {
@@ -365,7 +365,9 @@
           apTime.minute = 59;
         }
         var max = maxAP * 20;
-        if ((apTime.minute % 10 === 4 || apTime.minute % 10 === 9) && !(apTime.hour === Math.floor((maxAP * 5 - 1) / 60) && apTime.minute === (maxAP * 5 - 1) % 60)) {
+        if ((apTime.minute % 10 === 4 || apTime.minute % 10 === 9) &&
+            !(apTime.hour === Math.floor((maxAP * 5 - 1) / 60) &&
+            apTime.minute === (maxAP * 5 - 1) % 60)) {
           setAP(currAP + 1, maxAP);
         }
         apTime.second = 59;
@@ -400,7 +402,9 @@
           }
           bpTime.minute = 59;
         }
-        if ((bpTime.minute === 19 || bpTime.minute === 39 || bpTime.minute === 59) && !(bpTime.hour === Math.floor((maxBP * 10 - 1) / 60) && bpTime.minute === (maxBP * 10 - 1) % 60)) {
+        if ((bpTime.minute === 19 || bpTime.minute === 39 || bpTime.minute === 59) &&
+            !(bpTime.hour === Math.floor((maxBP * 10 - 1) / 60) &&
+            bpTime.minute === (maxBP * 10 - 1) % 60)) {
           setBP(currBP + 1, maxBP);
         }
         bpTime.second = 59;
