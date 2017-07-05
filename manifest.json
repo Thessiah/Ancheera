@@ -6,7 +6,7 @@
   "version": "1.0.0",
 
   "icons": { "16": "src/assets/images/icon16.png",
-            "48": "src/assets/images/icon48.png",
+            "48":  "src/assets/images/icon48.png",
             "128": "src/assets/images/icon128.png"
             },
 
@@ -25,7 +25,6 @@
       "src/background/message.js",
       "src/background/storage.js",
       "src/background/options.js",
-
       "src/background/supplies.js",
       "src/background/apbp.js",
       "src/background/buffs.js",
