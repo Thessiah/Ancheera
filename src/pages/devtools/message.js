@@ -14,6 +14,7 @@
   var $supplyList = $('#supply-list');
   var $supplyItem = $supplyList.find('.supply-item').first().clone();
   $supplyList.find('.supply-item').first().remove();
+  // TODO: Why are these globals?
   $searchSupplies   = $('#search-supplies');
   $supplyCategories = $('#supply-categories');
   $firstCategory    = $supplyCategories.children('.active');
@@ -501,7 +502,6 @@
       jQueryCache[id] = $(id);
     }
     jQueryCache[id].attr('title', text).tooltip('fixTitle');
-    console.log(id.substring(1));
     if ($('.tooltip').length > 0 && $('.tooltip').prev().prop('id') == id.substring(1)) {
       jQueryCache[id].tooltip('show');
     }

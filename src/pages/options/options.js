@@ -200,9 +200,12 @@ var options = [
   '20751',
   '20761'
 ];
+
 var $raids = $('#raids');
-var $raid = $raids.find('.raid').first().clone();
+var $raid  = $raids.find('.raid').first().clone();
+
 $raids.find('.raid').first().remove();
+
 for (var i = 0; i < options.length; i++) {
   var key = options[i];
   if (raidInfo.hasOwnProperty(key)) {
@@ -212,9 +215,7 @@ for (var i = 0; i < options.length; i++) {
       newRaid.children('.check').attr('id', key);
       newRaid.children('.name').text(raidInfo[key].name);
       newRaid.appendTo('#' + raidInfo[key].type);
-    }
-    else
-    {
+    } else {
       var newRaid = $raid.clone();
       newRaid.children('.check').hide();
       newRaid.children('.name').text('  ');
@@ -235,7 +236,7 @@ $(':checkbox').each(function() {
   $(this).click(function() {
     checkEnabled($(this));
     chrome.runtime.sendMessage({setOption: {
-      'id': [$(this).attr('id')],
+      'id':    [$(this).attr('id')],
       'value': $(this).is(':checked')
     }
     });
