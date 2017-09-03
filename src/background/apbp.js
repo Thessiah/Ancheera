@@ -29,8 +29,8 @@
       }
 
       if (status !== undefined) {
-        setAP(status.ap, status.max_ap);
-        setBP(status.bp, status.max_bp);
+        setAP(status.now_action_point, status.max_action_point);
+        setBP(status.now_battle_point, status.max_battle_point);
         if (status.action_point_remain.indexOf('00:00') === -1) {
           var index = status.action_point_remain.indexOf('h');
           var hour  = apTime.hour;
