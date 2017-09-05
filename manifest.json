@@ -3,15 +3,15 @@
 
   "name": "Lyria",
   "description": "Granblue Fantasy Companion Extension.",
-  "version": "1.0.0",
+  "version": "1.0.1",
 
-  "icons": { "16": "src/assets/images/icon16.png",
-            "48":  "src/assets/images/icon48.png",
-            "128": "src/assets/images/icon128.png"
+  "icons": { "16": "src/assets/images/icon16.jpg",
+            "48":  "src/assets/images/icon48.jpg",
+            "128": "src/assets/images/icon128.jpg"
             },
 
   "browser_action": {
-    "default_icon": "src/assets/images/icon128.png"
+    "default_icon": "src/assets/images/icon128.jpg"
   },
 
   "options_ui": {
