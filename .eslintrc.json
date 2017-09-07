@@ -1,0 +1,45 @@
+{
+    "env": {
+        "browser": true,
+        "es6": true,
+        "jest": true,
+        "jquery": true
+    },
+    "extends": "eslint:recommended",
+    "parserOptions": {
+        "ecmaFeatures": {
+            "experimentalObjectRestSpread": true,
+            "jsx": true
+        },
+        "sourceType": "module"
+    },
+    "plugins": [
+        "react"
+    ],
+    "globals": {
+        "chrome": true,
+        "Message": true
+    },
+    "rules": {
+        "indent": [
+            "error",
+            2
+        ],
+        "linebreak-style": [
+            "error",
+            "unix"
+        ],
+        "quotes": [
+            "error",
+            "single"
+        ],
+        "semi": [
+            "error",
+            "always"
+        ],
+        "keyword-spacing": [
+          "error",
+          { "before": true, "after": true }
+        ]
+    }
+}

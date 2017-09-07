@@ -1,0 +1,19 @@
+engines:
+  eslint:
+    enabled: true
+  csslint:
+    enabled: true
+  duplication:
+    enabled: true
+    config:
+      languages:
+        #mass_threshold: 30
+      - javascript
+ratings:
+  paths:
+  - src/**
+  - "**.js"
+  - "**.css"
+exclude_paths:
+- spec/**/*
+- lib/**/*

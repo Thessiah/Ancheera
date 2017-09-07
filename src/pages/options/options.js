@@ -4,14 +4,14 @@ var createRaid = function(name, type, isHL) {
     type: type,
     isHL: isHL
   };
-}
+};
 
 var createDistinction = function(name, type) {
   return {
     name: name,
     type: type
   };
-}
+};
 var raidInfo = {
   '300011' : createRaid('Griffin (N)', '0', false),
   '300021' : createRaid('Griffin (H)', '1', false),
@@ -52,7 +52,7 @@ var raidInfo = {
   '301371' : createRaid('Baal (EX)', '6', false),
   '300531' : createRaid('Yggdrasil (HL)', '7', true),
   '300541' : createRaid('Medusa (HL)', '8', true),
-  
+
   '300200' : createRaid(null, '0', null, false),
   '300201' : createRaid('Wisp (H)', '1', false),
   '300211' : createRaid('Adversa (N)', '2', false),
@@ -62,7 +62,7 @@ var raidInfo = {
   '300461' : createRaid('Odin (EX)', '6', false),
   '300561' : createRaid('Lumi (HL)', '7', true),
   '300571' : createRaid('Apollo (HL)', '8', true),
-  
+
   '300230' : createRaid(null, '0', null, false),
   '300231' : createRaid('Eye (H)', '1', false),
   '300241' : createRaid('Celeste (N)', '2', false),
@@ -100,205 +100,186 @@ var distinctionInfo = {
 };
 
 var options = [
-    'ougiRefresh',
-    'skip',
-    'skipNext',
-    'enableNotifications',
-    'muteNotifications',
-    'apNotifications',
-    'epNotifications',
-    'dailyResetNotifications',
-    'strikeTimeNotifications',
-    'angelHaloNotifications',
-    'defenseOrderNotifications',
-    'isMagFest',
-    'increasedRenownLimit',
-    'freeSingleRoll',
-    'primarchDaily',
-    'sortRaidsDifficulty',
-    'copyJapaneseName',
-    'windowTheme',
-    'notificationTheme',
+  'ougiRefresh',
+  'skip',
+  'skipNext',
+  'enableNotifications',
+  'muteNotifications',
+  'apNotifications',
+  'epNotifications',
+  'dailyResetNotifications',
+  'strikeTimeNotifications',
+  'angelHaloNotifications',
+  'defenseOrderNotifications',
+  'isMagFest',
+  'increasedRenownLimit',
+  'freeSingleRoll',
+  'primarchDaily',
+  'sortRaidsDifficulty',
+  'copyJapaneseName',
+  'windowTheme',
+  'notificationTheme',
 
-    '300011',
-    '300021',
-    '300031',
-    '300041',
-    '300051',
-    '300421',
-    '301381',
-    '300441',
-    '300451',
+  '300011',
+  '300021',
+  '300031',
+  '300041',
+  '300051',
+  '300421',
+  '301381',
+  '300441',
+  '300451',
 
-    '300061',
-    '300071',
-    '300081',
-    '300091',
-    '300101',
-    '300411',
-    '301071',
-    '300491',
-    '300501',
+  '300061',
+  '300071',
+  '300081',
+  '300091',
+  '300101',
+  '300411',
+  '301071',
+  '300491',
+  '300501',
 
-    '300111',
-    '300121',
-    '300141',
-    '300151',
-    '300161',
-    '300381',
-    '300481',
-    '300511',
-    '300521',
+  '300111',
+  '300121',
+  '300141',
+  '300151',
+  '300161',
+  '300381',
+  '300481',
+  '300511',
+  '300521',
 
-    '300171',
-    '300181',
-    '300191',
-    '300261',
-    '300391',
-    '301371',
-    '300531',
-    '300541',
-    
-    '300201',
-    '300211',
-    '300221',
-    '300271',
-    '300431',
-    '300461',
-    '300561',
-    '300571',
-    
-    '300231',
-    '300241',
-    '300251',
-    '300281',
-    '300401',
-    '300551',
-    '300581',
-    '300591',
+  '300171',
+  '300181',
+  '300191',
+  '300261',
+  '300391',
+  '301371',
+  '300531',
+  '300541',
 
-    '300291',
-    '301051',
-    '300471',
-    '301061',
+  '300201',
+  '300211',
+  '300221',
+  '300271',
+  '300431',
+  '300461',
+  '300561',
+  '300571',
 
-    '20411',
-    '20421',
-    '20431',
-    '20441',
-    '20451',
-    '20461',
-    '20471',
-    '20481',
-    '20491',
-    '20501',
-    '20511',
-    '20671',
-    '20681',
-    '20691',
-    '20701',
-    '20751',
-    '20761'
+  '300231',
+  '300241',
+  '300251',
+  '300281',
+  '300401',
+  '300551',
+  '300581',
+  '300591',
+
+  '300291',
+  '301051',
+  '300471',
+  '301061',
+
+  '20411',
+  '20421',
+  '20431',
+  '20441',
+  '20451',
+  '20461',
+  '20471',
+  '20481',
+  '20491',
+  '20501',
+  '20511',
+  '20671',
+  '20681',
+  '20691',
+  '20701',
+  '20751',
+  '20761'
 ];
+
 var $raids = $('#raids');
-var $raid = $raids.find('.raid').first().clone();
+var $raid  = $raids.find('.raid').first().clone();
+
 $raids.find('.raid').first().remove();
-for(var i = 0; i < options.length; i++) {
+
+for (var i = 0; i < options.length; i++) {
   var key = options[i];
-  if(raidInfo.hasOwnProperty(key)) {
-    if(raidInfo[key].name !== null) {
+  if (raidInfo.hasOwnProperty(key)) {
+    if (raidInfo[key].name !== null) {
       var newRaid = $raid.clone();
       newRaid.attr('id', 'raid-' + key);
       newRaid.children('.check').attr('id', key);
-      // if(raidInfo[key].isHL) {
-      //   newRaid.children('.check').prop('checked', false);
-      // } else {
-      //   newRaid.children('.check').prop('checked', true);
-      // }
       newRaid.children('.name').text(raidInfo[key].name);
-      //$raids.children('#' + raidInfo[key].type).append(newRaid);
       newRaid.appendTo('#' + raidInfo[key].type);
-    }
-    else
-    {
+    } else {
       var newRaid = $raid.clone();
       newRaid.children('.check').hide();
       newRaid.children('.name').text('  ');
       newRaid.appendTo('#' + raidInfo[key].type);
     }
-  } else if(distinctionInfo.hasOwnProperty(key)) {
-    if(distinctionInfo[key].name !== null) {
+  } else if (distinctionInfo.hasOwnProperty(key)) {
+    if (distinctionInfo[key].name !== null) {
       var newRaid = $raid.clone();
       newRaid.attr('id', 'distinction-' + key);
       newRaid.children('.check').attr('id', key);
-      // if(raidInfo[key].isHL) {
-      //   newRaid.children('.check').prop('checked', false);
-      // } else {
-      //   newRaid.children('.check').prop('checked', true);
-      // }
       newRaid.children('.name').text(distinctionInfo[key].name);
-      //$raids.children('#' + raidInfo[key].type).append(newRaid);
       newRaid.appendTo('#d' + distinctionInfo[key].type);
-    }
-    else
-    {
-      // var newRaid = $raid.clone();
-      // newRaid.children('.check').hide();
-      // newRaid.children('.name').text('  ');
-      // newRaid.appendTo('#' + raidInfo[key].type);
     }
   }
 }
-
 
 $(':checkbox').each(function() {
   $(this).click(function() {
     checkEnabled($(this));
     chrome.runtime.sendMessage({setOption: {
-      'id': [$(this).attr('id')],
+      'id':    [$(this).attr('id')],
       'value': $(this).is(':checked')
     }
+    });
   });
-});
 });
 $('select').each(function() {
   $(this).on('change', function() {
     chrome.runtime.sendMessage({setOption: {
-      'id': [$(this).attr('id')],
+      'id':    [$(this).attr('id')],
       'value': this.value
-      }
+    }
     });
   });
 });
 
 var checkEnabled = function(obj) {
-  if(obj.attr('id') === 'enableNotifications') {
-    var checked = obj.is(':checked')
+  if (obj.attr('id') === 'enableNotifications') {
+    var checked = obj.is(':checked');
     $('#notifications').find('.check').each(function() {
       $(this).prop('disabled', !checked);
     });
     $('#notifications').find('.name').each(function() {
-      if(checked) {
+      if (checked) {
         $(this).css('color', '#333333');
       } else {
         $(this).css('color', 'grey');
       }
     });
   }
-}
+};
 
-for(var i = 0; i < options.length; i++) {
+for (var i = 0; i < options.length; i++) {
   chrome.runtime.sendMessage({getOption : options[i]
   }, function(response) {
-      if(response.value !== null) {
-        if(response.id === 'windowTheme' || response.id === 'notificationTheme') {
-          $('#' + response.id).val(response.value);
-        } else {
-          $('#' + response.id).prop('checked', response.value);
-          checkEnabled($('#' + response.id));
-        }
+    if (response.value !== null) {
+      if (response.id === 'windowTheme' || response.id === 'notificationTheme') {
+        $('#' + response.id).val(response.value);
       } else {
-        $('#raid-' + response.id).hide();
+        $('#' + response.id).prop('checked', response.value);
+        checkEnabled($('#' + response.id));
       }
+    } else {
+      $('#raid-' + response.id).hide();
+    }
   });
 }
