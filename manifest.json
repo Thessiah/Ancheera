@@ -5,13 +5,13 @@
   "description": "Granblue Fantasy Companion Extension.",
   "version": "1.0.1",
 
-  "icons": { "16": "src/assets/images/icon16.jpg",
-            "48":  "src/assets/images/icon48.jpg",
-            "128": "src/assets/images/icon128.jpg"
+  "icons": { "16": "src/assets/images/icon16.png",
+            "48":  "src/assets/images/icon48.png",
+            "128": "src/assets/images/icon128.png"
             },
 
   "browser_action": {
-    "default_icon": "src/assets/images/icon128.jpg"
+    "default_icon": "src/assets/images/icon128.png"
   },
 
   "options_ui": {
@@ -21,7 +21,7 @@
 
 
   "background": {
-    "scripts": [
+  "scripts": [
       "src/background/message.js",
       "src/background/storage.js",
       "src/background/options.js",
