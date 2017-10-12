@@ -77,7 +77,7 @@
 //             Quest.InitializeRaid(message.request.response, 'event');
 //           }
 //         Message.MessageTabs({checkRaids: true}, function(response) {
-          
+
 //         });
 //       }
 //       //initialize raid through code
@@ -282,7 +282,6 @@
 //     }
 //   });
 // })();
-
 
 
 // //   window.Message = {
