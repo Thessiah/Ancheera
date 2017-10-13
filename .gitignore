@@ -49,3 +49,6 @@ Temporary Items
 # Ignore docs files
 src/.sass-cache
 src/.sass-cache/*
+
+# Ignore IDEA shit
+.idea
