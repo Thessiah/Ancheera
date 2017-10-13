@@ -5,21 +5,22 @@
   "description": "The GBF Companion Extension that's absolutely bananas.",
   "version": "1.1.2.1",
 
-  "icons": { "16": "src/assets/images/icon16.png",
-            "48": "src/assets/images/icon48.png",
-            "128": "src/assets/images/icon128.png" 
-            },
+  "icons": {
+    "16": "src/assets/images/icon16.png",
+    "48": "src/assets/images/icon48.png",
+    "128": "src/assets/images/icon128.png"
+  },
 
   "browser_action": {
     "default_icon": "src/assets/images/icon128.png"
-  },   
-  
+  },
+
   "options_ui": {
     "page": "src/pages/options/options.html",
     "chrome_style": true
   },
-  
-  
+
+
   "background": {
     "scripts": [
       "src/background/message.js",
@@ -34,6 +35,7 @@
       "src/background/profile.js",
       "src/background/dailies.js",
       "src/background/time.js",
+      "src/background/backgroundMessageActionCollection.js",
       "src/background/background.js"
     ]
   },
